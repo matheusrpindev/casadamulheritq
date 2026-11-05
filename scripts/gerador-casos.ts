@@ -385,7 +385,7 @@ export function gerarCasos(quantidade: number, hoje: Date, semente = 20261105): 
     if (chance(0.78)) {
       const fisica = tipos.includes("FISICA");
       const r: Respostas = {};
-      r.q1 = [g > 0.95 || (acessoArma === "SIM" && g > 0.7) ? "arma_fogo" : g > 0.82 ? "faca" : g > 0.35 ? "outra" : "nao"];
+      r.q1 = [acessoArma !== "NAO" && (g > 0.95 || (acessoArma === "SIM" && g > 0.7)) ? "arma_fogo" : g > 0.82 ? "faca" : g > 0.35 ? "outra" : "nao"];
       const graves = fisica ? (["enforcamento", "sufocamento", "paulada", "queimadura", "facada"] as const).filter((_, k) => g > [0.72, 0.88, 0.84, 0.95, 0.97][k] && chance(0.7)) : [];
       r.q2 = graves.length ? [...graves] : ["nenhuma"];
       const leves = fisica ? (["socos", "chutes", "tapas", "empurroes", "puxoes_cabelo"] as const).filter(() => chance(0.5)) : [];

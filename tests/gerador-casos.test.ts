@@ -51,6 +51,8 @@ describe("base fictícia de validação", () => {
       expect(r.q5[0] === "sim").toBe(c.tipos.includes("SEXUAL"));
       expect(r.q26[0] === "sim").toBe(c.perfil.dependenciaFinanceira === true);
       expect(r.q22[0] === "sim").toBe(c.perfil.pessoaComDeficiencia === true);
+      // Ameaça com arma de fogo só quando o autor tem (ou pode ter) acesso a uma.
+      if (r.q1.includes("arma_fogo")) expect(c.autor?.acessoArma).not.toBe("NAO");
     }
   });
 
