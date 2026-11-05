@@ -92,6 +92,9 @@ servidores ficam fora do Brasil e o contrato não foi avaliado pela Prefeitura.
 
 Para recomeçar a base depois dos testes, rode de novo o `npm run db:semear` do seu computador.
 
+Se algo não funcionar (erro no login, prontuário que não abre), rode `npm run db:verificar` no seu computador: ele
+confere o `.env`, a conexão, as tabelas, as contas e se a chave abre os relatos, e diz o que corrigir.
+
 ## 5. Backups
 
 Backup diário do banco, criptografado, guardado fora do servidor. Exemplo (cron às 2h):

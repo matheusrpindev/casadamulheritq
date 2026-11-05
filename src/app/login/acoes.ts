@@ -15,6 +15,21 @@ export async function entrar(_: EstadoAcao, dados: FormData): Promise<EstadoAcao
   const senha = String(dados.get("senha") ?? "").slice(0, 200);
   if (!email || !senha) return falha("Informe e-mail e senha.");
 
+  let resultado: EstadoAcao | { destino: string };
+  try {
+    resultado = await autenticar(email, senha);
+  } catch (e) {
+    // Banco fora do ar ou mal configurado: mensagem clara na tela, detalhes no log do servidor.
+    console.error("[login] Falha ao acessar o banco de dados:", e instanceof Error && e.cause ? e.cause : e);
+    return falha(
+      "Não foi possível acessar o banco de dados agora. Tente de novo em instantes; se continuar, avise a administração do sistema (no computador de quem instalou: npm run db:verificar).",
+    );
+  }
+  if ("destino" in resultado) redirect(resultado.destino);
+  return resultado;
+}
+
+async function autenticar(email: string, senha: string): Promise<EstadoAcao | { destino: string }> {
   const [usuario] = await db.select().from(schema.usuarios).where(eq(schema.usuarios.email, email)).limit(1);
 
   if (!usuario) {
@@ -60,5 +75,5 @@ export async function entrar(_: EstadoAcao, dados: FormData): Promise<EstadoAcao
   await criarSessao(usuario.id);
   await registrarAuditoria("LOGIN", quem);
 
-  redirect(usuario.precisaTrocarSenha ? "/conta/senha" : usuario.papel === "ADMIN" ? "/admin/usuarios" : "/");
+  return { destino: usuario.precisaTrocarSenha ? "/conta/senha" : usuario.papel === "ADMIN" ? "/admin/usuarios" : "/" };
 }

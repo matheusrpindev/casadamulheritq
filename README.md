@@ -107,6 +107,7 @@ Com `MODO_VALIDACAO=true` no `.env`, uma faixa amarela avisa em todas as telas q
 | `npm run lint` / `npm run typecheck` | Verificações de código |
 | `npm run db:gerar` | Gera migração após mudar `src/db/schema.ts` |
 | `npm run db:migrar` | Aplica migrações |
+| `npm run db:verificar` | Diagnóstico: confere `.env`, conexão, tabelas, contas e se a chave abre os relatos |
 | `npm run db:semear` | Base fictícia de validação (**apaga o banco**); `QTD_CASOS=300` muda o volume |
 | `npm run build:semear` | Empacota a carga fictícia em `dist-scripts/semear.mjs` (usado na imagem Docker) |
 | `npm run criar-admin -- --email … --nome "…"` | Primeira conta em produção |
