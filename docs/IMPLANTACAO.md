@@ -1,0 +1,91 @@
+# Implantação
+
+Caminho recomendado: **um servidor Linux** (da Prefeitura ou VPS no Brasil) com Docker, atrás de HTTPS.
+Para uma rede municipal (dezenas de profissionais), 2 vCPU / 4 GB de RAM / 40 GB de disco sobram.
+
+> Por serem dados sensíveis, prefira infraestrutura da própria Prefeitura ou um provedor com data center no Brasil e
+> contrato que trate de proteção de dados. Evite hospedagens gratuitas.
+
+## 1. Preparar o `.env`
+
+No servidor, dentro da pasta do projeto:
+
+```bash
+cp .env.example .env
+```
+
+```bash
+docker run --rm -v "$PWD":/app -w /app node:22-alpine node scripts/gerar-chaves.mjs
+```
+
+Preencha no `.env`:
+
+- `CHAVE_CRIPTOGRAFIA` e `CHAVE_INDICE` — as chaves geradas acima. **Guarde uma cópia no cofre de senhas da
+  Prefeitura.** Sem elas, ninguém (nem a TI) consegue ler os relatos — inclusive de um backup.
+- `SENHA_BANCO` — uma senha longa e aleatória para o PostgreSQL.
+- `NOME_REDE` e `PREFIXO_PRONTUARIO` (ex.: `ITQ`).
+
+O `DATABASE_URL` é montado pelo `docker-compose.yml`.
+
+## 2. Subir
+
+```bash
+docker compose up -d --build
+```
+
+As migrações rodam sozinhas a cada inicialização. A aplicação escuta só em `127.0.0.1:3000`.
+
+## 3. HTTPS
+
+Coloque um proxy com certificado na frente. Exemplo com [Caddy](https://caddyserver.com) (certificado automático),
+arquivo `/etc/caddy/Caddyfile`:
+
+```
+acolhe.itaquaquecetuba.sp.gov.br {
+    reverse_proxy 127.0.0.1:3000
+}
+```
+
+Em rede interna sem certificado (só para testes!), defina `PERMITIR_HTTP=true` no `.env`.
+
+## 4. Primeira conta
+
+```bash
+docker compose exec app node scripts/criar-admin.mjs --email ti@prefeitura.sp.gov.br --nome "Equipe de TI" --unidade "Secretaria Municipal da Mulher" --sigla SMM --tipo SECRETARIA
+```
+
+Ele mostra uma **senha temporária**, trocada no primeiro acesso. Com essa conta, cadastre as unidades e as gestoras de
+cada unidade; cada gestora cria as contas da própria equipe.
+
+> **Nunca** rode `npm run db:semear` em produção: ele apaga o banco e cria dados fictícios.
+
+## 5. Backups
+
+Backup diário do banco, criptografado, guardado fora do servidor. Exemplo (cron às 2h):
+
+```bash
+docker compose exec -T banco pg_dump -U acolhe -Fc acolhe | gpg --encrypt --recipient backup@prefeitura > /backup/acolhe-$(date +%F).dump.gpg
+```
+
+Teste a restauração todo mês em um ambiente separado. Lembre: o backup do banco **não** contém as chaves — elas ficam no
+cofre de senhas, e são necessárias para ler os dados restaurados.
+
+## 6. Atualizações
+
+```bash
+git pull
+```
+
+```bash
+docker compose up -d --build
+```
+
+## 7. Checklist de produção
+
+- [ ] HTTPS funcionando (o sistema exige cookie seguro)
+- [ ] Chaves guardadas no cofre, com duas pessoas responsáveis
+- [ ] Backup diário configurado e restauração testada
+- [ ] Firewall: só portas 80/443 abertas; PostgreSQL não exposto
+- [ ] Atualizações de segurança automáticas do sistema operacional
+- [ ] RIPD e termo de uso aprovados com o encarregado (DPO)
+- [ ] Rotina semanal da gestão: revisar acessos emergenciais na Auditoria

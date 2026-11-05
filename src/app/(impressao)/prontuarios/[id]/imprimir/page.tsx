@@ -32,8 +32,9 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
   await registrarAuditoria("PRONTUARIO_IMPRESSO", { usuarioId: usuario.id, unidadeId: usuario.unidadeId }, { prontuarioId: id });
 
   const anos = idade(p.dataNascimento);
-  const relatos = c.relatos.filter((r) => r.visivel && !r.retificadoPor);
-  const atendimentos = c.atendimentos.filter((a) => a.visivel && !a.retificadoPor);
+  // Papel sai do sistema: só registros compartilhados com a rede vão para a impressão.
+  const relatos = c.relatos.filter((r) => r.visivel && !r.retificadoPor && r.sigilo === "REDE");
+  const atendimentos = c.atendimentos.filter((a) => a.visivel && !a.retificadoPor && a.sigilo === "REDE");
   const ultima = c.avaliacoes[0];
   const fonar = ultima?.respostas ? avaliarFonar(ultima.respostas) : null;
 

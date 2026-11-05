@@ -79,6 +79,11 @@ export function idade(dataNascimento: string | null | undefined, hoje = new Date
   return anos;
 }
 
+/** Instante deslocado do momento atual (ms negativos = passado). */
+export function instante(deslocamentoMs = 0): Date {
+  return new Date(Date.now() + deslocamentoMs);
+}
+
 /** Data de hoje (AAAA-MM-DD) no fuso de São Paulo. */
 export function hojeISO(agora = new Date()): string {
   return new Intl.DateTimeFormat("en-CA", { timeZone: TZ }).format(agora);

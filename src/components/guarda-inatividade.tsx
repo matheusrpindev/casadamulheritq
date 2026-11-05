@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ShieldAlert } from "lucide-react";
 import { manterSessao, sair } from "@/app/(app)/acoes-sessao";
 import { classeBotao } from "./ui";
@@ -19,6 +20,7 @@ export function GuardaInatividade({ minutos }: { minutos: number }) {
   const ultimaAtividade = useRef(0);
   const ultimoPing = useRef(0);
   const [restante, setRestante] = useState<number | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     ultimaAtividade.current = Date.now();
@@ -43,7 +45,7 @@ export function GuardaInatividade({ minutos }: { minutos: number }) {
       if (parado < INTERVALO_PING_MS && agora - ultimoPing.current >= INTERVALO_PING_MS) {
         ultimoPing.current = agora;
         const ativa = await manterSessao().catch(() => true);
-        if (!ativa) window.location.assign("/login?motivo=inatividade");
+        if (!ativa) router.replace("/login?motivo=inatividade");
       }
     }, 1000);
 
@@ -51,7 +53,7 @@ export function GuardaInatividade({ minutos }: { minutos: number }) {
       eventos.forEach((e) => window.removeEventListener(e, marcar));
       window.clearInterval(relogio);
     };
-  }, [limiteMs]);
+  }, [limiteMs, router]);
 
   if (restante === null) return null;
   const mm = Math.floor(restante / 60);

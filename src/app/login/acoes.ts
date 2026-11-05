@@ -60,5 +60,5 @@ export async function entrar(_: EstadoAcao, dados: FormData): Promise<EstadoAcao
   await criarSessao(usuario.id);
   await registrarAuditoria("LOGIN", quem);
 
-  redirect(usuario.precisaTrocarSenha ? "/conta/senha" : "/");
+  redirect(usuario.precisaTrocarSenha ? "/conta/senha" : usuario.papel === "ADMIN" ? "/admin/usuarios" : "/");
 }

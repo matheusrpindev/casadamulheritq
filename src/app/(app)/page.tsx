@@ -6,7 +6,7 @@ import { db, schema } from "@/db";
 import { exigirUsuario } from "@/lib/sessao";
 import { idsAcessiveisPelaUnidade } from "@/lib/dados/consultas";
 import { mapasRede } from "@/lib/dados/prontuario";
-import { formatarData, hojeISO, nomeExibicao, numeroProntuario, tempoRelativo } from "@/lib/texto";
+import { formatarData, hojeISO, instante, nomeExibicao, numeroProntuario, tempoRelativo } from "@/lib/texto";
 import { PREFIXO_PRONTUARIO } from "@/lib/config";
 import { BotaoLink, CabecalhoCartao, Cartao, SeloUnidade, Vazio } from "@/components/ui";
 import { Avatar, SeloRisco, SeloStatusEncaminhamento, SeloUrgencia } from "@/components/selos";
@@ -17,8 +17,8 @@ export default async function Painel() {
 
   const acessiveis = idsAcessiveisPelaUnidade(usuario.unidadeId);
   const hoje = hojeISO();
-  const em30dias = hojeISO(new Date(Date.now() + 30 * 86400000));
-  const seteDiasAtras = new Date(Date.now() - 7 * 86400000);
+  const em30dias = hojeISO(instante(30 * 86400000));
+  const seteDiasAtras = instante(-7 * 86400000);
 
   const [mapas, entrada, riscoElevado, medidasVencendo, recentes, [{ atendimentosSemana }], [{ ativos }], [{ aguardando }]] =
     await Promise.all([

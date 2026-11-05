@@ -150,7 +150,7 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
                         ))}
                       </div>
                     )}
-                    <p className="texto-relato line-clamp-[12]">{r.texto}</p>
+                    <p className={cx("texto-relato", i > 0 && "line-clamp-6")}>{r.texto}</p>
                   </article>
                 ))}
                 {relatosVigentes.length > 2 && (

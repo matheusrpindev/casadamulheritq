@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE FUNCTION bloquear_alteracao() RETURNS trigger AS $$
 BEGIN
-  RAISE EXCEPTION 'A tabela % é somente acréscimo: % não é permitido. Use uma retificação.', TG_TABLE_NAME, TG_OP
+  RAISE EXCEPTION 'Registros da tabela % não podem ser alterados nem apagados (% bloqueado). Correções são feitas por retificação.', TG_TABLE_NAME, TG_OP
     USING ERRCODE = 'insufficient_privilege';
 END;
 $$ LANGUAGE plpgsql;

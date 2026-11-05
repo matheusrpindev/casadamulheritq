@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: acolhe
+          POSTGRES_USER: acolhe
+          POSTGRES_PASSWORD: acolhe
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U acolhe" --health-interval 5s --health-retries 10
+    env:
+      DATABASE_URL: postgres://acolhe:acolhe@localhost:5432/acolhe
+      CHAVE_CRIPTOGRAFIA: MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=
+      CHAVE_INDICE: ZmVkY2JhOTg3NjU0MzIxMGZlZGNiYTk4NzY1NDMyMTA=
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - name: Migrações e dados de demonstração
+        run: npm run db:migrar && npm run db:semear
+      - run: npm run build

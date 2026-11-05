@@ -8,7 +8,7 @@ import { exigirUsuario } from "@/lib/sessao";
 import { registrarAuditoria } from "@/lib/auditoria";
 import { carregarConteudo, carregarProntuario, mapasRede } from "@/lib/dados/prontuario";
 import { podeRegistrarAtendimento, podeSolicitarAcessoEmergencial, podeVerAcessosDoProntuario } from "@/lib/permissoes";
-import { formatarData, formatarDataHora, hojeISO, idade, nomeExibicao, numeroProntuario } from "@/lib/texto";
+import { formatarData, formatarDataHora, hojeISO, idade, instante, nomeExibicao, numeroProntuario } from "@/lib/texto";
 import { PREFIXO_PRONTUARIO } from "@/lib/config";
 import { Aviso, BotaoLink, Cartao, Selo, SeloUnidade, cx } from "@/components/ui";
 import { Avatar, SeloRisco } from "@/components/selos";
@@ -31,12 +31,12 @@ const ABAS = [
   { id: "resumo", rotulo: "Resumo" },
   { id: "relatos", rotulo: "Relatos" },
   { id: "atendimentos", rotulo: "Atendimentos" },
-  { id: "risco", rotulo: "Avaliação de risco" },
+  { id: "risco", rotulo: "Risco" },
   { id: "encaminhamentos", rotulo: "Encaminhamentos" },
-  { id: "medidas", rotulo: "Medidas protetivas" },
-  { id: "autores", rotulo: "Autor da violência" },
-  { id: "cadastro", rotulo: "Cadastro e autorização" },
-  { id: "acessos", rotulo: "Quem acessou" },
+  { id: "medidas", rotulo: "Medidas" },
+  { id: "autores", rotulo: "Autor" },
+  { id: "cadastro", rotulo: "Cadastro" },
+  { id: "acessos", rotulo: "Acessos" },
 ] as const;
 type Aba = (typeof ABAS)[number]["id"];
 
@@ -84,7 +84,7 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
         eq(schema.auditoria.usuarioId, usuario.id),
         eq(schema.auditoria.prontuarioId, p.id),
         eq(schema.auditoria.acao, "PRONTUARIO_VISUALIZADO"),
-        gt(schema.auditoria.criadoEm, new Date(Date.now() - 10 * 60000)),
+        gt(schema.auditoria.criadoEm, instante(-10 * 60000)),
       ),
     )
     .limit(1);
@@ -126,8 +126,8 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
       {/* Cabeçalho */}
       <Cartao className="overflow-hidden">
         <div className="flex flex-wrap items-start gap-5 p-5 sm:p-6">
-          <Avatar nome={nomeExibicao(p)} className="size-14 text-base" />
-          <div className="min-w-0 flex-1">
+          <Avatar nome={nomeExibicao(p)} className="hidden size-14 text-base sm:grid" />
+          <div className="min-w-0 flex-1 basis-full sm:basis-auto">
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-2xl font-semibold tracking-tight text-slate-900">{nomeExibicao(p)}</h1>
               <SeloRisco nivel={p.nivelRisco} grande />

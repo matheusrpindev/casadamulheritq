@@ -1,0 +1,32 @@
+# Implantação simples em um servidor: banco + aplicação.
+# Coloque um proxy com HTTPS na frente (ver docs/IMPLANTACAO.md).
+services:
+  banco:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: acolhe
+      POSTGRES_USER: acolhe
+      POSTGRES_PASSWORD: ${SENHA_BANCO:?defina SENHA_BANCO no .env}
+    volumes:
+      - dados-banco:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U acolhe -d acolhe"]
+      interval: 5s
+      retries: 10
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      banco:
+        condition: service_healthy
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://acolhe:${SENHA_BANCO}@banco:5432/acolhe
+    # Só escuta na própria máquina; o proxy HTTPS é quem fica exposto.
+    ports:
+      - "127.0.0.1:3000:3000"
+
+volumes:
+  dados-banco:
