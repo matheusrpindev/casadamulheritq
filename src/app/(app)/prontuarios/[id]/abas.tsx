@@ -12,10 +12,12 @@ import {
   Send,
   ShieldAlert,
   UserX,
+  Users,
 } from "lucide-react";
 import { db, schema } from "@/db";
 import type { Prontuario } from "@/db/schema";
 import { avaliarFonar, FONAR } from "@/lib/fonar";
+import { resumoPerfil } from "@/lib/relatorios";
 import {
   acessosAoProntuario,
   cadastroDecifrado,
@@ -105,6 +107,7 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
   const fonar = ultimaAvaliacao?.respostas ? avaliarFonar(ultimaAvaliacao.respostas) : null;
   const abertos = conteudo.encaminhamentos.filter((e) => e.status === "ENVIADO" || e.status === "RECEBIDO");
   const contato = cadastroDecifrado(p);
+  const perfil = resumoPerfil(p);
   const unidadesQueAtenderam = new Set([...conteudo.atendimentos.map((a) => a.unidade.sigla), ...conteudo.relatos.map((r) => r.unidade.sigla)]);
 
   return (
@@ -122,9 +125,9 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
           />
           <div className="p-5">
             {!tecnica ? (
-              <p className="text-sm text-slate-500">O conteúdo dos relatos é visível apenas para a equipe técnica.</p>
+              <p className="text-sm text-zinc-500">O conteúdo dos relatos é visível apenas para a equipe técnica.</p>
             ) : relatosVigentes.length === 0 ? (
-              <div className="text-sm text-slate-500">
+              <div className="text-sm text-zinc-500">
                 Nenhum relato registrado ainda.{" "}
                 <Link href={`/prontuarios/${p.id}?aba=relatos`} className="font-medium text-marca-700 underline">
                   Registrar relato
@@ -133,8 +136,8 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
             ) : (
               <div className="space-y-5">
                 {relatosVigentes.slice(0, 2).map((r, i) => (
-                  <article key={r.id} className={cx(i > 0 && "border-t border-slate-100 pt-5")}>
-                    <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                  <article key={r.id} className={cx(i > 0 && "border-t border-zinc-100 pt-5")}>
+                    <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
                       <SeloUnidade unidade={r.unidade} />
                       <span>{formatarDataHora(r.criadoEm)}</span>
                       <span>· {r.autor.nome}</span>
@@ -181,7 +184,7 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
           <div className="p-5">
             {!ultimaAvaliacao ? (
               <div className="space-y-3">
-                <p className="text-sm text-slate-600">Nenhuma avaliação de risco aplicada ainda.</p>
+                <p className="text-sm text-zinc-600">Nenhuma avaliação de risco aplicada ainda.</p>
                 {tecnica && (
                   <BotaoLink href={`/prontuarios/${p.id}/risco/novo`} tamanho="sm">
                     Aplicar FONAR
@@ -191,7 +194,7 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
             ) : (
               <div className="space-y-3">
                 <SeloRisco nivel={ultimaAvaliacao.classificacao} grande />
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-zinc-500">
                   {formatarData(ultimaAvaliacao.criadoEm)} · {ultimaAvaliacao.unidade.sigla} · {ultimaAvaliacao.profissional.nome}
                 </p>
                 {fonar && fonar.fatoresGraves.length > 0 && (
@@ -217,34 +220,56 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
         </Cartao>
 
         <Cartao>
+          <CabecalhoCartao icone={<Users className="size-5" />} titulo="Sobre ela" />
+          <div className="p-5">
+            {perfil.length === 0 ? (
+              <p className="text-sm text-zinc-500">
+                Família e situação socioeconômica ainda não informadas.{" "}
+                <Link href={`/prontuarios/${p.id}?aba=cadastro`} className="font-medium text-marca-700 underline">
+                  Completar cadastro
+                </Link>
+              </p>
+            ) : (
+              <ul className="flex flex-wrap gap-1.5">
+                {perfil.map((i) => (
+                  <li key={i.texto}>
+                    <Selo tom={i.destaque ? "ambar" : "neutro"}>{i.texto}</Selo>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </Cartao>
+
+        <Cartao>
           <CabecalhoCartao icone={<Phone className="size-5" />} titulo="Como falar com ela" />
           <div className="space-y-2 p-5 text-sm">
             {!p.contatoSeguro && (
               <p className="rounded-lg bg-rose-50 px-3 py-2 font-medium text-rose-900">Ligar pode colocá-la em risco.</p>
             )}
             <p>
-              <span className="text-slate-500">Telefone:</span> {contato.telefone ?? "não informado"}
+              <span className="text-zinc-500">Telefone:</span> {contato.telefone ?? "não informado"}
             </p>
             <p>
-              <span className="text-slate-500">Recado:</span> {p.podeDeixarRecado ? "pode deixar" : "não deixar recado"}
+              <span className="text-zinc-500">Recado:</span> {p.podeDeixarRecado ? "pode deixar" : "não deixar recado"}
             </p>
             {p.melhorHorario && (
               <p>
-                <span className="text-slate-500">Horário:</span> {p.melhorHorario}
+                <span className="text-zinc-500">Horário:</span> {p.melhorHorario}
               </p>
             )}
-            {contato.orientacoesContato && <p className="rounded-lg bg-slate-50 px-3 py-2 text-slate-700">{contato.orientacoesContato}</p>}
+            {contato.orientacoesContato && <p className="rounded-lg bg-zinc-50 px-3 py-2 text-zinc-700">{contato.orientacoesContato}</p>}
           </div>
         </Cartao>
 
         {medidasVigentes.length > 0 && (
           <Cartao>
             <CabecalhoCartao icone={<Gavel className="size-5" />} titulo="Medidas protetivas vigentes" />
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-zinc-100">
               {medidasVigentes.map((m) => (
                 <li key={m.id} className="px-5 py-3 text-sm">
-                  <p className="text-slate-800">{m.medidas.join(" · ")}</p>
-                  <p className="mt-0.5 text-xs text-slate-500">
+                  <p className="text-zinc-800">{m.medidas.join(" · ")}</p>
+                  <p className="mt-0.5 text-xs text-zinc-500">
                     {m.validaAte ? `Válida até ${formatarData(m.validaAte)}` : "Sem data de validade registrada"}
                   </p>
                 </li>
@@ -256,11 +281,11 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
         {conteudo.autores.length > 0 && (
           <Cartao>
             <CabecalhoCartao icone={<UserX className="size-5" />} titulo="Autor da violência" />
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-zinc-100">
               {conteudo.autores.map((a) => (
                 <li key={a.id} className="px-5 py-3 text-sm">
-                  <p className="font-medium text-slate-900">{a.nome}</p>
-                  <p className="text-xs text-slate-500">
+                  <p className="font-medium text-zinc-900">{a.nome}</p>
+                  <p className="text-xs text-zinc-500">
                     {ROTULO_VINCULO[a.vinculo]}
                     {a.acessoArma === "SIM" && <strong className="ml-1 text-rose-700">· acesso a arma de fogo</strong>}
                   </p>
@@ -273,7 +298,7 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
         {abertos.length > 0 && (
           <Cartao>
             <CabecalhoCartao icone={<Send className="size-5" />} titulo="Encaminhamentos em aberto" />
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-zinc-100">
               {abertos.map((e) => (
                 <li key={e.id} className="flex items-center justify-between gap-2 px-5 py-3 text-sm">
                   <span className="flex items-center gap-1.5">
@@ -315,9 +340,9 @@ export function AbaRelatos({ usuario, prontuario: p, conteudo, tecnica }: Ctx) {
       ) : (
         conteudo.relatos.map((r) => (
           <Cartao key={r.id} id={`relato-${r.id}`} className={cx("scroll-mt-6", r.retificadoPor && "opacity-70")}>
-            <div className="flex flex-wrap items-center gap-2 border-b border-slate-100 px-5 py-3 text-xs text-slate-500">
+            <div className="flex flex-wrap items-center gap-2 border-b border-zinc-100 px-5 py-3 text-xs text-zinc-500">
               <SeloUnidade unidade={r.unidade} />
-              <span className="font-medium text-slate-700">{r.autor.nome}</span>
+              <span className="font-medium text-zinc-700">{r.autor.nome}</span>
               {r.especialidade && <span>· {especialidadeRotulo(r.especialidade)}</span>}
               <span>· registrado em {formatarDataHora(r.criadoEm)}</span>
               {r.dataFato && <span>· fato em {formatarData(r.dataFato)}</span>}
@@ -327,7 +352,7 @@ export function AbaRelatos({ usuario, prontuario: p, conteudo, tecnica }: Ctx) {
             </div>
             <div className="p-5">
               {!r.visivel ? (
-                <p className="flex items-center gap-2 text-sm text-slate-500">
+                <p className="flex items-center gap-2 text-sm text-zinc-500">
                   <Lock className="size-4" /> {restricao(r.sigilo, r.especialidade, r.unidade)}.
                 </p>
               ) : (
@@ -341,11 +366,11 @@ export function AbaRelatos({ usuario, prontuario: p, conteudo, tecnica }: Ctx) {
                       ))}
                     </div>
                   )}
-                  {r.localFato && <p className="mb-2 text-xs text-slate-500">Local: {r.localFato}</p>}
+                  {r.localFato && <p className="mb-2 text-xs text-zinc-500">Local: {r.localFato}</p>}
                   {r.motivoRetificacao && (
                     <p className="mb-3 rounded-lg bg-sky-50 px-3 py-2 text-xs text-sky-900">Motivo da retificação: {r.motivoRetificacao}</p>
                   )}
-                  <p className={cx("texto-relato", r.retificadoPor && "line-through decoration-slate-300")}>{r.texto}</p>
+                  <p className={cx("texto-relato", r.retificadoPor && "line-through decoration-zinc-300")}>{r.texto}</p>
                   {r.autor.id === usuario.id && !r.retificadoPor && r.texto && (
                     <div className="mt-3">
                       <FormRetificacao tipo="relato" id={r.id} textoAtual={r.texto} />
@@ -382,12 +407,12 @@ export function AbaAtendimentos({ usuario, prontuario: p, conteudo, tecnica }: C
     return (
       <Cartao>
         <CabecalhoCartao titulo="Atendimentos" descricao="O conteúdo é restrito à equipe técnica." />
-        <ul className="divide-y divide-slate-100">
+        <ul className="divide-y divide-zinc-100">
           {conteudo.atendimentos.map((a) => (
             <li key={a.id} className="flex items-center gap-2 px-5 py-3 text-sm">
               <SeloUnidade unidade={a.unidade} />
               <span>{ROTULO_TIPO_ATENDIMENTO[a.tipo]}</span>
-              <span className="text-slate-500">· {formatarDataHora(a.realizadoEm)}</span>
+              <span className="text-zinc-500">· {formatarDataHora(a.realizadoEm)}</span>
             </li>
           ))}
         </ul>
@@ -411,12 +436,12 @@ export function AbaAtendimentos({ usuario, prontuario: p, conteudo, tecnica }: C
         </Cartao>
       ) : (
         <Cartao>
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-zinc-100">
             {conteudo.atendimentos.map((a) => (
               <li key={a.id} id={`atendimento-${a.id}`} className={cx("scroll-mt-6 px-5 py-4", a.retificadoPor && "opacity-70")}>
-                <div className="flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-500">
                   <SeloUnidade unidade={a.unidade} />
-                  <span className="font-medium text-slate-800">{ROTULO_TIPO_ATENDIMENTO[a.tipo]}</span>
+                  <span className="font-medium text-zinc-800">{ROTULO_TIPO_ATENDIMENTO[a.tipo]}</span>
                   <span>· {formatarDataHora(a.realizadoEm)}</span>
                   <span>
                     · {a.profissional.nome}
@@ -431,7 +456,7 @@ export function AbaAtendimentos({ usuario, prontuario: p, conteudo, tecnica }: C
                     {a.motivoRetificacao && (
                       <p className="mt-2 rounded-lg bg-sky-50 px-3 py-2 text-xs text-sky-900">Motivo da retificação: {a.motivoRetificacao}</p>
                     )}
-                    <p className={cx("mt-2 text-sm leading-relaxed whitespace-pre-wrap text-slate-700", a.retificadoPor && "line-through decoration-slate-300")}>
+                    <p className={cx("mt-2 text-sm leading-relaxed whitespace-pre-wrap text-zinc-700", a.retificadoPor && "line-through decoration-zinc-300")}>
                       {a.texto}
                     </p>
                     {a.profissional.id === usuario.id && !a.retificadoPor && a.texto && (
@@ -441,7 +466,7 @@ export function AbaAtendimentos({ usuario, prontuario: p, conteudo, tecnica }: C
                     )}
                   </>
                 ) : (
-                  <p className="mt-2 flex items-center gap-2 text-sm text-slate-500">
+                  <p className="mt-2 flex items-center gap-2 text-sm text-zinc-500">
                     <Lock className="size-4" /> {restricao(a.sigilo, a.especialidade, a.unidade)}.
                   </p>
                 )}
@@ -464,8 +489,8 @@ export function AbaRisco({ prontuario: p, conteudo, tecnica }: Ctx) {
       <Cartao className="p-5">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="max-w-2xl">
-            <p className="text-sm font-semibold text-slate-900">Formulário Nacional de Avaliação de Risco (FONAR)</p>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="text-sm font-semibold text-zinc-900">Formulário Nacional de Avaliação de Risco (FONAR)</p>
+            <p className="mt-1 text-sm text-zinc-600">
               Lei 14.149/2021. Se ela já respondeu em outra unidade, a resposta está abaixo — reaplique só se a situação
               mudou (nova agressão, separação, ameaça).
             </p>
@@ -487,27 +512,27 @@ export function AbaRisco({ prontuario: p, conteudo, tecnica }: Ctx) {
           const r = v.respostas ? avaliarFonar(v.respostas) : null;
           return (
             <Cartao key={v.id}>
-              <div className="flex flex-wrap items-center gap-3 border-b border-slate-100 px-5 py-4">
+              <div className="flex flex-wrap items-center gap-3 border-b border-zinc-100 px-5 py-4">
                 <SeloRisco nivel={v.classificacao} grande />
                 {i === 0 && <Selo tom="marca">Mais recente</Selo>}
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-zinc-500">
                   <SeloUnidade unidade={v.unidade} /> {formatarDataHora(v.criadoEm)} · {v.profissional.nome}
                 </span>
                 {v.sugestao !== v.classificacao && (
-                  <span className="text-xs text-slate-500">(sugestão automática: {ROTULO_RISCO[v.sugestao].toLowerCase()})</span>
+                  <span className="text-xs text-zinc-500">(sugestão automática: {ROTULO_RISCO[v.sugestao].toLowerCase()})</span>
                 )}
               </div>
               {!v.visivel || !r || !v.respostas ? (
-                <p className="px-5 py-4 text-sm text-slate-500">Respostas visíveis apenas para a equipe técnica.</p>
+                <p className="px-5 py-4 text-sm text-zinc-500">Respostas visíveis apenas para a equipe técnica.</p>
               ) : (
                 <div className="space-y-4 p-5">
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div>
                       <p className="mb-2 text-xs font-semibold tracking-wide text-rose-800 uppercase">Fatores de risco grave ({r.fatoresGraves.length})</p>
                       {r.fatoresGraves.length === 0 ? (
-                        <p className="text-sm text-slate-500">Nenhum.</p>
+                        <p className="text-sm text-zinc-500">Nenhum.</p>
                       ) : (
-                        <ul className="space-y-1 text-sm text-slate-800">
+                        <ul className="space-y-1 text-sm text-zinc-800">
                           {r.fatoresGraves.map((f) => (
                             <li key={f} className="flex gap-2">
                               <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-rose-500" /> {f}
@@ -519,9 +544,9 @@ export function AbaRisco({ prontuario: p, conteudo, tecnica }: Ctx) {
                     <div>
                       <p className="mb-2 text-xs font-semibold tracking-wide text-amber-800 uppercase">Fatores de atenção ({r.fatoresAtencao.length})</p>
                       {r.fatoresAtencao.length === 0 ? (
-                        <p className="text-sm text-slate-500">Nenhum.</p>
+                        <p className="text-sm text-zinc-500">Nenhum.</p>
                       ) : (
-                        <ul className="space-y-1 text-sm text-slate-800">
+                        <ul className="space-y-1 text-sm text-zinc-800">
                           {r.fatoresAtencao.map((f) => (
                             <li key={f} className="flex gap-2">
                               <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-amber-500" /> {f}
@@ -532,30 +557,30 @@ export function AbaRisco({ prontuario: p, conteudo, tecnica }: Ctx) {
                     </div>
                   </div>
                   {v.justificativa && (
-                    <div className="rounded-lg bg-slate-50 px-4 py-3 text-sm">
-                      <p className="text-xs font-semibold text-slate-600">Parte II — avaliação da profissional</p>
-                      <p className="mt-1 whitespace-pre-wrap text-slate-800">{v.justificativa}</p>
+                    <div className="rounded-lg bg-zinc-50 px-4 py-3 text-sm">
+                      <p className="text-xs font-semibold text-zinc-600">Parte II — avaliação da profissional</p>
+                      <p className="mt-1 whitespace-pre-wrap text-zinc-800">{v.justificativa}</p>
                     </div>
                   )}
-                  <details className="group rounded-lg border border-slate-200">
+                  <details className="group rounded-lg border border-zinc-200">
                     <summary className="cursor-pointer px-4 py-2.5 text-sm font-medium text-marca-800">Ver todas as respostas</summary>
-                    <div className="space-y-5 border-t border-slate-100 px-4 py-4">
+                    <div className="space-y-5 border-t border-zinc-100 px-4 py-4">
                       {FONAR.map((bloco) => (
                         <div key={bloco.titulo}>
-                          <p className="mb-2 text-xs font-semibold text-slate-500 uppercase">{bloco.titulo}</p>
+                          <p className="mb-2 text-xs font-semibold text-zinc-500 uppercase">{bloco.titulo}</p>
                           <dl className="space-y-2">
                             {bloco.perguntas.map((q) => {
                               const marcadas = v.respostas?.[q.id] ?? [];
                               const graves = marcadas.some((m) => q.opcoes.find((o) => o.valor === m)?.peso === "grave");
                               return (
                                 <div key={q.id} className="grid gap-1 text-sm sm:grid-cols-[1fr_240px]">
-                                  <dt className="text-slate-600">
+                                  <dt className="text-zinc-600">
                                     {q.numero}. {q.texto}
                                   </dt>
-                                  <dd className={cx("font-medium", graves ? "text-rose-800" : "text-slate-900")}>
+                                  <dd className={cx("font-medium", graves ? "text-rose-800" : "text-zinc-900")}>
                                     {marcadas.length
                                       ? marcadas.map((m) => q.opcoes.find((o) => o.valor === m)?.rotulo ?? m).join("; ")
-                                      : <span className="font-normal text-slate-400">Sem resposta</span>}
+                                      : <span className="font-normal text-zinc-400">Sem resposta</span>}
                                   </dd>
                                 </div>
                               );
@@ -602,7 +627,7 @@ export async function AbaEncaminhamentos({ usuario, prontuario: p, conteudo, tec
         </Cartao>
       ) : (
         <Cartao>
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-zinc-100">
             {conteudo.encaminhamentos.map((e) => {
               const ehDestino = e.destinoUnidadeId === usuario.unidadeId;
               const ehOrigem = e.origem.id === usuario.unidadeId;
@@ -611,30 +636,30 @@ export async function AbaEncaminhamentos({ usuario, prontuario: p, conteudo, tec
                 <li key={e.id} className="px-5 py-4">
                   <div className="flex flex-wrap items-center gap-2 text-sm">
                     <SeloUnidade unidade={e.origem} />
-                    <span className="text-slate-400">→</span>
+                    <span className="text-zinc-400">→</span>
                     {e.destino ? <SeloUnidade unidade={e.destino} /> : <span className="font-medium">{e.destinoExterno}</span>}
                     <SeloStatusEncaminhamento status={e.status} />
                     <SeloUrgencia urgencia={e.urgencia} />
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-zinc-500">
                       {formatarDataHora(e.criadoEm)} · por {e.criadoPor.nome}
                     </span>
                   </div>
                   {e.motivo && (
                     <div className="mt-3 rounded-lg bg-marca-50/60 px-4 py-3">
                       <p className="text-xs font-semibold text-marca-900">Ficha de passagem</p>
-                      <p className="mt-1 text-sm whitespace-pre-wrap text-slate-800">{e.motivo}</p>
+                      <p className="mt-1 text-sm whitespace-pre-wrap text-zinc-800">{e.motivo}</p>
                     </div>
                   )}
                   {e.recebidoEm && (
-                    <p className="mt-2 text-xs text-slate-500">
+                    <p className="mt-2 text-xs text-zinc-500">
                       Recebida em {formatarDataHora(e.recebidoEm)}
                       {e.recebidoPor && ` por ${e.recebidoPor.nome}`}
                     </p>
                   )}
                   {e.resposta && (
-                    <div className="mt-2 rounded-lg bg-slate-50 px-4 py-3 text-sm">
-                      <p className="text-xs font-semibold text-slate-600">Devolutiva</p>
-                      <p className="mt-1 whitespace-pre-wrap text-slate-800">{e.resposta}</p>
+                    <div className="mt-2 rounded-lg bg-zinc-50 px-4 py-3 text-sm">
+                      <p className="text-xs font-semibold text-zinc-600">Devolutiva</p>
+                      <p className="mt-1 whitespace-pre-wrap text-zinc-800">{e.resposta}</p>
                     </div>
                   )}
                   {aberto && (
@@ -675,7 +700,7 @@ export function AbaMedidas({ prontuario: p, conteudo, tecnica }: Ctx) {
         </Cartao>
       ) : (
         <Cartao>
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-zinc-100">
             {conteudo.medidas.map((m) => {
               const vencida = m.status === "DEFERIDA" && m.validaAte && m.validaAte < hoje;
               return (
@@ -684,16 +709,16 @@ export function AbaMedidas({ prontuario: p, conteudo, tecnica }: Ctx) {
                     <Selo tom={m.status === "DEFERIDA" && !vencida ? "marca" : m.status === "SOLICITADA" ? "ambar" : "neutro"}>
                       {vencida ? "Vencida" : ROTULO_STATUS_MEDIDA[m.status]}
                     </Selo>
-                    {m.validaAte && <span className="text-sm text-slate-700">válida até {formatarData(m.validaAte)}</span>}
-                    {m.numeroProcesso && <span className="font-mono text-xs text-slate-500">proc. {m.numeroProcesso}</span>}
+                    {m.validaAte && <span className="text-sm text-zinc-700">válida até {formatarData(m.validaAte)}</span>}
+                    {m.numeroProcesso && <span className="font-mono text-xs text-zinc-500">proc. {m.numeroProcesso}</span>}
                   </div>
-                  <ul className="mt-2 list-inside list-disc text-sm text-slate-800">
+                  <ul className="mt-2 list-inside list-disc text-sm text-zinc-800">
                     {m.medidas.map((x) => (
                       <li key={x}>{x}</li>
                     ))}
                   </ul>
-                  {m.observacoes && <p className="mt-2 text-sm text-slate-600">{m.observacoes}</p>}
-                  <p className="mt-2 text-xs text-slate-500">
+                  {m.observacoes && <p className="mt-2 text-sm text-zinc-600">{m.observacoes}</p>}
+                  <p className="mt-2 text-xs text-zinc-500">
                     Registrada por {m.registradoPor.nome} ({m.unidade.sigla}) em {formatarData(m.criadoEm)}
                     {m.solicitadaEm && ` · solicitada em ${formatarData(m.solicitadaEm)}`}
                     {m.decididaEm && ` · decidida em ${formatarData(m.decididaEm)}`}
@@ -731,17 +756,17 @@ export function AbaAutores({ prontuario: p, conteudo, tecnica }: Ctx) {
         </Cartao>
       ) : (
         <Cartao>
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-zinc-100">
             {conteudo.autores.map((a) => (
               <li key={a.id} className="px-5 py-4">
                 <div className="flex flex-wrap items-center gap-2">
-                  <p className="font-medium text-slate-900">{a.nome}</p>
+                  <p className="font-medium text-zinc-900">{a.nome}</p>
                   <Selo>{ROTULO_VINCULO[a.vinculo]}</Selo>
                   {a.acessoArma === "SIM" && <Selo tom="vermelho">Acesso a arma de fogo</Selo>}
                   {a.acessoArma === "NAO_SABE" && <Selo>Acesso a arma: não sabe</Selo>}
                 </div>
-                {a.observacoes && <p className="mt-2 text-sm whitespace-pre-wrap text-slate-700">{a.observacoes}</p>}
-                <p className="mt-1 text-xs text-slate-500">
+                {a.observacoes && <p className="mt-2 text-sm whitespace-pre-wrap text-zinc-700">{a.observacoes}</p>}
+                <p className="mt-1 text-xs text-zinc-500">
                   Registrado pela {a.unidade.sigla} em {formatarData(a.criadoEm)}
                 </p>
               </li>
@@ -782,6 +807,16 @@ export function AbaCadastro({ usuario, prontuario: p, mapas, concessoes }: Ctx) 
               orientacoesContato: c.orientacoesContato,
               endereco: c.endereco,
               bairro: p.bairro,
+              quantidadeFilhos: p.quantidadeFilhos,
+              filhosMenores: p.filhosMenores,
+              gestante: p.gestante,
+              pessoaComDeficiencia: p.pessoaComDeficiencia,
+              estadoCivil: p.estadoCivil,
+              situacaoTrabalho: p.situacaoTrabalho,
+              rendaFamiliar: p.rendaFamiliar,
+              recebeBeneficio: p.recebeBeneficio,
+              situacaoMoradia: p.situacaoMoradia,
+              dependenciaFinanceira: p.dependenciaFinanceira,
             }}
           />
         ) : (
@@ -804,7 +839,7 @@ export function AbaCadastro({ usuario, prontuario: p, mapas, concessoes }: Ctx) 
                 : "Ela não autorizou o compartilhamento com a rede. Só unidades com autorização específica ou acesso emergencial veem o conteúdo."}
             </p>
             {p.consentimentoRegistradoEm && (
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-zinc-500">
                 Registrado em {formatarDataHora(p.consentimentoRegistradoEm)} por {mapas.pessoa(p.consentimentoRegistradoPorId).nome}
               </p>
             )}
@@ -814,11 +849,11 @@ export function AbaCadastro({ usuario, prontuario: p, mapas, concessoes }: Ctx) 
 
         <Cartao>
           <CabecalhoCartao titulo="Unidades com acesso agora" />
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-zinc-100">
             {unidadesComAcesso.map((x) => (
               <li key={x.id} className="flex items-center justify-between gap-2 px-5 py-2.5 text-sm">
                 <SeloUnidade unidade={mapas.unidade(x.unidadeId)} />
-                <span className={cx("text-xs", x.origem === "EMERGENCIAL" ? "font-medium text-rose-700" : "text-slate-500")}>
+                <span className={cx("text-xs", x.origem === "EMERGENCIAL" ? "font-medium text-rose-700" : "text-zinc-500")}>
                   {ROTULO_ORIGEM_ACESSO[x.origem]}
                 </span>
               </li>
@@ -828,7 +863,7 @@ export function AbaCadastro({ usuario, prontuario: p, mapas, concessoes }: Ctx) 
 
         {usuario.papel === "GESTORA" && (
           <Cartao className="p-5">
-            <p className="mb-3 text-sm text-slate-600">
+            <p className="mb-3 text-sm text-zinc-600">
               Arquivar quando o acompanhamento terminar. Nada é apagado: o prontuário pode ser reativado se ela voltar.
             </p>
             <FormStatus prontuarioId={p.id} arquivado={p.status === "ARQUIVADO"} />
@@ -856,7 +891,7 @@ export async function AbaAcessos({ usuario, prontuario: p, mapas, concessoes }: 
         <CabecalhoCartao titulo="Permissões de acesso" />
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs text-slate-500">
+            <thead className="bg-zinc-50 text-left text-xs text-zinc-500">
               <tr>
                 <th className="px-5 py-2 font-medium">Unidade</th>
                 <th className="px-3 py-2 font-medium">Origem</th>
@@ -865,7 +900,7 @@ export async function AbaAcessos({ usuario, prontuario: p, mapas, concessoes }: 
                 <th className="px-5 py-2 font-medium">Situação</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-zinc-100">
               {concessoes.map((x) => {
                 const vigente = concessaoVigente(x as Concessao);
                 return (
@@ -874,23 +909,23 @@ export async function AbaAcessos({ usuario, prontuario: p, mapas, concessoes }: 
                       <SeloUnidade unidade={mapas.unidade(x.unidadeId)} />
                     </td>
                     <td className="px-3 py-3">{ROTULO_ORIGEM_ACESSO[x.origem]}</td>
-                    <td className="px-3 py-3 text-xs text-slate-600">
+                    <td className="px-3 py-3 text-xs text-zinc-600">
                       {formatarDataHora(x.criadoEm)}
                       <br />
                       {mapas.pessoa(x.concedidoPorId).nome}
                     </td>
-                    <td className="max-w-xs px-3 py-3 text-xs text-slate-700">{x.justificativa ?? "—"}</td>
+                    <td className="max-w-xs px-3 py-3 text-xs text-zinc-700">{x.justificativa ?? "—"}</td>
                     <td className="px-5 py-3 text-xs">
                       {x.revogadoEm ? (
-                        <span className="text-slate-500">Revogado em {formatarData(x.revogadoEm)}</span>
+                        <span className="text-zinc-500">Revogado em {formatarData(x.revogadoEm)}</span>
                       ) : !vigente ? (
-                        <span className="text-slate-500">Expirou</span>
+                        <span className="text-zinc-500">Expirou</span>
                       ) : x.expiraEm ? (
                         <span className="text-amber-800">Até {formatarDataHora(x.expiraEm)}</span>
                       ) : (
                         <span className="text-emerald-700">Vigente</span>
                       )}
-                      {x.revisadoEm && <span className="block text-slate-500">Revisado por {mapas.pessoa(x.revisadoPorId).nome}</span>}
+                      {x.revisadoEm && <span className="block text-zinc-500">Revisado por {mapas.pessoa(x.revisadoPorId).nome}</span>}
                       {podeRevisar && vigente && x.origem !== "ORIGEM" && (
                         <div className="mt-2">
                           <FormRevisarAcesso acessoId={x.id} jaRevisado={!!x.revisadoEm} />
@@ -907,13 +942,13 @@ export async function AbaAcessos({ usuario, prontuario: p, mapas, concessoes }: 
 
       <Cartao>
         <CabecalhoCartao titulo="Trilha de auditoria deste prontuário" descricao="Últimos 300 eventos." />
-        <ul className="divide-y divide-slate-100">
+        <ul className="divide-y divide-zinc-100">
           {eventos.map((ev) => (
             <li key={ev.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-5 py-2.5 text-sm">
-              <span className="w-32 shrink-0 text-xs text-slate-500 tabular-nums">{formatarDataHora(ev.criadoEm)}</span>
+              <span className="w-32 shrink-0 text-xs text-zinc-500 tabular-nums">{formatarDataHora(ev.criadoEm)}</span>
               <SeloUnidade unidade={mapas.unidade(ev.unidadeId)} />
-              <span className="font-medium text-slate-800">{mapas.pessoa(ev.usuarioId).nome}</span>
-              <span className={cx("text-slate-600", ev.acao === "ACESSO_EMERGENCIAL" && "font-medium text-rose-700")}>
+              <span className="font-medium text-zinc-800">{mapas.pessoa(ev.usuarioId).nome}</span>
+              <span className={cx("text-zinc-600", ev.acao === "ACESSO_EMERGENCIAL" && "font-medium text-rose-700")}>
                 {ROTULO_ACAO[ev.acao] ?? ev.acao}
               </span>
             </li>

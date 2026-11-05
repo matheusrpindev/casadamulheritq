@@ -30,16 +30,16 @@ export default async function PaginaUnidades() {
         <FormUnidade id={null} />
       </Expansivel>
       <Cartao>
-        <ul className="divide-y divide-slate-100">
+        <ul className="divide-y divide-zinc-100">
           {unidades.map((u) => (
             <li key={u.id} className={cx("flex flex-wrap items-start gap-4 px-5 py-4", !u.ativa && "opacity-60")}>
               <span className="mt-1 size-3 shrink-0 rounded-full" style={{ backgroundColor: u.cor }} aria-hidden />
               <div className="min-w-0 flex-1">
-                <p className="flex flex-wrap items-center gap-2 font-medium text-slate-900">
+                <p className="flex flex-wrap items-center gap-2 font-medium text-zinc-900">
                   {u.nome} <Selo>{u.sigla}</Selo> <Selo tom="marca">{ROTULO_TIPO_UNIDADE[u.tipo]}</Selo>
                   {!u.ativa && <Selo tom="vermelho">Inativa</Selo>}
                 </p>
-                <p className="mt-0.5 text-xs text-slate-500">
+                <p className="mt-0.5 text-xs text-zinc-500">
                   {[u.endereco, u.telefone].filter(Boolean).join(" · ") || "Sem endereço cadastrado"} ·{" "}
                   {contas.find((c) => c.unidadeId === u.id)?.total ?? 0} conta(s) ativa(s)
                 </p>

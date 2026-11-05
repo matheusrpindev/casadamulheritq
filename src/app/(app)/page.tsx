@@ -122,7 +122,7 @@ export default async function Painel() {
             id="busca-rapida"
             name="q"
             placeholder="Buscar por nome, nome social ou CPF…"
-            className="h-11 flex-1 rounded-xl border-0 bg-white px-4 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:ring-2 focus:ring-rosa focus:outline-none"
+            className="h-11 min-w-0 flex-1 rounded-xl border-0 bg-white px-4 text-sm text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:ring-2 focus:ring-rosa focus:outline-none"
           />
           <button className="inline-flex h-11 items-center gap-2 rounded-xl bg-marca-950/40 px-4 text-sm font-medium ring-1 ring-white/20 hover:bg-marca-950/60">
             <FileSearch className="size-4" /> Buscar
@@ -139,7 +139,7 @@ export default async function Painel() {
         <Indicador icone={<ShieldAlert />} valor={riscoElevado.length} rotulo="Acompanhadas com risco elevado" alerta={riscoElevado.length > 0} />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-5">
+      <div className="grid gap-6 lg:grid-cols-5 [&>*]:min-w-0">
         <Cartao className="lg:col-span-3">
           <CabecalhoCartao
             icone={<Inbox className="size-5" />}
@@ -152,14 +152,14 @@ export default async function Painel() {
               Quando outra unidade encaminhar uma mulher para cá, ela aparece nesta lista.
             </Vazio>
           ) : (
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-zinc-100">
               {entrada.map(({ e, p }) => (
                 <li key={e.id}>
-                  <Link href={`/prontuarios/${p.id}?aba=encaminhamentos`} className="flex items-center gap-3 px-5 py-3.5 hover:bg-slate-50">
+                  <Link href={`/prontuarios/${p.id}?aba=encaminhamentos`} className="flex items-center gap-3 px-5 py-3.5 hover:bg-zinc-50">
                     <Avatar nome={nomeExibicao(p)} />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-slate-900">{nomeExibicao(p)}</p>
-                      <p className="mt-0.5 flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
+                      <p className="truncate text-sm font-medium text-zinc-900">{nomeExibicao(p)}</p>
+                      <p className="mt-0.5 flex flex-wrap items-center gap-1.5 text-xs text-zinc-500">
                         de <SeloUnidade unidade={mapas.unidade(e.origemUnidadeId)} /> · {tempoRelativo(e.criadoEm)}
                       </p>
                     </div>
@@ -178,15 +178,15 @@ export default async function Painel() {
           <Cartao>
             <CabecalhoCartao icone={<ShieldAlert className="size-5 text-rose-600" />} titulo="Risco elevado" descricao="Prontuários ativos que sua unidade acompanha." />
             {riscoElevado.length === 0 ? (
-              <p className="px-5 py-6 text-sm text-slate-500">Nenhum caso com risco elevado na sua unidade.</p>
+              <p className="px-5 py-6 text-sm text-zinc-500">Nenhum caso com risco elevado na sua unidade.</p>
             ) : (
-              <ul className="divide-y divide-slate-100">
+              <ul className="divide-y divide-zinc-100">
                 {riscoElevado.map((p) => (
                   <li key={p.id}>
-                    <Link href={`/prontuarios/${p.id}`} className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-slate-50">
+                    <Link href={`/prontuarios/${p.id}`} className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-zinc-50">
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-slate-900">{nomeExibicao(p)}</p>
-                        <p className="text-xs text-slate-500">
+                        <p className="truncate text-sm font-medium text-zinc-900">{nomeExibicao(p)}</p>
+                        <p className="text-xs text-zinc-500">
                           {numeroProntuario(p.numero, p.criadoEm, PREFIXO_PRONTUARIO)} · avaliado {p.riscoAtualizadoEm ? tempoRelativo(p.riscoAtualizadoEm) : "—"}
                         </p>
                       </div>
@@ -201,13 +201,13 @@ export default async function Painel() {
           <Cartao>
             <CabecalhoCartao icone={<Gavel className="size-5" />} titulo="Medidas protetivas vencendo" descricao="Próximos 30 dias — avalie pedido de prorrogação." />
             {medidasVencendo.length === 0 ? (
-              <p className="px-5 py-6 text-sm text-slate-500">Nenhuma medida vencendo nos próximos 30 dias.</p>
+              <p className="px-5 py-6 text-sm text-zinc-500">Nenhuma medida vencendo nos próximos 30 dias.</p>
             ) : (
-              <ul className="divide-y divide-slate-100">
+              <ul className="divide-y divide-zinc-100">
                 {medidasVencendo.map(({ m, p }) => (
                   <li key={m.id}>
-                    <Link href={`/prontuarios/${p.id}?aba=medidas`} className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-slate-50">
-                      <p className="truncate text-sm font-medium text-slate-900">{nomeExibicao(p)}</p>
+                    <Link href={`/prontuarios/${p.id}?aba=medidas`} className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-zinc-50">
+                      <p className="truncate text-sm font-medium text-zinc-900">{nomeExibicao(p)}</p>
                       <span className="flex items-center gap-1 text-xs font-medium text-amber-800">
                         <CalendarClock className="size-3.5" /> {formatarData(m.validaAte)}
                       </span>
@@ -233,14 +233,14 @@ export default async function Painel() {
         {recentes.length === 0 ? (
           <Vazio titulo="Ainda não há atendimentos registrados pela unidade" />
         ) : (
-          <ul className="grid divide-y divide-slate-100 sm:grid-cols-2 sm:divide-y-0">
+          <ul className="grid divide-y divide-zinc-100 sm:grid-cols-2 sm:divide-y-0 [&>*]:min-w-0">
             {recentes.map(({ p, ultimo }) => (
-              <li key={p.id} className="sm:border-b sm:border-slate-100 sm:odd:border-r">
-                <Link href={`/prontuarios/${p.id}`} className="flex items-center gap-3 px-5 py-3 hover:bg-slate-50">
+              <li key={p.id} className="sm:border-b sm:border-zinc-100 sm:odd:border-r">
+                <Link href={`/prontuarios/${p.id}`} className="flex items-center gap-3 px-5 py-3 hover:bg-zinc-50">
                   <Avatar nome={nomeExibicao(p)} />
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-slate-900">{nomeExibicao(p)}</p>
-                    <p className="text-xs text-slate-500">Último atendimento {tempoRelativo(ultimo)}</p>
+                    <p className="truncate text-sm font-medium text-zinc-900">{nomeExibicao(p)}</p>
+                    <p className="text-xs text-zinc-500">Último atendimento {tempoRelativo(ultimo)}</p>
                   </div>
                   <SeloRisco nivel={p.nivelRisco} />
                 </Link>
@@ -248,7 +248,7 @@ export default async function Painel() {
             ))}
           </ul>
         )}
-        <p className="border-t border-slate-100 px-5 py-3 text-xs text-slate-500">
+        <p className="border-t border-zinc-100 px-5 py-3 text-xs text-zinc-500">
           Sua unidade tem acesso a {ativos} prontuário{ativos === 1 ? "" : "s"} ativo{ativos === 1 ? "" : "s"} na rede.
         </p>
       </Cartao>
@@ -272,7 +272,7 @@ function Indicador({
   href?: string;
 }) {
   const corpo = (
-    <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white px-5 py-4 shadow-xs transition-colors hover:border-marca-200">
+    <div className="flex items-center gap-4 rounded-2xl border border-zinc-200/80 bg-white px-5 py-4 shadow-xs transition-colors hover:border-marca-200">
       <div
         className={
           "grid size-11 place-items-center rounded-xl [&>svg]:size-5 " +
@@ -282,8 +282,8 @@ function Indicador({
         {icone}
       </div>
       <div>
-        <p className="text-2xl font-semibold text-slate-900 tabular-nums">{valor}</p>
-        <p className="text-xs text-slate-500">{rotulo}</p>
+        <p className="text-2xl font-semibold text-zinc-900 tabular-nums">{valor}</p>
+        <p className="text-xs text-zinc-500">{rotulo}</p>
       </div>
     </div>
   );

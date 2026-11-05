@@ -2,30 +2,31 @@
 
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-titulo: "Montserrat Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-titulo: "PT Sans", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
 
   /*
-   * Identidade visual da Casa da Mulher em Itaquaquecetuba.
-   * Cores do logo: roxo #84296F, rosa #ED9CA3, coral #E37171, coral-laranja #F07F6A.
-   * "marca" é a escala do roxo (600 = cor do logo). Coral e rosa são só decorativos:
-   * texto branco sobre coral não tem contraste suficiente.
+   * Identidade visual oficial da Casa da Mulher Itaquaquecetuba.
+   * Paleta: roxo #862C72, rosa #E7A1A3, coral #E07974 e cinza #717075.
+   * "marca" é a escala do roxo (600 = cor oficial). Coral e rosa são decorativos:
+   * texto branco sobre coral não tem contraste suficiente. Os cinzas da interface
+   * usam a escala "zinc", cujo 500 (#71717A) é praticamente o cinza oficial.
    */
-  --color-marca-50: #fbf4f8;
-  --color-marca-100: #f6e7f1;
-  --color-marca-200: #eccde2;
-  --color-marca-300: #dda6c9;
-  --color-marca-400: #c574a8;
-  --color-marca-500: #a54b8b;
-  --color-marca-600: #84296f;
-  --color-marca-700: #6e2160;
-  --color-marca-800: #5a1c4f;
-  --color-marca-900: #471842;
-  --color-marca-950: #2b0a27;
+  --color-marca-50: #fbf4f9;
+  --color-marca-100: #f6e6f1;
+  --color-marca-200: #ebcbe1;
+  --color-marca-300: #dba3c9;
+  --color-marca-400: #c473a9;
+  --color-marca-500: #a64b8d;
+  --color-marca-600: #862c72;
+  --color-marca-700: #702361;
+  --color-marca-800: #5c1d51;
+  --color-marca-900: #491942;
+  --color-marca-950: #2c0a28;
 
-  --color-rosa: #ed9ca3;
-  --color-rosa-claro: #fdf2f3;
-  --color-coral: #e37171;
-  --color-coral-laranja: #f07f6a;
+  --color-rosa: #e7a1a3;
+  --color-rosa-claro: #fcf1f1;
+  --color-coral: #e07974;
+  --color-cinza-marca: #717075;
 
   --color-fundo: #faf7f8;
 }
@@ -37,7 +38,7 @@
   }
   body {
     background: var(--color-fundo);
-    color: var(--color-slate-900);
+    color: var(--color-zinc-900);
   }
   ::selection {
     background: var(--color-rosa);
@@ -46,7 +47,7 @@
   h1,
   .fonte-titulo {
     font-family: var(--font-titulo);
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
   }
   :focus-visible {
     outline: 2px solid var(--color-marca-500);
@@ -56,12 +57,12 @@
 
 @layer components {
   .campo-base {
-    @apply block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-xs
-      placeholder:text-slate-400 focus:border-marca-500 focus:ring-2 focus:ring-marca-200 focus:outline-none
-      disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500;
+    @apply block w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm text-zinc-900 shadow-xs
+      placeholder:text-zinc-400 focus:border-marca-500 focus:ring-2 focus:ring-marca-200 focus:outline-none
+      disabled:cursor-not-allowed disabled:bg-zinc-50 disabled:text-zinc-500;
   }
   .texto-relato {
-    @apply whitespace-pre-wrap text-[15px] leading-7 text-slate-800;
+    @apply whitespace-pre-wrap text-[15px] leading-7 text-zinc-800;
   }
 }
 

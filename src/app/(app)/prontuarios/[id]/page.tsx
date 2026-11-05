@@ -52,12 +52,12 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
     return (
       <div className="mx-auto max-w-2xl">
         <Cartao className="p-8 text-center">
-          <Lock className="mx-auto size-10 text-slate-300" />
-          <h1 className="mt-3 text-lg font-semibold text-slate-900">Sua unidade não tem acesso a este prontuário</h1>
-          <p className="mt-1 text-sm text-slate-600">
+          <Lock className="mx-auto size-10 text-zinc-300" />
+          <h1 className="mt-3 text-lg font-semibold text-zinc-900">Sua unidade não tem acesso a este prontuário</h1>
+          <p className="mt-1 text-sm text-zinc-600">
             {nomeExibicao(p)} · {numeroProntuario(p.numero, p.criadoEm, PREFIXO_PRONTUARIO)}
           </p>
-          <p className="mx-auto mt-4 max-w-md text-sm text-slate-500">
+          <p className="mx-auto mt-4 max-w-md text-sm text-zinc-500">
             O acesso é liberado quando ela é encaminhada para sua unidade com autorização, quando ela autoriza
             diretamente, ou em situação de emergência.
           </p>
@@ -129,7 +129,7 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
           <Avatar nome={nomeExibicao(p)} className="hidden size-14 text-base sm:grid" />
           <div className="min-w-0 flex-1 basis-full sm:basis-auto">
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-2xl font-semibold tracking-tight text-slate-900">{nomeExibicao(p)}</h1>
+              <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">{nomeExibicao(p)}</h1>
               <SeloRisco nivel={p.nivelRisco} grande />
               {p.status === "ARQUIVADO" && (
                 <Selo>
@@ -137,7 +137,7 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
                 </Selo>
               )}
             </div>
-            <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-500">
+            <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-zinc-500">
               {p.nomeSocial && <span>Registro civil: {p.nomeCivil} ·</span>}
               <span>{anos !== null ? `${anos} anos` : "Idade não informada"}</span>
               <span>·</span>
@@ -178,7 +178,7 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
         </div>
 
         {(!p.contatoSeguro || apenasEmergencial) && (
-          <div className="space-y-px border-t border-slate-100">
+          <div className="space-y-px border-t border-zinc-100">
             {!p.contatoSeguro && (
               <div className="flex items-center gap-2 bg-rose-50 px-6 py-2.5 text-sm text-rose-900">
                 <PhoneOff className="size-4 shrink-0" />
@@ -201,7 +201,7 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
           </div>
         )}
 
-        <nav className="nao-imprimir flex gap-1 overflow-x-auto border-t border-slate-100 px-3" aria-label="Seções do prontuário">
+        <nav className="nao-imprimir flex gap-1 overflow-x-auto border-t border-zinc-100 px-3" aria-label="Seções do prontuário">
           {abasVisiveis.map((a) => (
             <Link
               key={a.id}
@@ -209,12 +209,12 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
               aria-current={aba === a.id ? "page" : undefined}
               className={cx(
                 "-mb-px flex items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium whitespace-nowrap",
-                aba === a.id ? "border-marca-600 text-marca-800" : "border-transparent text-slate-500 hover:text-slate-800",
+                aba === a.id ? "border-marca-600 text-marca-800" : "border-transparent text-zinc-500 hover:text-zinc-800",
               )}
             >
               {a.rotulo}
               {!!contagem[a.id] && (
-                <span className={cx("rounded-full px-1.5 text-xs tabular-nums", aba === a.id ? "bg-marca-100" : "bg-slate-100")}>
+                <span className={cx("rounded-full px-1.5 text-xs tabular-nums", aba === a.id ? "bg-marca-100" : "bg-zinc-100")}>
                   {contagem[a.id]}
                 </span>
               )}

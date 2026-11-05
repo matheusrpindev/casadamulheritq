@@ -22,8 +22,8 @@ Bases legais a avaliar no RIPD:
 |---|---|
 | **Recepção** | Buscar, cadastrar, ver identificação, risco atual, contato seguro, medidas protetivas e encaminhamentos; confirmar chegada. **Não lê** relatos, atendimentos nem respostas do FONAR. |
 | **Equipe técnica** | Tudo da recepção + ler e registrar relatos, atendimentos, FONAR, autores, medidas e encaminhamentos — respeitando o sigilo de cada registro. |
-| **Gestão** | Tudo da equipe técnica + trilha de auditoria da unidade, revisão de acessos emergenciais, indicadores, equipe da unidade, arquivamento. **Não** fura o sigilo por especialidade. |
-| **Administração (TI)** | Contas, unidades, auditoria técnica e indicadores. **Nunca abre prontuário.** |
+| **Gestão** | Tudo da equipe técnica + trilha de auditoria da unidade, revisão de acessos emergenciais, relatórios, equipe da unidade, arquivamento. **Não** fura o sigilo por especialidade. |
+| **Administração (TI)** | Contas, unidades, auditoria técnica e relatórios agregados. **Nunca abre prontuário.** |
 
 ### Acesso ao prontuário (por unidade)
 
@@ -63,7 +63,16 @@ A impressão inclui somente registros compartilhados com a rede.
 | Sessão no banco (só o hash do token), cookie `httpOnly`/`secure`/`sameSite`, 10 h de duração, 30 min de inatividade | `src/lib/sessao.ts` |
 | Bloqueio de tela no navegador após 15 min parado (com aviso); renovação enquanto ela digita | `src/components/guarda-inatividade.tsx` |
 | CSP com nonce, `frame-ancestors 'none'`, HSTS, `no-referrer`, `nosniff`, `Cache-Control: no-store`, `noindex` | `src/proxy.ts`, `next.config.ts` |
-| Indicadores só agregados, com supressão de contagens < 3 em bairro e raça/cor | `src/app/(app)/indicadores/page.tsx` |
+| Relatórios só agregados (tela e CSV), com supressão de contagens < 3 nas categorias sensíveis | `src/lib/dados/relatorios.ts` |
+
+### Campos em texto claro
+
+Para que os relatórios possam ser calculados no banco, ficam **sem criptografia**: nome civil e social, data de
+nascimento, bairro, raça/cor, identidade de gênero, escolaridade e o perfil familiar e socioeconômico (filhos,
+gestação, deficiência, estado civil, trabalho, renda, benefício, moradia, dependência financeira). Relatos,
+atendimentos, respostas do FONAR, fichas de passagem, CPF, telefone, endereço, orientações de contato e dados do
+autor continuam cifrados. Os relatórios nunca mostram uma mulher individualmente e ocultam contagens de 1 e 2 nas
+categorias sensíveis.
 
 ## 4. Responsabilidades da operação
 

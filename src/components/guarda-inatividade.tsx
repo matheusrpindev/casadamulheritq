@@ -60,13 +60,13 @@ export function GuardaInatividade({ minutos }: { minutos: number }) {
   const ss = String(restante % 60).padStart(2, "0");
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-slate-900/60 p-4 backdrop-blur-sm" role="alertdialog" aria-modal="true" aria-labelledby="titulo-inatividade">
+    <div className="fixed inset-0 z-50 grid place-items-center bg-zinc-900/60 p-4 backdrop-blur-sm" role="alertdialog" aria-modal="true" aria-labelledby="titulo-inatividade">
       <div className="w-full max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
         <ShieldAlert className="mx-auto size-10 text-marca-600" />
-        <h2 id="titulo-inatividade" className="mt-3 text-lg font-semibold text-slate-900">
+        <h2 id="titulo-inatividade" className="mt-3 text-lg font-semibold text-zinc-900">
           Ainda está aí?
         </h2>
-        <p className="mt-1 text-sm text-slate-600">
+        <p className="mt-1 text-sm text-zinc-600">
           Por segurança, o sistema vai sair em <strong className="tabular-nums">{mm}:{ss}</strong>.
         </p>
         <button

@@ -56,12 +56,12 @@ export function Expansivel({
       <button
         type="button"
         onClick={() => setAberto(false)}
-        className="absolute top-3 right-3 rounded-md p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+        className="absolute top-3 right-3 rounded-md p-1 text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600"
         aria-label="Fechar"
       >
         <X className="size-4" />
       </button>
-      <p className="mb-4 text-sm font-semibold text-slate-900">{rotulo}</p>
+      <p className="mb-4 text-sm font-semibold text-zinc-900">{rotulo}</p>
       {children}
     </div>
   );
@@ -70,7 +70,7 @@ export function Expansivel({
 function EscolhaSigilo({ permitidos, especialidade }: { permitidos: Sigilo[]; especialidade: string | null }) {
   return (
     <fieldset>
-      <legend className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-slate-700">
+      <legend className="mb-1.5 flex items-center gap-1.5 text-sm font-medium text-zinc-700">
         <Lock className="size-3.5" /> Quem pode ler este registro
       </legend>
       <div className="grid gap-2 sm:grid-cols-3">
@@ -106,7 +106,7 @@ export function FormRelato({
         precisa ser perguntado de novo.
       </Aviso>
       <fieldset>
-        <legend className="mb-1.5 text-sm font-medium text-slate-700">Formas de violência</legend>
+        <legend className="mb-1.5 text-sm font-medium text-zinc-700">Formas de violência</legend>
         <div className="flex flex-wrap gap-2">
           {TIPOS_VIOLENCIA.map((t) => (
             <Marcador key={t} name="tiposViolencia" value={t} rotulo={ROTULO_VIOLENCIA[t]} />
@@ -187,8 +187,8 @@ export function FormRetificacao({ tipo, id, textoAtual }: { tipo: "relato" | "at
     );
   }
   return (
-    <FormAcao acao={registrarRetificacao.bind(null, { tipo, id })} className="mt-3 space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
-      <p className="text-xs text-slate-600">
+    <FormAcao acao={registrarRetificacao.bind(null, { tipo, id })} className="mt-3 space-y-3 rounded-xl border border-zinc-200 bg-zinc-50 p-4">
+      <p className="text-xs text-zinc-600">
         Registros não são apagados nem editados. A retificação cria uma nova versão; a original fica guardada e marcada
         como retificada.
       </p>
@@ -304,7 +304,7 @@ export function AcoesEncaminhamento({
       cancelar: { rotulo: "Motivo do cancelamento (opcional)", botao: "Cancelar encaminhamento", obrigatorio: false },
     }[modo];
     return (
-      <FormAcao acao={acao} className="mt-3 space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+      <FormAcao acao={acao} className="mt-3 space-y-3 rounded-xl border border-zinc-200 bg-zinc-50 p-4">
         <input type="hidden" name="operacao" value={modo} />
         <Campo rotulo={textos.rotulo} htmlFor={`resp-${id}`}>
           <AreaTexto id={`resp-${id}`} name="resposta" rows={3} required={textos.obrigatorio} />
@@ -341,7 +341,7 @@ export function AcoesEncaminhamento({
         </button>
       )}
       {podeCancelar && (
-        <button type="button" className={classeBotao("fantasma", "sm", "text-slate-600")} onClick={() => setModo("cancelar")}>
+        <button type="button" className={classeBotao("fantasma", "sm", "text-zinc-600")} onClick={() => setModo("cancelar")}>
           Cancelar encaminhamento
         </button>
       )}
@@ -371,7 +371,7 @@ export function FormAutor({ prontuarioId }: { prontuarioId: string }) {
         </Campo>
       </div>
       <fieldset>
-        <legend className="mb-1.5 text-sm font-medium text-slate-700">Tem acesso a arma de fogo?</legend>
+        <legend className="mb-1.5 text-sm font-medium text-zinc-700">Tem acesso a arma de fogo?</legend>
         <div className="flex flex-wrap gap-2">
           <Marcador type="radio" name="acessoArma" value="SIM" rotulo="Sim" />
           <Marcador type="radio" name="acessoArma" value="NAO" rotulo="Não" />
@@ -392,7 +392,7 @@ export function FormMedida({ prontuarioId }: { prontuarioId: string }) {
   return (
     <FormAcao acao={registrarMedida.bind(null, prontuarioId)} className="space-y-4">
       <fieldset>
-        <legend className="mb-1.5 text-sm font-medium text-slate-700">Medidas</legend>
+        <legend className="mb-1.5 text-sm font-medium text-zinc-700">Medidas</legend>
         <div className="grid gap-2 sm:grid-cols-2">
           {MEDIDAS_PROTETIVAS_COMUNS.map((m) => (
             <Marcador key={m} name="medidas" value={m} rotulo={m} />
@@ -446,7 +446,7 @@ export function FormAtualizarMedida({ id, status, validaAte }: { id: string; sta
     );
   }
   return (
-    <FormAcao acao={atualizarMedida.bind(null, id)} limparAoSalvar={false} className="mt-3 grid gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end">
+    <FormAcao acao={atualizarMedida.bind(null, id)} limparAoSalvar={false} className="mt-3 grid gap-3 rounded-xl border border-zinc-200 bg-zinc-50 p-4 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end">
       <Campo rotulo="Situação" htmlFor={`ms-${id}`}>
         <Seletor id={`ms-${id}`} name="status" defaultValue={status}>
           {STATUS_MEDIDA.map((s) => (
@@ -471,7 +471,7 @@ export function FormCadastro({ prontuarioId, valores }: { prontuarioId: string; 
   return (
     <FormAcao acao={atualizarCadastro.bind(null, prontuarioId)} limparAoSalvar={false} className="space-y-8">
       <CamposCadastro valores={valores} />
-      <div className="flex justify-end border-t border-slate-100 pt-5">
+      <div className="flex justify-end border-t border-zinc-100 pt-5">
         <BotaoEnviar>Salvar alterações</BotaoEnviar>
       </div>
     </FormAcao>

@@ -33,16 +33,16 @@ export function PedidoAcesso({ prontuarioId, autorizado }: { prontuarioId: strin
       )}
     >
       <input type="hidden" name="tipo" value={tipo} />
-      <p className="text-sm font-semibold text-slate-900">
+      <p className="text-sm font-semibold text-zinc-900">
         {emergencial ? "Acesso emergencial (quebra de vidro)" : "Acesso autorizado pela mulher"}
       </p>
-      <p className="text-xs leading-relaxed text-slate-600">
+      <p className="text-xs leading-relaxed text-zinc-600">
         {emergencial
           ? "Use só quando houver risco à vida ou à integridade dela e não for possível pedir autorização. O acesso dura 24 horas, fica registrado em seu nome e a gestão da unidade de origem será avisada para revisar."
           : "Registre como ela autorizou (presencialmente, por telefone…). Sua unidade passa a acompanhar o caso, e o acesso fica registrado na trilha de auditoria."}
       </p>
       <div>
-        <label htmlFor={`just-${prontuarioId}`} className="mb-1 block text-xs font-medium text-slate-700">
+        <label htmlFor={`just-${prontuarioId}`} className="mb-1 block text-xs font-medium text-zinc-700">
           Justificativa
         </label>
         <AreaTexto

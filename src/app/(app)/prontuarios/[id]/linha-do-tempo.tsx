@@ -37,7 +37,7 @@ export function LinhaDoTempo({
       quando: abertura.quando,
       unidade: abertura.unidade,
       icone: <FilePlus2 className="size-4" />,
-      tom: "bg-slate-100 text-slate-600",
+      tom: "bg-zinc-100 text-zinc-600",
       titulo: "Prontuário aberto — primeiro acolhimento na rede",
       autor: abertura.autor,
       href: `${base}?aba=cadastro`,
@@ -53,7 +53,7 @@ export function LinhaDoTempo({
       corpo: r.visivel ? (
         <>
           {r.tiposViolencia.length > 0 && (
-            <span className="mb-1 block text-xs text-slate-500">{r.tiposViolencia.map((t) => ROTULO_VIOLENCIA[t as keyof typeof ROTULO_VIOLENCIA] ?? t).join(" · ")}</span>
+            <span className="mb-1 block text-xs text-zinc-500">{r.tiposViolencia.map((t) => ROTULO_VIOLENCIA[t as keyof typeof ROTULO_VIOLENCIA] ?? t).join(" · ")}</span>
           )}
           <span className="line-clamp-3">{r.texto}</span>
         </>
@@ -117,20 +117,20 @@ export function LinhaDoTempo({
     <ol className="relative">
       {eventos.map((ev, i) => (
         <li key={ev.chave} className="relative flex gap-4 pb-6 last:pb-0">
-          {i < eventos.length - 1 && <span aria-hidden className="absolute top-9 bottom-0 left-[17px] w-px bg-slate-200" />}
+          {i < eventos.length - 1 && <span aria-hidden className="absolute top-9 bottom-0 left-[17px] w-px bg-zinc-200" />}
           <span className={cx("relative z-10 grid size-9 shrink-0 place-items-center rounded-full ring-4 ring-white", ev.tom)}>{ev.icone}</span>
           <div className="min-w-0 flex-1 pt-0.5">
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-zinc-500">
               <SeloUnidade unidade={ev.unidade} />
               <time dateTime={ev.quando.toISOString()}>{formatarDataHora(ev.quando)}</time>
               {ev.autor && <span>· {ev.autor}</span>}
             </div>
-            <Link href={ev.href} className="mt-1 block text-sm font-medium text-slate-900 hover:text-marca-800">
+            <Link href={ev.href} className="mt-1 block text-sm font-medium text-zinc-900 hover:text-marca-800">
               {ev.titulo}
             </Link>
-            {ev.corpo && <p className="mt-1 text-sm leading-relaxed text-slate-600">{ev.corpo}</p>}
+            {ev.corpo && <p className="mt-1 text-sm leading-relaxed text-zinc-600">{ev.corpo}</p>}
             {ev.restrito && (
-              <p className="mt-1 inline-flex items-center gap-1.5 rounded-md bg-slate-50 px-2 py-1 text-xs text-slate-500 ring-1 ring-slate-200">
+              <p className="mt-1 inline-flex items-center gap-1.5 rounded-md bg-zinc-50 px-2 py-1 text-xs text-zinc-500 ring-1 ring-zinc-200">
                 <Lock className="size-3" /> {ev.restrito}
               </p>
             )}

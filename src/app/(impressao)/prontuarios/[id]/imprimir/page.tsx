@@ -4,8 +4,10 @@ import { exigirUsuario } from "@/lib/sessao";
 import { registrarAuditoria } from "@/lib/auditoria";
 import { cadastroDecifrado, carregarConteudo, carregarProntuario, mapasRede } from "@/lib/dados/prontuario";
 import { avaliarFonar } from "@/lib/fonar";
+import { resumoPerfil } from "@/lib/relatorios";
 import { INSTITUICAO, NOME_SISTEMA, PREFIXO_PRONTUARIO } from "@/lib/config";
 import { LogoCompleto } from "@/components/marca";
+import { FaixaValidacao } from "@/components/faixa-validacao";
 import {
   ROTULO_RISCO,
   ROTULO_STATUS_ENCAMINHAMENTO,
@@ -15,7 +17,7 @@ import {
   ROTULO_VIOLENCIA,
 } from "@/lib/rotulos";
 import { formatarData, formatarDataHora, idade, mascararCpf, nomeExibicao, numeroProntuario } from "@/lib/texto";
-import { BotaoImprimir } from "./botao";
+import { BotaoImprimir } from "@/components/botao-imprimir";
 
 export const metadata: Metadata = { title: "Impressão do prontuário" };
 
@@ -33,6 +35,7 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
   await registrarAuditoria("PRONTUARIO_IMPRESSO", { usuarioId: usuario.id, unidadeId: usuario.unidadeId }, { prontuarioId: id });
 
   const anos = idade(p.dataNascimento);
+  const perfil = resumoPerfil(p);
   // Papel sai do sistema: só registros compartilhados com a rede vão para a impressão.
   const relatos = c.relatos.filter((r) => r.visivel && !r.retificadoPor && r.sigilo === "REDE");
   const atendimentos = c.atendimentos.filter((a) => a.visivel && !a.retificadoPor && a.sigilo === "REDE");
@@ -40,18 +43,21 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
   const fonar = ultima?.respostas ? avaliarFonar(ultima.respostas) : null;
 
   return (
-    <main className="mx-auto max-w-3xl bg-white px-8 py-10 text-[13px] leading-relaxed text-slate-900 print:max-w-none print:p-0">
+    <main className="mx-auto max-w-3xl bg-white px-8 py-10 text-[13px] leading-relaxed text-zinc-900 print:max-w-none print:p-0">
       <div className="nao-imprimir mb-6 flex items-center justify-between rounded-xl bg-marca-50 px-4 py-3 text-sm text-marca-900">
         <span>Esta impressão fica registrada na trilha de auditoria. Guarde o papel em local seguro ou descarte triturando.</span>
         <BotaoImprimir />
       </div>
 
+      <div className="mb-4">
+        <FaixaValidacao />
+      </div>
       <header className="flex items-start justify-between gap-4 border-b-2 border-marca-600 pb-3">
-        <LogoCompleto className="w-20 shrink-0" />
+        <LogoCompleto orientacao="horizontal" className="w-44 shrink-0" />
         <div className="flex-1">
           <p className="text-xs font-semibold tracking-widest text-marca-600 uppercase">Documento sigiloso</p>
           <h1 className="text-xl font-bold">Prontuário único — Rede de Atendimento à Mulher</h1>
-          <p className="text-xs text-slate-600">
+          <p className="text-xs text-zinc-600">
             {INSTITUICAO} · {NOME_SISTEMA}
           </p>
         </div>
@@ -83,6 +89,12 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
           <Linha r="Risco atual">{ROTULO_RISCO[p.nivelRisco]}</Linha>
         </div>
       </Secao>
+
+      {perfil.length > 0 && (
+        <Secao titulo="Família e situação socioeconômica">
+          <p>{perfil.map((i) => i.texto).join(" · ")}.</p>
+        </Secao>
+      )}
 
       {c.autores.length > 0 && (
         <Secao titulo="Autor(es) da violência">
@@ -121,7 +133,7 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
         <Secao titulo="Relatos">
           {relatos.map((r) => (
             <article key={r.id} className="mb-3 break-inside-avoid">
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-zinc-600">
                 {formatarDataHora(r.criadoEm)} · {r.unidade.sigla} · {r.autor.nome}
                 {r.tiposViolencia.length > 0 &&
                   ` · ${r.tiposViolencia.map((t) => ROTULO_VIOLENCIA[t as keyof typeof ROTULO_VIOLENCIA] ?? t).join(", ")}`}
@@ -136,7 +148,7 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
         <Secao titulo="Atendimentos">
           {atendimentos.map((a) => (
             <article key={a.id} className="mb-3 break-inside-avoid">
-              <p className="text-xs text-slate-600">
+              <p className="text-xs text-zinc-600">
                 {formatarDataHora(a.realizadoEm)} · {a.unidade.sigla} · {ROTULO_TIPO_ATENDIMENTO[a.tipo]} · {a.profissional.nome}
               </p>
               <p className="whitespace-pre-wrap">{a.texto}</p>
@@ -155,7 +167,7 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
         </Secao>
       )}
 
-      <footer className="mt-8 border-t border-slate-300 pt-3 text-[11px] text-slate-600">
+      <footer className="mt-8 border-t border-zinc-300 pt-3 text-[11px] text-zinc-600">
         Informações sigilosas sobre mulher em situação de violência (Lei 11.340/2006 e Lei 13.709/2018 — LGPD). Uso restrito
         ao atendimento pela rede de proteção. Registros com acesso restrito por especialidade ou unidade não aparecem nesta
         impressão.
@@ -167,7 +179,7 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
 function Secao({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
     <section className="mt-5">
-      <h2 className="mb-1.5 border-b border-slate-300 pb-0.5 text-sm font-bold tracking-wide text-marca-800 uppercase">{titulo}</h2>
+      <h2 className="mb-1.5 border-b border-zinc-300 pb-0.5 text-sm font-bold tracking-wide text-marca-800 uppercase">{titulo}</h2>
       {children}
     </section>
   );
@@ -176,7 +188,7 @@ function Secao({ titulo, children }: { titulo: string; children: React.ReactNode
 function Linha({ r, children }: { r: string; children: React.ReactNode }) {
   return (
     <p>
-      <span className="text-slate-600">{r}:</span> {children}
+      <span className="text-zinc-600">{r}:</span> {children}
     </p>
   );
 }

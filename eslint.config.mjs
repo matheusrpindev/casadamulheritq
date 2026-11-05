@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Gerado por "npm run build:semear"
+    "dist-scripts/**",
   ]),
 ]);
 

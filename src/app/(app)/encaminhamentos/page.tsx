@@ -55,14 +55,14 @@ export default async function PaginaEncaminhamentos({ searchParams }: PageProps<
       />
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex gap-1 rounded-xl bg-white p-1 shadow-xs ring-1 ring-slate-200">
+        <div className="flex gap-1 rounded-xl bg-white p-1 shadow-xs ring-1 ring-zinc-200">
           {abas.map((a) => (
             <Link
               key={a.id}
               href={`/encaminhamentos?caixa=${a.id}${todos ? "&status=todos" : ""}`}
               className={cx(
                 "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium",
-                caixa === a.id ? "bg-marca-700 text-white" : "text-slate-600 hover:bg-slate-50",
+                caixa === a.id ? "bg-marca-700 text-white" : "text-zinc-600 hover:bg-zinc-50",
               )}
             >
               <a.icone className="size-4" /> {a.rotulo}
@@ -70,12 +70,12 @@ export default async function PaginaEncaminhamentos({ searchParams }: PageProps<
           ))}
         </div>
         <div className="flex gap-3 text-sm">
-          <Link href={`/encaminhamentos?caixa=${caixa}`} className={cx(!todos ? "font-semibold text-marca-800" : "text-slate-500 hover:text-slate-800")}>
+          <Link href={`/encaminhamentos?caixa=${caixa}`} className={cx(!todos ? "font-semibold text-marca-800" : "text-zinc-500 hover:text-zinc-800")}>
             Em aberto
           </Link>
           <Link
             href={`/encaminhamentos?caixa=${caixa}&status=todos`}
-            className={cx(todos ? "font-semibold text-marca-800" : "text-slate-500 hover:text-slate-800")}
+            className={cx(todos ? "font-semibold text-marca-800" : "text-zinc-500 hover:text-zinc-800")}
           >
             Todos
           </Link>
@@ -86,7 +86,7 @@ export default async function PaginaEncaminhamentos({ searchParams }: PageProps<
         {linhas.length === 0 ? (
           <Vazio titulo={todos ? "Nenhum encaminhamento" : "Nenhum encaminhamento em aberto"} icone={<Inbox className="size-10" />} />
         ) : (
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-zinc-100">
             {linhas.map(({ e, p }) => {
               const temAcesso = acessiveis.has(p.id);
               const motivo = tecnica ? decifrar(e.motivoCifrado) : null;
@@ -100,17 +100,17 @@ export default async function PaginaEncaminhamentos({ searchParams }: PageProps<
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         {temAcesso ? (
-                          <Link href={`/prontuarios/${p.id}`} className="font-medium text-slate-900 hover:text-marca-800 hover:underline">
+                          <Link href={`/prontuarios/${p.id}`} className="font-medium text-zinc-900 hover:text-marca-800 hover:underline">
                             {nomeExibicao(p)}
                           </Link>
                         ) : (
-                          <span className="font-medium text-slate-900">{nomeExibicao(p)}</span>
+                          <span className="font-medium text-zinc-900">{nomeExibicao(p)}</span>
                         )}
                         <SeloUrgencia urgencia={e.urgencia} />
                         <SeloStatusEncaminhamento status={e.status} />
                         {temAcesso && <SeloRisco nivel={p.nivelRisco} />}
                       </div>
-                      <p className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-slate-500">
+                      <p className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-zinc-500">
                         <SeloUnidade unidade={mapas.unidade(e.origemUnidadeId)} /> →{" "}
                         {e.destinoUnidadeId ? <SeloUnidade unidade={mapas.unidade(e.destinoUnidadeId)} /> : <span>{e.destinoExterno}</span>}
                         <span>
@@ -120,13 +120,13 @@ export default async function PaginaEncaminhamentos({ searchParams }: PageProps<
                       {motivo && (
                         <div className="mt-3 rounded-lg bg-marca-50/70 px-4 py-3">
                           <p className="text-xs font-semibold text-marca-900">Ficha de passagem</p>
-                          <p className="mt-1 text-sm whitespace-pre-wrap text-slate-800">{motivo}</p>
+                          <p className="mt-1 text-sm whitespace-pre-wrap text-zinc-800">{motivo}</p>
                         </div>
                       )}
                       {resposta && (
-                        <div className="mt-2 rounded-lg bg-slate-50 px-4 py-3 text-sm">
-                          <p className="text-xs font-semibold text-slate-600">Devolutiva</p>
-                          <p className="mt-1 whitespace-pre-wrap text-slate-800">{resposta}</p>
+                        <div className="mt-2 rounded-lg bg-zinc-50 px-4 py-3 text-sm">
+                          <p className="text-xs font-semibold text-zinc-600">Devolutiva</p>
+                          <p className="mt-1 whitespace-pre-wrap text-zinc-800">{resposta}</p>
                         </div>
                       )}
                       {caixa === "recebidos" && (

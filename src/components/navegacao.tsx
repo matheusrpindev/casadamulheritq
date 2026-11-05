@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { sair } from "@/app/(app)/acoes-sessao";
-import { Simbolo } from "./marca";
+import { LogoCompleto } from "./marca";
 import { cx } from "./ui";
 
 export type ItemMenu = {
@@ -42,12 +42,10 @@ export function Navegacao({
   grupos,
   usuario,
   nomeSistema,
-  nomeRede,
 }: {
   grupos: { titulo?: string; itens: ItemMenu[] }[];
   usuario: { nome: string; papel: string; unidade: string; cor: string };
   nomeSistema: string;
-  nomeRede: string;
 }) {
   const caminho = usePathname();
   const [aberto, setAberto] = useState(false);
@@ -56,19 +54,16 @@ export function Navegacao({
   const conteudo = (
     <div className="flex h-full flex-col">
       <div aria-hidden className="flex h-1 shrink-0">
-        <span className="flex-1 bg-[#84296F]" />
-        <span className="flex-1 bg-[#ED9CA3]" />
-        <span className="flex-1 bg-[#E37171]" />
-        <span className="flex-1 bg-[#F07F6A]" />
+        <span className="flex-1 bg-[#862C72]" />
+        <span className="flex-1 bg-[#E7A1A3]" />
+        <span className="flex-1 bg-[#E07974]" />
+        <span className="flex-1 bg-[#717075]" />
       </div>
-      <Link href="/" className="flex items-center gap-3 px-5 pt-6 pb-5" onClick={() => setAberto(false)}>
-        <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-white shadow-sm">
-          <Simbolo className="w-7" />
-        </div>
-        <div className="leading-tight">
-          <p className="fonte-titulo text-[17px] font-bold text-white">{nomeSistema}</p>
-          <p className="text-xs text-marca-200">Casa da Mulher · {nomeRede}</p>
-        </div>
+      <Link href="/" className="block px-5 pt-6 pb-5" onClick={() => setAberto(false)} aria-label={`${nomeSistema} — início`}>
+        <LogoCompleto orientacao="horizontal" claro className="w-44" />
+        <p className="mt-3 text-[11px] font-semibold tracking-wider text-marca-200 uppercase">
+          {nomeSistema} · prontuário da rede
+        </p>
       </Link>
 
       <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-2" aria-label="Principal">
@@ -98,7 +93,7 @@ export function Navegacao({
                         <span
                           className={cx(
                             "min-w-5 rounded-full px-1.5 text-center text-xs font-semibold tabular-nums",
-                            marcado ? "bg-marca-600 text-white" : "bg-[#F07F6A] text-marca-950",
+                            marcado ? "bg-marca-600 text-white" : "bg-[#E07974] text-marca-950",
                           )}
                         >
                           {item.contador}
@@ -142,10 +137,8 @@ export function Navegacao({
     <>
       <div className="nao-imprimir sticky top-0 z-30 flex items-center justify-between bg-marca-950 px-4 py-3 text-white lg:hidden">
         <span className="flex items-center gap-2.5">
-          <span className="grid size-8 place-items-center rounded-lg bg-white">
-            <Simbolo className="w-5" />
-          </span>
-          <span className="fonte-titulo font-bold">{nomeSistema}</span>
+          <LogoCompleto orientacao="horizontal" claro className="w-32" />
+          <span className="border-l border-white/20 pl-2.5 text-xs font-semibold tracking-wider text-marca-200 uppercase">{nomeSistema}</span>
         </span>
         <button type="button" onClick={() => setAberto(true)} aria-label="Abrir menu" className="rounded-md p-1.5 hover:bg-white/10">
           <Menu className="size-5" />
@@ -156,7 +149,7 @@ export function Navegacao({
 
       {aberto && (
         <div className="nao-imprimir fixed inset-0 z-40 lg:hidden">
-          <div className="absolute inset-0 bg-slate-900/50" onClick={() => setAberto(false)} aria-hidden />
+          <div className="absolute inset-0 bg-zinc-900/50" onClick={() => setAberto(false)} aria-hidden />
           <aside className="absolute inset-y-0 left-0 w-72 bg-marca-950 shadow-xl">
             <button
               type="button"

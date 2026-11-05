@@ -159,6 +159,40 @@ export const IDENTIDADES_GENERO = [
   "Prefere não informar",
 ] as const;
 
+export const ESTADOS_CIVIS = [
+  "Solteira",
+  "Casada / união estável",
+  "Separada / divorciada",
+  "Viúva",
+] as const;
+
+export const SITUACOES_TRABALHO = [
+  "Trabalho com carteira assinada",
+  "Trabalho informal / autônoma",
+  "Desempregada",
+  "Do lar",
+  "Aposentada / pensionista",
+  "Estudante",
+] as const;
+
+/** Faixas de renda familiar mensal, em salários mínimos. */
+export const FAIXAS_RENDA = [
+  "Sem renda",
+  "Até 1 salário mínimo",
+  "De 1 a 2 salários mínimos",
+  "De 2 a 3 salários mínimos",
+  "Mais de 3 salários mínimos",
+] as const;
+
+export const SITUACOES_MORADIA = [
+  "Própria",
+  "Alugada",
+  "Cedida / de favor",
+  "Mora com o autor da violência",
+  "Acolhimento / casa-abrigo",
+  "Situação de rua",
+] as const;
+
 export const RACAS_COR = ["Branca", "Preta", "Parda", "Amarela", "Indígena", "Prefere não declarar"] as const;
 
 export const ESCOLARIDADES = [
@@ -206,4 +240,5 @@ export const ROTULO_ACAO: Record<string, string> = {
   SENHA_ALTERADA: "Trocou a própria senha",
   UNIDADE_CRIADA: "Cadastrou unidade",
   UNIDADE_ALTERADA: "Alterou unidade",
+  RELATORIO_EXPORTADO: "Exportou relatório agregado (CSV)",
 };

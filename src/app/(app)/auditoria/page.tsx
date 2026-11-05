@@ -110,19 +110,19 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
             descricao="Outras unidades abriram prontuários da sua unidade por acesso emergencial ou autorização direta. Confira se foi justificado."
           />
           {pendentes.length === 0 ? (
-            <p className="px-5 py-5 text-sm text-slate-500">Nenhum acesso pendente de revisão.</p>
+            <p className="px-5 py-5 text-sm text-zinc-500">Nenhum acesso pendente de revisão.</p>
           ) : (
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-zinc-100">
               {pendentes.map(({ ac, p }) => (
                 <li key={ac.id} className="flex flex-wrap items-start justify-between gap-4 px-5 py-4">
                   <div className="min-w-0 flex-1">
                     <p className="flex flex-wrap items-center gap-2 text-sm">
                       <SeloUnidade unidade={mapas.unidade(ac.unidadeId)} />
                       <strong>{mapas.pessoa(ac.concedidoPorId).nome}</strong>
-                      <span className={cx("text-xs", ac.origem === "EMERGENCIAL" ? "font-semibold text-rose-700" : "text-slate-500")}>
+                      <span className={cx("text-xs", ac.origem === "EMERGENCIAL" ? "font-semibold text-rose-700" : "text-zinc-500")}>
                         {ROTULO_ORIGEM_ACESSO[ac.origem]}
                       </span>
-                      <span className="text-xs text-slate-500">{formatarDataHora(ac.criadoEm)}</span>
+                      <span className="text-xs text-zinc-500">{formatarDataHora(ac.criadoEm)}</span>
                     </p>
                     <p className="mt-1 text-sm">
                       Prontuário{" "}
@@ -130,7 +130,7 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
                         {numeroProntuario(p.numero, p.criadoEm, PREFIXO_PRONTUARIO)} — {nomeExibicao(p)}
                       </Link>
                     </p>
-                    <p className="mt-1 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-700">“{ac.justificativa}”</p>
+                    <p className="mt-1 rounded-lg bg-zinc-50 px-3 py-2 text-sm text-zinc-700">“{ac.justificativa}”</p>
                   </div>
                   <FormRevisarAcesso acessoId={ac.id} jaRevisado={false} />
                 </li>
@@ -141,7 +141,7 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
       )}
 
       <Cartao>
-        <form className="grid gap-3 border-b border-slate-100 p-5 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_150px_150px_130px_auto]">
+        <form className="grid gap-3 border-b border-zinc-100 p-5 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_150px_150px_130px_auto]">
           <Seletor name="acao" defaultValue={acao} aria-label="Ação">
             <option value="">Todas as ações</option>
             {Object.entries(ROTULO_ACAO).map(([k, v]) => (
@@ -169,7 +169,7 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="bg-slate-50 text-left text-xs text-slate-500">
+              <thead className="bg-zinc-50 text-left text-xs text-zinc-500">
                 <tr>
                   <th className="px-5 py-2 font-medium">Quando</th>
                   <th className="px-3 py-2 font-medium">Quem</th>
@@ -178,10 +178,10 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
                   <th className="px-5 py-2 font-medium">Detalhes</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-zinc-100">
                 {visiveis.map(({ a, numero: n, pCriado }) => (
                   <tr key={a.id} className={cx(ACOES_SENSIVEIS.has(a.acao) && "bg-amber-50/50", a.acao === "ACESSO_EMERGENCIAL" && "bg-rose-50/60")}>
-                    <td className="px-5 py-2.5 text-xs whitespace-nowrap text-slate-500 tabular-nums">{formatarDataHora(a.criadoEm)}</td>
+                    <td className="px-5 py-2.5 text-xs whitespace-nowrap text-zinc-500 tabular-nums">{formatarDataHora(a.criadoEm)}</td>
                     <td className="px-3 py-2.5">
                       <div className="flex items-center gap-2">
                         {a.unidadeId && <SeloUnidade unidade={mapas.unidade(a.unidadeId)} />}
@@ -198,9 +198,9 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
                         "—"
                       )}
                     </td>
-                    <td className="max-w-sm px-5 py-2.5 text-xs text-slate-600">
+                    <td className="max-w-sm px-5 py-2.5 text-xs text-zinc-600">
                       <Detalhes d={a.detalhes} />
-                      {a.ip && <span className="block text-slate-400">IP {a.ip}</span>}
+                      {a.ip && <span className="block text-zinc-400">IP {a.ip}</span>}
                     </td>
                   </tr>
                 ))}
@@ -208,8 +208,8 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
             </table>
           </div>
         )}
-        <div className="flex items-center justify-between border-t border-slate-100 px-5 py-3 text-sm">
-          <span className="text-slate-500">Página {pagina}</span>
+        <div className="flex items-center justify-between border-t border-zinc-100 px-5 py-3 text-sm">
+          <span className="text-zinc-500">Página {pagina}</span>
           <div className="flex gap-2">
             {pagina > 1 && (
               <Link className={classeBotao("secundario", "sm")} href={qs({ pagina: String(pagina - 1) })}>
@@ -252,7 +252,7 @@ function Detalhes({ d }: { d: Record<string, unknown> | null }) {
     <span>
       {itens.map(([k, v]) => (
         <span key={k} className="mr-2">
-          <span className="text-slate-400">{ROTULOS_DETALHE[k]}:</span> {Array.isArray(v) ? v.join(", ") : String(v)}
+          <span className="text-zinc-400">{ROTULOS_DETALHE[k]}:</span> {Array.isArray(v) ? v.join(", ") : String(v)}
         </span>
       ))}
     </span>

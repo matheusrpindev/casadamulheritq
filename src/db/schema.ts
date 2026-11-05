@@ -165,8 +165,21 @@ export const prontuarios = pgTable(
     orientacoesContatoCifrado: text(),
 
     enderecoCifrado: text(),
-    /** Bairro em texto claro: usado só em indicadores agregados. */
+    /** Bairro em texto claro: usado só em relatórios agregados. */
     bairro: text(),
+
+    // Perfil socioeconômico e familiar — texto claro porque alimenta os relatórios
+    // agregados (com supressão de contagens pequenas). null = não informado.
+    quantidadeFilhos: integer(),
+    filhosMenores: integer(),
+    gestante: boolean(),
+    pessoaComDeficiencia: boolean(),
+    estadoCivil: text(),
+    situacaoTrabalho: text(),
+    rendaFamiliar: text(),
+    recebeBeneficio: boolean(),
+    situacaoMoradia: text(),
+    dependenciaFinanceira: boolean(),
 
     // Consentimento para compartilhar com a rede
     compartilhamentoAutorizado: boolean().notNull().default(false),

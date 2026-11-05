@@ -10,7 +10,7 @@ RUN npm ci
 FROM base AS build
 COPY --from=dependencias /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN npm run build && npm run build:semear
 
 FROM base AS dependencias-producao
 COPY package.json package-lock.json ./
@@ -25,6 +25,8 @@ COPY --from=build /app/public ./public
 COPY --from=dependencias-producao /app/node_modules ./node_modules
 COPY drizzle ./drizzle
 COPY scripts/migrar.mjs scripts/criar-admin.mjs ./scripts/
+# Carga da base fictícia (só roda com MODO_VALIDACAO=true)
+COPY --from=build /app/dist-scripts/semear.mjs ./scripts/semear.mjs
 USER acolhe
 EXPOSE 3000
 # Aplica as migrações pendentes e sobe o servidor.

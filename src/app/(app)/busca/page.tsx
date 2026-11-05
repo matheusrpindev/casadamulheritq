@@ -70,13 +70,13 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
       <Cartao className="mb-6 p-5">
         <form className="grid gap-3 sm:grid-cols-[1fr_200px_auto]" role="search">
           <div>
-            <label htmlFor="q" className="mb-1 block text-sm font-medium text-slate-700">
+            <label htmlFor="q" className="mb-1 block text-sm font-medium text-zinc-700">
               Nome, nome social ou CPF
             </label>
             <Entrada id="q" name="q" defaultValue={q} placeholder="Ex.: Maria Aparecida ou 123.456.789-09" autoFocus autoComplete="off" />
           </div>
           <div>
-            <label htmlFor="nasc" className="mb-1 block text-sm font-medium text-slate-700">
+            <label htmlFor="nasc" className="mb-1 block text-sm font-medium text-zinc-700">
               Data de nascimento
             </label>
             <Entrada id="nasc" name="nasc" type="date" defaultValue={nasc} />
@@ -87,7 +87,7 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
             </button>
           </div>
         </form>
-        <p className="mt-3 text-xs text-slate-500">
+        <p className="mt-3 text-xs text-zinc-500">
           Por privacidade, não existe lista completa de mulheres atendidas: é preciso buscar alguém específico. Toda busca fica registrada.
         </p>
       </Cartao>
@@ -98,14 +98,15 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
 
       {buscaValida && (
         <Cartao>
-          <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3">
-            <p className="text-sm text-slate-600">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-zinc-100 px-5 py-3">
+            <p className="text-sm text-zinc-600">
               {resultados.length === 0
                 ? "Nenhum prontuário encontrado."
                 : `${resultados.length} prontuário${resultados.length > 1 ? "s" : ""} encontrado${resultados.length > 1 ? "s" : ""}`}
             </p>
             <BotaoLink href={novoHref} variante="secundario" tamanho="sm">
-              <UserPlus className="size-4" /> Não é nenhuma delas — novo acolhimento
+              <UserPlus className="size-4" /> <span className="sm:hidden">Novo acolhimento</span>
+              <span className="hidden sm:inline">Não é nenhuma delas — novo acolhimento</span>
             </BotaoLink>
           </div>
 
@@ -118,7 +119,7 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
               .
             </Vazio>
           ) : (
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-zinc-100">
               {resultados.map((p) => {
                 const temAcesso = acessiveis.has(p.id);
                 const anos = idade(p.dataNascimento);
@@ -127,11 +128,11 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
                     <div className="flex flex-wrap items-center gap-4">
                       <Avatar nome={p.nomeSocial || p.nomeCivil} />
                       <div className="min-w-0 flex-1">
-                        <p className="font-medium text-slate-900">
+                        <p className="font-medium text-zinc-900">
                           {p.nomeSocial || p.nomeCivil}
-                          {p.nomeSocial && <span className="ml-2 text-sm font-normal text-slate-500">(registro civil: {p.nomeCivil})</span>}
+                          {p.nomeSocial && <span className="ml-2 text-sm font-normal text-zinc-500">(registro civil: {p.nomeCivil})</span>}
                         </p>
-                        <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500">
+                        <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-zinc-500">
                           <span>Nasc. {formatarData(p.dataNascimento)}{anos !== null && ` (${anos} anos)`}</span>
                           <span>·</span>
                           <span>{numeroProntuario(p.numero, p.criadoEm, PREFIXO_PRONTUARIO)}</span>
@@ -150,7 +151,7 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
                           </BotaoLink>
                         </div>
                       ) : (
-                        <div className="flex items-center gap-2 text-xs text-slate-500">
+                        <div className="flex items-center gap-2 text-xs text-zinc-500">
                           <Lock className="size-3.5" /> Sua unidade ainda não tem acesso
                         </div>
                       )}
@@ -169,7 +170,7 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
                         {podePedir ? (
                           <PedidoAcesso prontuarioId={p.id} autorizado={p.compartilhamentoAutorizado} />
                         ) : (
-                          <p className="text-xs text-slate-500">Peça a uma profissional da equipe técnica para solicitar o acesso.</p>
+                          <p className="text-xs text-zinc-500">Peça a uma profissional da equipe técnica para solicitar o acesso.</p>
                         )}
                       </div>
                     )}

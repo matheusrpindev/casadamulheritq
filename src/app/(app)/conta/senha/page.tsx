@@ -30,7 +30,7 @@ export default async function PaginaConta() {
         </dl>
       </Cartao>
       <Cartao className="p-5">
-        <h2 className="mb-4 text-[15px] font-semibold text-slate-900">Trocar senha</h2>
+        <h2 className="mb-4 text-[15px] font-semibold text-zinc-900">Trocar senha</h2>
         <FormularioSenha minimo={TAMANHO_MINIMO_SENHA} />
       </Cartao>
     </div>

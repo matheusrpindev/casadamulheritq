@@ -59,7 +59,7 @@ export function FormularioAcolhimento({ valores, tecnica, unidade }: { valores: 
             relato para depois e preencher só o cadastro agora.
           </Aviso>
           <fieldset className="mb-4">
-            <legend className="mb-2 text-sm font-medium text-slate-700">Formas de violência relatadas (Lei Maria da Penha, art. 7º)</legend>
+            <legend className="mb-2 text-sm font-medium text-zinc-700">Formas de violência relatadas (Lei Maria da Penha, art. 7º)</legend>
             <div className="grid gap-2 sm:grid-cols-3">
               {TIPOS_VIOLENCIA.map((t) => (
                 <Marcador key={t} name="relatoTipos" value={t} rotulo={ROTULO_VIOLENCIA[t]} descricao={DESCRICAO_VIOLENCIA[t]} />
@@ -80,8 +80,8 @@ export function FormularioAcolhimento({ valores, tecnica, unidade }: { valores: 
         <Aviso tom="info">O relato será registrado pela equipe técnica no atendimento. Aqui você faz só o cadastro.</Aviso>
       )}
 
-      <div className="flex flex-wrap items-center justify-end gap-3 border-t border-slate-100 pt-6">
-        <p className="mr-auto text-xs text-slate-500">Campos com * são obrigatórios. Tudo pode ser completado depois.</p>
+      <div className="flex flex-wrap items-center justify-end gap-3 border-t border-zinc-100 pt-6">
+        <p className="mr-auto text-xs text-zinc-500">Campos com * são obrigatórios. Tudo pode ser completado depois.</p>
         <BotaoEnviar>Abrir prontuário</BotaoEnviar>
       </div>
     </FormAcao>

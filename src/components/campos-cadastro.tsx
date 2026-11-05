@@ -1,6 +1,14 @@
 "use client";
 
-import { ESCOLARIDADES, IDENTIDADES_GENERO, RACAS_COR } from "@/lib/rotulos";
+import {
+  ESCOLARIDADES,
+  ESTADOS_CIVIS,
+  FAIXAS_RENDA,
+  IDENTIDADES_GENERO,
+  RACAS_COR,
+  SITUACOES_MORADIA,
+  SITUACOES_TRABALHO,
+} from "@/lib/rotulos";
 import { useErroCampo } from "./form-acao";
 import { AreaTexto, Campo, Entrada, Marcador, Secao, Seletor } from "./ui";
 
@@ -20,7 +28,31 @@ export type ValoresCadastro = {
   orientacoesContato?: string | null;
   endereco?: string | null;
   bairro?: string | null;
+  quantidadeFilhos?: number | null;
+  filhosMenores?: number | null;
+  gestante?: boolean | null;
+  pessoaComDeficiencia?: boolean | null;
+  estadoCivil?: string | null;
+  situacaoTrabalho?: string | null;
+  rendaFamiliar?: string | null;
+  recebeBeneficio?: boolean | null;
+  situacaoMoradia?: string | null;
+  dependenciaFinanceira?: boolean | null;
 };
+
+const simNao = (v: boolean | null | undefined) => (v === true ? "sim" : v === false ? "nao" : "");
+
+function CampoSimNao({ nome, rotulo, valor, dica }: { nome: string; rotulo: string; valor?: boolean | null; dica?: string }) {
+  return (
+    <Campo rotulo={rotulo} htmlFor={`c-${nome}`} dica={dica}>
+      <Seletor id={`c-${nome}`} name={nome} defaultValue={simNao(valor)}>
+        <option value="">Não informado</option>
+        <option value="sim">Sim</option>
+        <option value="nao">Não</option>
+      </Seletor>
+    </Campo>
+  );
+}
 
 function CampoTexto({
   nome,
@@ -91,7 +123,7 @@ export function CamposCadastro({ valores = {} }: { valores?: ValoresCadastro }) 
           <CampoTexto nome="telefone" rotulo="Telefone" valor={valores.telefone} type="tel" autoComplete="off" />
           <CampoTexto nome="melhorHorario" rotulo="Melhor horário para contato" valor={valores.melhorHorario} placeholder="Ex.: dias úteis, das 9h às 12h" />
           <fieldset className="sm:col-span-2">
-            <legend className="mb-1 text-sm font-medium text-slate-700">É seguro ligar para esse número?</legend>
+            <legend className="mb-1 text-sm font-medium text-zinc-700">É seguro ligar para esse número?</legend>
             <div className="flex flex-wrap gap-2">
               <Marcador type="radio" name="contatoSeguro" value="sim" defaultChecked={valores.contatoSeguro !== false} rotulo="Sim" />
               <Marcador
@@ -116,7 +148,33 @@ export function CamposCadastro({ valores = {} }: { valores?: ValoresCadastro }) 
         </div>
       </Secao>
 
-      <Secao titulo="Endereço" descricao="Criptografado. O bairro é usado apenas em indicadores agregados.">
+      <Secao
+        titulo="Família e situação socioeconômica"
+        descricao="Ajuda a planejar o atendimento (creche, benefício, moradia) e alimenta os relatórios — sempre de forma agregada, sem identificar ninguém."
+      >
+        <div className="grid gap-4 sm:grid-cols-2">
+          <CampoTexto
+            nome="quantidadeFilhos"
+            rotulo="Quantos filhos tem"
+            valor={valores.quantidadeFilhos?.toString()}
+            type="number"
+            min={0}
+            max={20}
+            dica="0 se não tem filhos."
+          />
+          <CampoTexto nome="filhosMenores" rotulo="Quantos são menores de 18" valor={valores.filhosMenores?.toString()} type="number" min={0} max={20} />
+          <CampoSimNao nome="gestante" rotulo="Está gestante?" valor={valores.gestante} />
+          <CampoLista nome="estadoCivil" rotulo="Estado civil" valor={valores.estadoCivil} opcoes={ESTADOS_CIVIS} />
+          <CampoLista nome="situacaoTrabalho" rotulo="Trabalho" valor={valores.situacaoTrabalho} opcoes={SITUACOES_TRABALHO} />
+          <CampoLista nome="rendaFamiliar" rotulo="Renda familiar" valor={valores.rendaFamiliar} opcoes={FAIXAS_RENDA} />
+          <CampoSimNao nome="dependenciaFinanceira" rotulo="Depende financeiramente do autor?" valor={valores.dependenciaFinanceira} />
+          <CampoSimNao nome="recebeBeneficio" rotulo="Recebe benefício social?" valor={valores.recebeBeneficio} dica="Bolsa Família, BPC, aluguel social…" />
+          <CampoSimNao nome="pessoaComDeficiencia" rotulo="É pessoa com deficiência?" valor={valores.pessoaComDeficiencia} />
+          <CampoLista nome="situacaoMoradia" rotulo="Moradia" valor={valores.situacaoMoradia} opcoes={SITUACOES_MORADIA} />
+        </div>
+      </Secao>
+
+      <Secao titulo="Endereço" descricao="Criptografado. O bairro é usado apenas em relatórios agregados.">
         <div className="grid gap-4 sm:grid-cols-[2fr_1fr]">
           <CampoTexto nome="endereco" rotulo="Endereço" valor={valores.endereco} autoComplete="off" />
           <CampoTexto nome="bairro" rotulo="Bairro" valor={valores.bairro} autoComplete="off" />

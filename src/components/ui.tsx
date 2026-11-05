@@ -14,8 +14,8 @@ type Tamanho = "sm" | "md";
 
 const VARIANTES: Record<Variante, string> = {
   primario: "bg-marca-600 text-white hover:bg-marca-700 shadow-sm",
-  secundario: "bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 shadow-xs",
-  fantasma: "text-slate-700 hover:bg-slate-100",
+  secundario: "bg-white text-zinc-800 border border-zinc-300 hover:bg-zinc-50 shadow-xs",
+  fantasma: "text-zinc-700 hover:bg-zinc-100",
   perigo: "bg-rose-700 text-white hover:bg-rose-800 shadow-sm",
   suave: "bg-marca-50 text-marca-800 hover:bg-marca-100",
 };
@@ -57,7 +57,7 @@ export function BotaoLink({
 // ---------------------------------------------------------------------------
 
 export function Cartao({ className, ...props }: ComponentProps<"section">) {
-  return <section className={cx("rounded-2xl border border-slate-200/80 bg-white shadow-xs", className)} {...props} />;
+  return <section className={cx("min-w-0 rounded-2xl border border-zinc-200/80 bg-white shadow-xs", className)} {...props} />;
 }
 
 export function CabecalhoCartao({
@@ -72,12 +72,12 @@ export function CabecalhoCartao({
   icone?: ReactNode;
 }) {
   return (
-    <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4">
+    <div className="flex items-start justify-between gap-4 border-b border-zinc-100 px-5 py-4">
       <div className="flex min-w-0 items-start gap-3">
         {icone && <div className="mt-0.5 text-marca-600">{icone}</div>}
         <div className="min-w-0">
-          <h2 className="text-[15px] font-semibold text-slate-900">{titulo}</h2>
-          {descricao && <p className="mt-0.5 text-sm text-slate-500">{descricao}</p>}
+          <h2 className="text-[15px] font-semibold text-zinc-900">{titulo}</h2>
+          {descricao && <p className="mt-0.5 text-sm text-zinc-500">{descricao}</p>}
         </div>
       </div>
       {acao && <div className="shrink-0">{acao}</div>}
@@ -105,8 +105,8 @@ export function TituloPagina({
       )}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">{titulo}</h1>
-          {descricao && <p className="mt-1 max-w-3xl text-sm text-slate-600">{descricao}</p>}
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">{titulo}</h1>
+          {descricao && <p className="mt-1 max-w-3xl text-sm text-zinc-600">{descricao}</p>}
         </div>
         {acoes && <div className="flex flex-wrap gap-2">{acoes}</div>}
       </div>
@@ -120,7 +120,7 @@ export function TituloPagina({
 
 type Tom = "neutro" | "marca" | "verde" | "ambar" | "vermelho" | "azul";
 const TONS: Record<Tom, string> = {
-  neutro: "bg-slate-100 text-slate-700 ring-slate-200",
+  neutro: "bg-zinc-100 text-zinc-700 ring-zinc-200",
   marca: "bg-marca-50 text-marca-800 ring-marca-200",
   verde: "bg-emerald-50 text-emerald-800 ring-emerald-200",
   ambar: "bg-amber-50 text-amber-900 ring-amber-200",
@@ -146,7 +146,7 @@ export function SeloUnidade({ unidade }: { unidade: { sigla: string; nome: strin
   return (
     <span
       title={unidade.nome}
-      className="inline-flex items-center gap-1.5 rounded-md bg-slate-50 px-1.5 py-0.5 text-xs font-medium text-slate-700 ring-1 ring-slate-200 ring-inset"
+      className="inline-flex items-center gap-1.5 rounded-md bg-zinc-50 px-1.5 py-0.5 text-xs font-medium text-zinc-700 ring-1 ring-zinc-200 ring-inset"
     >
       <span className="size-2 rounded-full" style={{ backgroundColor: unidade.cor }} aria-hidden />
       {unidade.sigla}
@@ -188,9 +188,9 @@ export function Aviso({
 export function Vazio({ titulo, children, icone }: { titulo: string; children?: ReactNode; icone?: ReactNode }) {
   return (
     <div className="flex flex-col items-center px-6 py-10 text-center">
-      {icone && <div className="mb-3 text-slate-300">{icone}</div>}
-      <p className="text-sm font-medium text-slate-700">{titulo}</p>
-      {children && <div className="mt-1 max-w-md text-sm text-slate-500">{children}</div>}
+      {icone && <div className="mb-3 text-zinc-300">{icone}</div>}
+      <p className="text-sm font-medium text-zinc-700">{titulo}</p>
+      {children && <div className="mt-1 max-w-md text-sm text-zinc-500">{children}</div>}
     </div>
   );
 }
@@ -218,12 +218,12 @@ export function Campo({
 }) {
   return (
     <div className={className}>
-      <label htmlFor={htmlFor} className="mb-1 block text-sm font-medium text-slate-700">
+      <label htmlFor={htmlFor} className="mb-1 block text-sm font-medium text-zinc-700">
         {rotulo}
         {obrigatorio && <span className="ml-0.5 text-rose-600">*</span>}
       </label>
       {children}
-      {dica && !erro && <p className="mt-1 text-xs text-slate-500">{dica}</p>}
+      {dica && !erro && <p className="mt-1 text-xs text-zinc-500">{dica}</p>}
       {erro && <p className="mt-1 text-xs font-medium text-rose-700">{erro}</p>}
     </div>
   );
@@ -254,15 +254,15 @@ export function Marcador({
   return (
     <label
       className={cx(
-        "flex cursor-pointer items-start gap-2.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm",
+        "flex cursor-pointer items-start gap-2.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm",
         "hover:border-marca-300 has-checked:border-marca-400 has-checked:bg-marca-50/60",
         className,
       )}
     >
       <input type="checkbox" className="mt-0.5 size-4 shrink-0 accent-marca-700" {...props} />
       <span>
-        <span className="text-slate-800">{rotulo}</span>
-        {descricao && <span className="mt-0.5 block text-xs text-slate-500">{descricao}</span>}
+        <span className="text-zinc-800">{rotulo}</span>
+        {descricao && <span className="mt-0.5 block text-xs text-zinc-500">{descricao}</span>}
       </span>
     </label>
   );
@@ -270,11 +270,11 @@ export function Marcador({
 
 export function Secao({ titulo, descricao, children }: { titulo: string; descricao?: ReactNode; children: ReactNode }) {
   return (
-    <fieldset className="border-t border-slate-100 pt-6 first:border-t-0 first:pt-0">
+    <fieldset className="border-t border-zinc-100 pt-6 first:border-t-0 first:pt-0">
       <legend className="sr-only">{titulo}</legend>
       <div className="mb-4">
-        <h3 className="text-sm font-semibold text-slate-900">{titulo}</h3>
-        {descricao && <p className="mt-0.5 text-sm text-slate-500">{descricao}</p>}
+        <h3 className="text-sm font-semibold text-zinc-900">{titulo}</h3>
+        {descricao && <p className="mt-0.5 text-sm text-zinc-500">{descricao}</p>}
       </div>
       {children}
     </fieldset>
@@ -284,8 +284,8 @@ export function Secao({ titulo, descricao, children }: { titulo: string; descric
 export function DadoRotulado({ rotulo, children }: { rotulo: string; children: ReactNode }) {
   return (
     <div>
-      <dt className="text-xs font-medium tracking-wide text-slate-500 uppercase">{rotulo}</dt>
-      <dd className="mt-0.5 text-sm text-slate-900">{children || "—"}</dd>
+      <dt className="text-xs font-medium tracking-wide text-zinc-500 uppercase">{rotulo}</dt>
+      <dd className="mt-0.5 text-sm text-zinc-900">{children || "—"}</dd>
     </div>
   );
 }

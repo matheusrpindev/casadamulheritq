@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  async redirects() {
+    return [{ source: "/indicadores", destination: "/relatorios", permanent: false }];
+  },
   async headers() {
     return [
       {

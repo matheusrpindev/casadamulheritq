@@ -59,6 +59,20 @@ cada unidade; cada gestora cria as contas da própria equipe.
 
 > **Nunca** rode `npm run db:semear` em produção: ele apaga o banco e cria dados fictícios.
 
+## 4.1 Ambiente de validação (base fictícia)
+
+Para a equipe testar antes de usar com casos reais, suba **uma instalação separada** (outro servidor ou outra pasta
+com outro banco e outras chaves) com `MODO_VALIDACAO=true` no `.env` e carregue a base fictícia:
+
+```bash
+docker compose exec app node scripts/semear.mjs
+```
+
+O script apaga o banco e cria 156 mulheres inventadas e 10 contas de teste. Sem `MODO_VALIDACAO=true` ele se recusa
+a rodar. O roteiro de testes está em [`ROTEIRO-DE-VALIDACAO.md`](ROTEIRO-DE-VALIDACAO.md).
+
+> Na instalação de verdade, mantenha `MODO_VALIDACAO=false` e nunca rode esse script.
+
 ## 5. Backups
 
 Backup diário do banco, criptografado, guardado fora do servidor. Exemplo (cron às 2h):

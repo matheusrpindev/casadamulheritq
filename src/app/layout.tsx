@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/inter";
-import "@fontsource-variable/montserrat";
+import "@fontsource/pt-sans/400.css";
+import "@fontsource/pt-sans/700.css";
 import "./globals.css";
 import { INSTITUICAO, NOME_SISTEMA } from "@/lib/config";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2b0a27",
+  themeColor: "#2c0a28",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

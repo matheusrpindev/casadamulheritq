@@ -35,7 +35,8 @@ export type AcaoAuditoria =
   | "SENHA_REDEFINIDA"
   | "SENHA_ALTERADA"
   | "UNIDADE_CRIADA"
-  | "UNIDADE_ALTERADA";
+  | "UNIDADE_ALTERADA"
+  | "RELATORIO_EXPORTADO";
 
 type Executor = Pick<typeof db, "insert">;
 

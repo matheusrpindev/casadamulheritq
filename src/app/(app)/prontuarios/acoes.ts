@@ -73,6 +73,17 @@ function tocarProntuario(id: string) {
 // Cadastro / acolhimento
 // ---------------------------------------------------------------------------
 
+const inteiroOpcional = (oque: string) =>
+  z
+    .string()
+    .optional()
+    .transform((v) => (v && v.trim() !== "" ? Number(v) : null))
+    .refine((v) => v === null || (Number.isInteger(v) && v >= 0 && v <= 20), `Número de ${oque} inválido.`);
+const simNaoOpcional = z
+  .string()
+  .optional()
+  .transform((v) => (v === "sim" ? true : v === "nao" ? false : null));
+
 const esquemaCadastro = z.object({
   nomeCivil: z.string().trim().min(3, "Informe o nome completo.").max(160),
   nomeSocial: opcional(160),
@@ -93,6 +104,19 @@ const esquemaCadastro = z.object({
   orientacoesContato: opcional(1000),
   endereco: opcional(300),
   bairro: opcional(80),
+  quantidadeFilhos: inteiroOpcional("filhos"),
+  filhosMenores: inteiroOpcional("filhos menores"),
+  gestante: simNaoOpcional,
+  pessoaComDeficiencia: simNaoOpcional,
+  estadoCivil: opcional(60),
+  situacaoTrabalho: opcional(60),
+  rendaFamiliar: opcional(60),
+  recebeBeneficio: simNaoOpcional,
+  situacaoMoradia: opcional(60),
+  dependenciaFinanceira: simNaoOpcional,
+}).refine((d) => d.filhosMenores === null || d.quantidadeFilhos === null || d.filhosMenores <= d.quantidadeFilhos, {
+  message: "Não pode ser maior que o total de filhos.",
+  path: ["filhosMenores"],
 });
 
 function valoresCadastro(d: z.infer<typeof esquemaCadastro>) {
@@ -114,6 +138,16 @@ function valoresCadastro(d: z.infer<typeof esquemaCadastro>) {
     orientacoesContatoCifrado: cifrarOpcional(d.orientacoesContato),
     enderecoCifrado: cifrarOpcional(d.endereco),
     bairro: d.bairro,
+    quantidadeFilhos: d.quantidadeFilhos,
+    filhosMenores: d.filhosMenores,
+    gestante: d.gestante,
+    pessoaComDeficiencia: d.pessoaComDeficiencia,
+    estadoCivil: d.estadoCivil,
+    situacaoTrabalho: d.situacaoTrabalho,
+    rendaFamiliar: d.rendaFamiliar,
+    recebeBeneficio: d.recebeBeneficio,
+    situacaoMoradia: d.situacaoMoradia,
+    dependenciaFinanceira: d.dependenciaFinanceira,
   };
 }
 

@@ -53,7 +53,7 @@ export default async function PaginaUsuarios() {
             }
             descricao={`${lista.filter((p) => p.ativo).length} conta(s) ativa(s)`}
           />
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-zinc-100">
             {lista.map((p) => {
               const gerenciavel = p.id !== ator.id && atribuiveis.includes(p.papel);
               const bloqueada = p.bloqueadoAte && p.bloqueadoAte.getTime() > Date.now();
@@ -61,25 +61,25 @@ export default async function PaginaUsuarios() {
                 <li key={p.id} className={cx("flex flex-wrap items-center gap-4 px-5 py-3.5", !p.ativo && "opacity-60")}>
                   <Avatar nome={p.nome} />
                   <div className="min-w-0 flex-1">
-                    <p className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-900">
+                    <p className="flex flex-wrap items-center gap-2 text-sm font-medium text-zinc-900">
                       {p.nome}
                       {p.id === ator.id && <Selo tom="marca">Você</Selo>}
                       {!p.ativo && <Selo>Desativada</Selo>}
                       {bloqueada && <Selo tom="vermelho">Bloqueada por tentativas</Selo>}
                       {p.precisaTrocarSenha && p.ativo && <Selo tom="ambar">Aguardando 1º acesso</Selo>}
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-zinc-500">
                       {p.email} · {ROTULO_PAPEL[p.papel]}
                       {p.especialidade && ` · ${ROTULO_ESPECIALIDADE[p.especialidade]}`}
                       {p.registroProfissional && ` · ${p.registroProfissional}`}
                     </p>
-                    <p className="text-xs text-slate-400">Último acesso: {p.ultimoAcessoEm ? formatarDataHora(p.ultimoAcessoEm) : "nunca"}</p>
+                    <p className="text-xs text-zinc-400">Último acesso: {p.ultimoAcessoEm ? formatarDataHora(p.ultimoAcessoEm) : "nunca"}</p>
                   </div>
                   {gerenciavel && <AcoesUsuario id={p.id} ativo={p.ativo} nome={p.nome} />}
                 </li>
               );
             })}
-            {lista.length === 0 && <li className="px-5 py-4 text-sm text-slate-500">Nenhuma conta nesta unidade ainda.</li>}
+            {lista.length === 0 && <li className="px-5 py-4 text-sm text-zinc-500">Nenhuma conta nesta unidade ainda.</li>}
           </ul>
         </Cartao>
       ))}

@@ -148,7 +148,7 @@ export function FormUnidade({ id, valores, aoFechar }: { id: string | null; valo
           <Entrada id={`un-tel-${id}`} name="telefone" defaultValue={valores?.telefone ?? ""} />
         </Campo>
         <Campo rotulo="Cor" htmlFor={`un-cor-${id}`}>
-          <input id={`un-cor-${id}`} name="cor" type="color" defaultValue={valores?.cor ?? "#7c3aed"} className="h-10 w-16 cursor-pointer rounded-lg border border-slate-300 bg-white p-1" />
+          <input id={`un-cor-${id}`} name="cor" type="color" defaultValue={valores?.cor ?? "#7c3aed"} className="h-10 w-16 cursor-pointer rounded-lg border border-zinc-300 bg-white p-1" />
         </Campo>
       </div>
       <div className="flex justify-end gap-2">
@@ -178,7 +178,7 @@ export function LinhaUnidadeAcoes({ id, ativa, valores }: { id: string; ativa: b
         </FormAcao>
       </div>
       {editando && (
-        <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4 text-left">
+        <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-left">
           <FormUnidade id={id} valores={valores} aoFechar={() => setEditando(false)} />
         </div>
       )}

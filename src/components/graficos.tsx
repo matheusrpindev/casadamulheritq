@@ -14,18 +14,34 @@ export function suprimirPequenos(barras: Barra[]): Barra[] {
   return barras.map((b) => (b.valor > 0 && b.valor < LIMIAR_SIGILO ? { ...b, oculto: true } : b));
 }
 
-export function BarrasHorizontais({ barras, unidade = "", vazio = "Sem dados no período." }: { barras: Barra[]; unidade?: string; vazio?: string }) {
-  if (barras.length === 0) return <p className="py-6 text-center text-sm text-slate-500">{vazio}</p>;
+export function BarrasHorizontais({
+  barras,
+  unidade = "",
+  vazio = "Sem dados no período.",
+  total,
+}: {
+  barras: Barra[];
+  unidade?: string;
+  vazio?: string;
+  /** Base para o percentual; sem ela, só mostra a contagem. */
+  total?: number;
+}) {
+  if (barras.length === 0 || barras.every((b) => b.valor === 0)) return <p className="py-6 text-center text-sm text-zinc-500">{vazio}</p>;
   const max = Math.max(...barras.map((b) => b.valor), 1);
   return (
     <div>
-      <ul className="space-y-2.5" aria-hidden>
+      <ul className="space-y-2" aria-hidden>
         {barras.map((b) => {
           const largura = b.oculto ? 3 : Math.max((b.valor / max) * 100, b.valor > 0 ? 1.5 : 0);
           const texto = b.oculto ? `< ${LIMIAR_SIGILO}` : b.valor.toLocaleString("pt-BR");
+          const pct = !b.oculto && total ? `${Math.round((b.valor / total) * 100)}%` : "";
           return (
-            <li key={b.rotulo} className="group grid grid-cols-[minmax(0,9rem)_1fr] items-center gap-3 text-sm" title={`${b.rotulo}: ${texto}${unidade}`}>
-              <span className="truncate text-slate-600 group-hover:text-slate-900">{b.rotulo}</span>
+            <li
+              key={b.rotulo}
+              className="group grid grid-cols-[minmax(0,13rem)_1fr] items-center gap-3 text-sm"
+              title={`${b.rotulo}: ${texto}${unidade}${pct ? ` (${pct})` : ""}`}
+            >
+              <span className="line-clamp-2 text-[13px] leading-tight text-zinc-600 group-hover:text-zinc-900">{b.rotulo}</span>
               <div className="flex items-center gap-2">
                 <div className="h-2.5 flex-1">
                   <div
@@ -33,7 +49,8 @@ export function BarrasHorizontais({ barras, unidade = "", vazio = "Sem dados no 
                     style={{ width: `${largura}%`, backgroundColor: b.cor ?? "var(--color-marca-600)" }}
                   />
                 </div>
-                <span className="w-12 shrink-0 text-right text-xs font-medium text-slate-700 tabular-nums">{texto}</span>
+                <span className="w-9 shrink-0 text-right text-xs font-medium text-zinc-800 tabular-nums">{texto}</span>
+                {total !== undefined && <span className="w-9 shrink-0 text-right text-xs text-zinc-500 tabular-nums">{pct}</span>}
               </div>
             </li>
           );
@@ -50,14 +67,14 @@ export function Colunas({ barras, unidade = "" }: { barras: Barra[]; unidade?: s
   return (
     <div>
       <div className="relative" aria-hidden>
-        <div className="flex h-44 items-end gap-[2px] border-b border-slate-200">
+        <div className="flex h-44 items-end gap-[2px] border-b border-zinc-200">
           {barras.map((b, i) => {
             const rotular = i === barras.length - 1 || i === indiceMax;
             return (
               <div key={b.rotulo} className="group relative flex h-full flex-1 flex-col justify-end" title={`${b.rotulo}: ${b.valor}${unidade}`}>
                 <span
                   className={cx(
-                    "mb-1 text-center text-[11px] font-medium text-slate-700 tabular-nums",
+                    "mb-1 text-center text-[11px] font-medium text-zinc-700 tabular-nums",
                     rotular ? "visible" : "invisible group-hover:visible",
                   )}
                 >
@@ -73,7 +90,7 @@ export function Colunas({ barras, unidade = "" }: { barras: Barra[]; unidade?: s
         </div>
         <div className="mt-1.5 flex gap-[2px]">
           {barras.map((b) => (
-            <span key={b.rotulo} className="flex-1 truncate text-center text-[10px] text-slate-500">
+            <span key={b.rotulo} className="flex-1 truncate text-center text-[10px] text-zinc-500">
               {b.rotulo}
             </span>
           ))}
@@ -87,7 +104,7 @@ export function Colunas({ barras, unidade = "" }: { barras: Barra[]; unidade?: s
 /** Barra empilhada única (proporções) com legenda rotulada e contagens. */
 export function Proporcao({ partes }: { partes: (Barra & { cor: string })[] }) {
   const total = partes.reduce((s, p) => s + p.valor, 0);
-  if (total === 0) return <p className="py-6 text-center text-sm text-slate-500">Sem dados.</p>;
+  if (total === 0) return <p className="py-6 text-center text-sm text-zinc-500">Sem dados.</p>;
   return (
     <div>
       <div className="flex h-3 gap-[2px] overflow-hidden rounded-[4px]" aria-hidden>
@@ -101,9 +118,9 @@ export function Proporcao({ partes }: { partes: (Barra & { cor: string })[] }) {
         {partes.map((p) => (
           <li key={p.rotulo} className="flex items-center gap-2 text-sm">
             <span className="size-2.5 shrink-0 rounded-sm" style={{ backgroundColor: p.cor }} aria-hidden />
-            <span className="flex-1 text-slate-600">{p.rotulo}</span>
-            <span className="font-medium text-slate-900 tabular-nums">{p.valor}</span>
-            <span className="w-10 text-right text-xs text-slate-500 tabular-nums">{Math.round((p.valor / total) * 100)}%</span>
+            <span className="flex-1 text-zinc-600">{p.rotulo}</span>
+            <span className="font-medium text-zinc-900 tabular-nums">{p.valor}</span>
+            <span className="w-10 text-right text-xs text-zinc-500 tabular-nums">{Math.round((p.valor / total) * 100)}%</span>
           </li>
         ))}
       </ul>
@@ -113,7 +130,9 @@ export function Proporcao({ partes }: { partes: (Barra & { cor: string })[] }) {
 
 function TabelaAcessivel({ barras }: { barras: Barra[] }) {
   return (
-    <table className="sr-only">
+    // sr-only num <div>: aplicado direto na <table>, a largura não é limitada e a página transborda no celular.
+    <div className="sr-only">
+    <table>
       <tbody>
         {barras.map((b) => (
           <tr key={b.rotulo}>
@@ -123,5 +142,6 @@ function TabelaAcessivel({ barras }: { barras: Barra[] }) {
         ))}
       </tbody>
     </table>
+    </div>
   );
 }
