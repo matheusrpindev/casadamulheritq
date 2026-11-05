@@ -6,7 +6,8 @@ import type { NextConfig } from "next";
  * e nada derivado de sessão é guardado em cache no servidor.
  */
 const nextConfig: NextConfig = {
-  output: "standalone",
+  // Pacote autossuficiente só para a imagem Docker; Netlify/Vercel usam o próprio empacotamento.
+  output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
   poweredByHeader: false,
   serverExternalPackages: ["pg", "bcryptjs"],
   turbopack: {

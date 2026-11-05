@@ -20,7 +20,8 @@ export function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+  // btoa existe em Node e em runtimes de borda (Netlify Edge, Vercel Edge); Buffer não.
+  const nonce = btoa(crypto.randomUUID());
   const dev = process.env.NODE_ENV === "development";
   const csp = [
     "default-src 'self'",

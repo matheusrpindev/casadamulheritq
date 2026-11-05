@@ -73,6 +73,25 @@ a rodar. O roteiro de testes está em [`ROTEIRO-DE-VALIDACAO.md`](ROTEIRO-DE-VAL
 
 > Na instalação de verdade, mantenha `MODO_VALIDACAO=false` e nunca rode esse script.
 
+## 4.2 Validação na Netlify (ou Vercel) com banco Neon
+
+Para a **base fictícia**, uma hospedagem gerenciada é o caminho mais rápido. **Não use para dados reais**: os
+servidores ficam fora do Brasil e o contrato não foi avaliado pela Prefeitura.
+
+1. **Banco:** crie um PostgreSQL no [Neon](https://neon.com) (ou pelo Netlify Database, que usa o Neon) e copie a
+   *connection string* **com pooling** (o endereço tem `-pooler`).
+2. **Chaves:** no seu computador, rode `npm run gerar-chaves` e guarde as duas chaves.
+3. **Carga do banco, do seu computador:** no `.env` local, coloque o `DATABASE_URL` do Neon, as duas chaves e
+   `MODO_VALIDACAO=true`. Depois rode `npm run db:migrar` e `npm run db:semear`.
+4. **Site:** na Netlify, *Add new site → Import from Git*, escolha o repositório e a branch. O build (`npm run build`)
+   é detectado sozinho. Em *Environment variables*, cadastre **exatamente as mesmas** `DATABASE_URL`,
+   `CHAVE_CRIPTOGRAFIA` e `CHAVE_INDICE` do passo 3, mais `MODO_VALIDACAO=true`.
+
+> As chaves da hospedagem precisam ser idênticas às usadas na carga: com chaves diferentes, os relatos gravados
+> não podem ser lidos (o sistema mostra erro ao abrir um prontuário).
+
+Para recomeçar a base depois dos testes, rode de novo o `npm run db:semear` do seu computador.
+
 ## 5. Backups
 
 Backup diário do banco, criptografado, guardado fora do servidor. Exemplo (cron às 2h):

@@ -10,6 +10,7 @@ RUN npm ci
 FROM base AS build
 COPY --from=dependencias /app/node_modules ./node_modules
 COPY . .
+ENV BUILD_STANDALONE=true
 RUN npm run build && npm run build:semear
 
 FROM base AS dependencias-producao

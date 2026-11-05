@@ -8,7 +8,8 @@ const globalParaDb = globalThis as unknown as { __acolhePool?: Pool };
 function criarPool() {
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL não configurada (veja .env.example).");
-  return new Pool({ connectionString: url, max: 10 });
+  // Poucas conexões por instância: em hospedagem serverless (Netlify/Vercel) cada função abre o seu pool.
+  return new Pool({ connectionString: url, max: Number(process.env.DB_POOL_MAX ?? 5), idleTimeoutMillis: 10_000 });
 }
 
 // Reaproveita o pool entre recarregamentos do servidor de desenvolvimento.
