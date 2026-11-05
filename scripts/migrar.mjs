@@ -4,6 +4,7 @@
 try {
   await import("dotenv/config");
 } catch {}
+import { fileURLToPath } from "node:url";
 import pg from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { migrate } from "drizzle-orm/node-postgres/migrator";
@@ -15,7 +16,8 @@ if (!url) {
 }
 const pool = new pg.Pool({ connectionString: url });
 try {
-  await migrate(drizzle(pool), { migrationsFolder: new URL("../drizzle", import.meta.url).pathname });
+  // fileURLToPath (e não .pathname): no Windows, .pathname vira "/C:/..." e o caminho não é encontrado.
+  await migrate(drizzle(pool), { migrationsFolder: fileURLToPath(new URL("../drizzle", import.meta.url)) });
   console.log("✓ Banco atualizado.");
 } catch (e) {
   console.error("Falha ao migrar:", e);
