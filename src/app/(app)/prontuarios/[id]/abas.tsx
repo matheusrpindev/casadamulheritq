@@ -110,7 +110,7 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
   return (
     <div className="grid gap-6 lg:grid-cols-3">
       <div className="space-y-6 lg:col-span-2">
-        <Cartao className="border-lilas-200">
+        <Cartao className="border-marca-200">
           <CabecalhoCartao
             icone={<BookOpenText className="size-5" />}
             titulo="Antes de atender, leia"
@@ -126,7 +126,7 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
             ) : relatosVigentes.length === 0 ? (
               <div className="text-sm text-slate-500">
                 Nenhum relato registrado ainda.{" "}
-                <Link href={`/prontuarios/${p.id}?aba=relatos`} className="font-medium text-lilas-700 underline">
+                <Link href={`/prontuarios/${p.id}?aba=relatos`} className="font-medium text-marca-700 underline">
                   Registrar relato
                 </Link>
               </div>
@@ -144,7 +144,7 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
                     {r.tiposViolencia.length > 0 && (
                       <div className="mb-2 flex flex-wrap gap-1.5">
                         {r.tiposViolencia.map((t) => (
-                          <Selo key={t} tom="lilas">
+                          <Selo key={t} tom="marca">
                             Violência {ROTULO_VIOLENCIA[t as keyof typeof ROTULO_VIOLENCIA]?.toLowerCase() ?? t}
                           </Selo>
                         ))}
@@ -154,7 +154,7 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
                   </article>
                 ))}
                 {relatosVigentes.length > 2 && (
-                  <Link href={`/prontuarios/${p.id}?aba=relatos`} className="text-sm font-medium text-lilas-700 hover:underline">
+                  <Link href={`/prontuarios/${p.id}?aba=relatos`} className="text-sm font-medium text-marca-700 hover:underline">
                     Ver todos os {relatosVigentes.length} relatos →
                   </Link>
                 )}
@@ -208,7 +208,7 @@ export function AbaResumo({ usuario, prontuario: p, conteudo, mapas, tecnica, me
                     Ela disse que <strong>aceita abrigamento temporário</strong>.
                   </Aviso>
                 )}
-                <Link href={`/prontuarios/${p.id}?aba=risco`} className="block text-sm font-medium text-lilas-700 hover:underline">
+                <Link href={`/prontuarios/${p.id}?aba=risco`} className="block text-sm font-medium text-marca-700 hover:underline">
                   Ver avaliação completa →
                 </Link>
               </div>
@@ -335,7 +335,7 @@ export function AbaRelatos({ usuario, prontuario: p, conteudo, tecnica }: Ctx) {
                   {r.tiposViolencia.length > 0 && (
                     <div className="mb-3 flex flex-wrap gap-1.5">
                       {r.tiposViolencia.map((t) => (
-                        <Selo key={t} tom="lilas">
+                        <Selo key={t} tom="marca">
                           {ROTULO_VIOLENCIA[t as keyof typeof ROTULO_VIOLENCIA] ?? t}
                         </Selo>
                       ))}
@@ -489,7 +489,7 @@ export function AbaRisco({ prontuario: p, conteudo, tecnica }: Ctx) {
             <Cartao key={v.id}>
               <div className="flex flex-wrap items-center gap-3 border-b border-slate-100 px-5 py-4">
                 <SeloRisco nivel={v.classificacao} grande />
-                {i === 0 && <Selo tom="lilas">Mais recente</Selo>}
+                {i === 0 && <Selo tom="marca">Mais recente</Selo>}
                 <span className="text-xs text-slate-500">
                   <SeloUnidade unidade={v.unidade} /> {formatarDataHora(v.criadoEm)} · {v.profissional.nome}
                 </span>
@@ -538,7 +538,7 @@ export function AbaRisco({ prontuario: p, conteudo, tecnica }: Ctx) {
                     </div>
                   )}
                   <details className="group rounded-lg border border-slate-200">
-                    <summary className="cursor-pointer px-4 py-2.5 text-sm font-medium text-lilas-800">Ver todas as respostas</summary>
+                    <summary className="cursor-pointer px-4 py-2.5 text-sm font-medium text-marca-800">Ver todas as respostas</summary>
                     <div className="space-y-5 border-t border-slate-100 px-4 py-4">
                       {FONAR.map((bloco) => (
                         <div key={bloco.titulo}>
@@ -620,8 +620,8 @@ export async function AbaEncaminhamentos({ usuario, prontuario: p, conteudo, tec
                     </span>
                   </div>
                   {e.motivo && (
-                    <div className="mt-3 rounded-lg bg-lilas-50/60 px-4 py-3">
-                      <p className="text-xs font-semibold text-lilas-900">Ficha de passagem</p>
+                    <div className="mt-3 rounded-lg bg-marca-50/60 px-4 py-3">
+                      <p className="text-xs font-semibold text-marca-900">Ficha de passagem</p>
                       <p className="mt-1 text-sm whitespace-pre-wrap text-slate-800">{e.motivo}</p>
                     </div>
                   )}
@@ -681,7 +681,7 @@ export function AbaMedidas({ prontuario: p, conteudo, tecnica }: Ctx) {
               return (
                 <li key={m.id} className="px-5 py-4">
                   <div className="flex flex-wrap items-center gap-2">
-                    <Selo tom={m.status === "DEFERIDA" && !vencida ? "lilas" : m.status === "SOLICITADA" ? "ambar" : "neutro"}>
+                    <Selo tom={m.status === "DEFERIDA" && !vencida ? "marca" : m.status === "SOLICITADA" ? "ambar" : "neutro"}>
                       {vencida ? "Vencida" : ROTULO_STATUS_MEDIDA[m.status]}
                     </Selo>
                     {m.validaAte && <span className="text-sm text-slate-700">válida até {formatarData(m.validaAte)}</span>}

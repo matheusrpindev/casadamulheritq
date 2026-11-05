@@ -112,7 +112,7 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
           {resultados.length === 0 ? (
             <Vazio titulo="Ela ainda não tem prontuário na rede" icone={<FileSearch className="size-10" />}>
               Confira a grafia (ou tente pelo nome social). Se for mesmo o primeiro atendimento,{" "}
-              <Link className="font-medium text-lilas-700 underline" href={novoHref}>
+              <Link className="font-medium text-marca-700 underline" href={novoHref}>
                 inicie um novo acolhimento
               </Link>
               .

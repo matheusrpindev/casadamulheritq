@@ -158,7 +158,7 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
                 </Selo>
               )}
               {medidasVigentes.length > 0 && (
-                <Selo tom="lilas">
+                <Selo tom="marca">
                   <Gavel className="size-3.5" /> Medida protetiva vigente
                   {medidasVigentes[0].validaAte && ` até ${formatarData(medidasVigentes[0].validaAte)}`}
                 </Selo>
@@ -209,12 +209,12 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
               aria-current={aba === a.id ? "page" : undefined}
               className={cx(
                 "-mb-px flex items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium whitespace-nowrap",
-                aba === a.id ? "border-lilas-600 text-lilas-800" : "border-transparent text-slate-500 hover:text-slate-800",
+                aba === a.id ? "border-marca-600 text-marca-800" : "border-transparent text-slate-500 hover:text-slate-800",
               )}
             >
               {a.rotulo}
               {!!contagem[a.id] && (
-                <span className={cx("rounded-full px-1.5 text-xs tabular-nums", aba === a.id ? "bg-lilas-100" : "bg-slate-100")}>
+                <span className={cx("rounded-full px-1.5 text-xs tabular-nums", aba === a.id ? "bg-marca-100" : "bg-slate-100")}>
                   {contagem[a.id]}
                 </span>
               )}

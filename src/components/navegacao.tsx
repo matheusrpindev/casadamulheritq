@@ -6,7 +6,6 @@ import {
   BarChart3,
   Building2,
   FileSearch,
-  HeartHandshake,
   Home,
   Inbox,
   LogOut,
@@ -18,6 +17,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { sair } from "@/app/(app)/acoes-sessao";
+import { Simbolo } from "./marca";
 import { cx } from "./ui";
 
 export type ItemMenu = {
@@ -55,13 +55,19 @@ export function Navegacao({
 
   const conteudo = (
     <div className="flex h-full flex-col">
+      <div aria-hidden className="flex h-1 shrink-0">
+        <span className="flex-1 bg-[#84296F]" />
+        <span className="flex-1 bg-[#ED9CA3]" />
+        <span className="flex-1 bg-[#E37171]" />
+        <span className="flex-1 bg-[#F07F6A]" />
+      </div>
       <Link href="/" className="flex items-center gap-3 px-5 pt-6 pb-5" onClick={() => setAberto(false)}>
-        <div className="grid size-10 place-items-center rounded-xl bg-white/10 ring-1 ring-white/15">
-          <HeartHandshake className="size-5 text-white" />
+        <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-white shadow-sm">
+          <Simbolo className="w-7" />
         </div>
         <div className="leading-tight">
-          <p className="font-semibold text-white">{nomeSistema}</p>
-          <p className="text-xs text-lilas-200">Rede da Mulher · {nomeRede}</p>
+          <p className="fonte-titulo text-[17px] font-bold text-white">{nomeSistema}</p>
+          <p className="text-xs text-marca-200">Casa da Mulher · {nomeRede}</p>
         </div>
       </Link>
 
@@ -69,7 +75,7 @@ export function Navegacao({
         {grupos.map((g, i) => (
           <div key={i}>
             {g.titulo && (
-              <p className="mb-1.5 px-3 text-[11px] font-semibold tracking-wider text-lilas-300/80 uppercase">{g.titulo}</p>
+              <p className="mb-1.5 px-3 text-[11px] font-semibold tracking-wider text-marca-300/80 uppercase">{g.titulo}</p>
             )}
             <ul className="space-y-0.5">
               {g.itens.map((item) => {
@@ -83,7 +89,7 @@ export function Navegacao({
                       aria-current={marcado ? "page" : undefined}
                       className={cx(
                         "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                        marcado ? "bg-white text-lilas-900 shadow-sm" : "text-lilas-100 hover:bg-white/10 hover:text-white",
+                        marcado ? "bg-white text-marca-800 shadow-sm" : "text-marca-100 hover:bg-white/10 hover:text-white",
                       )}
                     >
                       <Icone className="size-4.5 shrink-0" aria-hidden />
@@ -92,7 +98,7 @@ export function Navegacao({
                         <span
                           className={cx(
                             "min-w-5 rounded-full px-1.5 text-center text-xs font-semibold tabular-nums",
-                            marcado ? "bg-lilas-700 text-white" : "bg-amber-400 text-amber-950",
+                            marcado ? "bg-marca-600 text-white" : "bg-[#F07F6A] text-marca-950",
                           )}
                         >
                           {item.contador}
@@ -114,7 +120,7 @@ export function Navegacao({
           className="block rounded-lg px-3 py-2 hover:bg-white/10"
         >
           <p className="truncate text-sm font-medium text-white">{usuario.nome}</p>
-          <p className="flex items-center gap-1.5 truncate text-xs text-lilas-200">
+          <p className="flex items-center gap-1.5 truncate text-xs text-marca-200">
             <span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: usuario.cor }} aria-hidden />
             {usuario.unidade} · {usuario.papel}
           </p>
@@ -122,7 +128,7 @@ export function Navegacao({
         <form action={() => sair()}>
           <button
             type="submit"
-            className="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-lilas-100 hover:bg-white/10 hover:text-white"
+            className="mt-1 flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-marca-100 hover:bg-white/10 hover:text-white"
           >
             <LogOut className="size-4.5" aria-hidden />
             Sair
@@ -134,19 +140,24 @@ export function Navegacao({
 
   return (
     <>
-      <div className="nao-imprimir sticky top-0 z-30 flex items-center justify-between bg-lilas-950 px-4 py-3 text-white lg:hidden">
-        <span className="font-semibold">{nomeSistema}</span>
+      <div className="nao-imprimir sticky top-0 z-30 flex items-center justify-between bg-marca-950 px-4 py-3 text-white lg:hidden">
+        <span className="flex items-center gap-2.5">
+          <span className="grid size-8 place-items-center rounded-lg bg-white">
+            <Simbolo className="w-5" />
+          </span>
+          <span className="fonte-titulo font-bold">{nomeSistema}</span>
+        </span>
         <button type="button" onClick={() => setAberto(true)} aria-label="Abrir menu" className="rounded-md p-1.5 hover:bg-white/10">
           <Menu className="size-5" />
         </button>
       </div>
 
-      <aside className="nao-imprimir fixed inset-y-0 left-0 z-20 hidden w-64 bg-lilas-950 lg:block">{conteudo}</aside>
+      <aside className="nao-imprimir fixed inset-y-0 left-0 z-20 hidden w-64 bg-marca-950 lg:block">{conteudo}</aside>
 
       {aberto && (
         <div className="nao-imprimir fixed inset-0 z-40 lg:hidden">
           <div className="absolute inset-0 bg-slate-900/50" onClick={() => setAberto(false)} aria-hidden />
-          <aside className="absolute inset-y-0 left-0 w-72 bg-lilas-950 shadow-xl">
+          <aside className="absolute inset-y-0 left-0 w-72 bg-marca-950 shadow-xl">
             <button
               type="button"
               onClick={() => setAberto(false)}

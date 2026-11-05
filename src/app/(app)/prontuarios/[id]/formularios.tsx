@@ -52,7 +52,7 @@ export function Expansivel({
     );
   }
   return (
-    <div id={id} className="relative rounded-2xl border border-lilas-200 bg-white p-5 shadow-sm">
+    <div id={id} className="relative rounded-2xl border border-marca-200 bg-white p-5 shadow-sm">
       <button
         type="button"
         onClick={() => setAberto(false)}
@@ -181,7 +181,7 @@ export function FormRetificacao({ tipo, id, textoAtual }: { tipo: "relato" | "at
   const [aberto, setAberto] = useState(false);
   if (!aberto) {
     return (
-      <button type="button" onClick={() => setAberto(true)} className="text-xs font-medium text-lilas-700 hover:underline">
+      <button type="button" onClick={() => setAberto(true)} className="text-xs font-medium text-marca-700 hover:underline">
         Retificar
       </button>
     );
@@ -440,7 +440,7 @@ export function FormAtualizarMedida({ id, status, validaAte }: { id: string; sta
   const [aberto, setAberto] = useState(false);
   if (!aberto) {
     return (
-      <button type="button" onClick={() => setAberto(true)} className="text-xs font-medium text-lilas-700 hover:underline">
+      <button type="button" onClick={() => setAberto(true)} className="text-xs font-medium text-marca-700 hover:underline">
         Atualizar situação
       </button>
     );

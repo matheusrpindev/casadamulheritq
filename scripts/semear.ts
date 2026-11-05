@@ -37,7 +37,7 @@ async function main() {
   const [cmi, smm, creas, ubs, ddm] = await db
     .insert(schema.unidades)
     .values([
-      { nome: "Casa da Mulher de Itaquaquecetuba", sigla: "CMI", tipo: "CASA_DA_MULHER", cor: "#8d56d6", telefone: "(11) 0000-0001" },
+      { nome: "Casa da Mulher em Itaquaquecetuba", sigla: "CMI", tipo: "CASA_DA_MULHER", cor: "#84296F", telefone: "(11) 0000-0001" },
       { nome: "Secretaria Municipal da Mulher", sigla: "SMM", tipo: "SECRETARIA", cor: "#db2777", telefone: "(11) 0000-0002" },
       { nome: "CREAS Itaquaquecetuba", sigla: "CREAS", tipo: "CREAS", cor: "#0891b2", telefone: "(11) 0000-0003" },
       { nome: "UBS Central", sigla: "UBS", tipo: "SAUDE", cor: "#059669", telefone: "(11) 0000-0004" },

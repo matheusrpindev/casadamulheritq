@@ -36,7 +36,7 @@ export default async function PaginaUnidades() {
               <span className="mt-1 size-3 shrink-0 rounded-full" style={{ backgroundColor: u.cor }} aria-hidden />
               <div className="min-w-0 flex-1">
                 <p className="flex flex-wrap items-center gap-2 font-medium text-slate-900">
-                  {u.nome} <Selo>{u.sigla}</Selo> <Selo tom="lilas">{ROTULO_TIPO_UNIDADE[u.tipo]}</Selo>
+                  {u.nome} <Selo>{u.sigla}</Selo> <Selo tom="marca">{ROTULO_TIPO_UNIDADE[u.tipo]}</Selo>
                   {!u.ativa && <Selo tom="vermelho">Inativa</Selo>}
                 </p>
                 <p className="mt-0.5 text-xs text-slate-500">

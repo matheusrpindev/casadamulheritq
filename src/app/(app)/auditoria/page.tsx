@@ -126,7 +126,7 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
                     </p>
                     <p className="mt-1 text-sm">
                       Prontuário{" "}
-                      <Link href={`/prontuarios/${p.id}?aba=acessos`} className="font-medium text-lilas-700 underline">
+                      <Link href={`/prontuarios/${p.id}?aba=acessos`} className="font-medium text-marca-700 underline">
                         {numeroProntuario(p.numero, p.criadoEm, PREFIXO_PRONTUARIO)} — {nomeExibicao(p)}
                       </Link>
                     </p>
@@ -191,7 +191,7 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
                     <td className={cx("px-3 py-2.5", a.acao === "ACESSO_EMERGENCIAL" && "font-semibold text-rose-800")}>{ROTULO_ACAO[a.acao] ?? a.acao}</td>
                     <td className="px-3 py-2.5 font-mono text-xs">
                       {n && pCriado && a.prontuarioId ? (
-                        <Link href={`/prontuarios/${a.prontuarioId}`} className="text-lilas-700 hover:underline">
+                        <Link href={`/prontuarios/${a.prontuarioId}`} className="text-marca-700 hover:underline">
                           {numeroProntuario(n, pCriado, PREFIXO_PRONTUARIO)}
                         </Link>
                       ) : (

@@ -63,8 +63,8 @@ export function FormularioFonar({ prontuarioId, anteriores }: { prontuarioId: st
                               marcado
                                 ? o.peso === "grave"
                                   ? "border-rose-300 bg-rose-50 text-rose-900"
-                                  : "border-lilas-400 bg-lilas-50 text-lilas-900"
-                                : "border-slate-200 bg-white text-slate-700 hover:border-lilas-300",
+                                  : "border-marca-400 bg-marca-50 text-marca-900"
+                                : "border-slate-200 bg-white text-slate-700 hover:border-marca-300",
                             )}
                           >
                             <input
@@ -73,7 +73,7 @@ export function FormularioFonar({ prontuarioId, anteriores }: { prontuarioId: st
                               value={o.valor}
                               checked={marcado}
                               onChange={(e) => alternar(p, o.valor, e.target.checked)}
-                              className="size-3.5 accent-lilas-700"
+                              className="size-3.5 accent-marca-700"
                             />
                             {o.rotulo}
                           </label>
@@ -86,7 +86,7 @@ export function FormularioFonar({ prontuarioId, anteriores }: { prontuarioId: st
             </section>
           ))}
 
-          <section className="rounded-2xl border border-lilas-200 bg-white p-5 shadow-xs">
+          <section className="rounded-2xl border border-marca-200 bg-white p-5 shadow-xs">
             <h2 className="text-[15px] font-semibold text-slate-900">Parte II — Avaliação da profissional</h2>
             <p className="mt-1 text-sm text-slate-600">
               A classificação final é sua, a partir da escuta e do contexto (a percepção dela sobre o próprio risco também
@@ -100,7 +100,7 @@ export function FormularioFonar({ prontuarioId, anteriores }: { prontuarioId: st
                     key={n}
                     className={cx(
                       "flex cursor-pointer items-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium",
-                      classificacao === n ? "border-lilas-500 bg-lilas-50 ring-2 ring-lilas-200" : "border-slate-200 hover:border-lilas-300",
+                      classificacao === n ? "border-marca-500 bg-marca-50 ring-2 ring-marca-200" : "border-slate-200 hover:border-marca-300",
                     )}
                   >
                     <input
@@ -110,7 +110,7 @@ export function FormularioFonar({ prontuarioId, anteriores }: { prontuarioId: st
                       required
                       checked={classificacao === n}
                       onChange={() => setClassificacao(n)}
-                      className="accent-lilas-700"
+                      className="accent-marca-700"
                     />
                     {ROTULO_RISCO[n]}
                     {resultado.sugestao === n && <span className="ml-auto text-xs font-normal text-slate-500">sugerido</span>}
@@ -140,14 +140,14 @@ export function FormularioFonar({ prontuarioId, anteriores }: { prontuarioId: st
         <aside className="lg:sticky lg:top-6 lg:self-start">
           <div className="space-y-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-xs">
             <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-              <ShieldAlert className="size-4 text-lilas-600" /> Sugestão automática
+              <ShieldAlert className="size-4 text-marca-600" /> Sugestão automática
             </div>
             <SeloRisco nivel={resultado.respondidas === 0 ? "NAO_AVALIADO" : resultado.sugestao} grande />
             <p className="text-xs text-slate-500">
               {resultado.respondidas} de {total} perguntas respondidas
             </p>
             <div className="h-1.5 overflow-hidden rounded-full bg-slate-100">
-              <div className="h-full rounded-full bg-lilas-500 transition-all" style={{ width: `${(resultado.respondidas / total) * 100}%` }} />
+              <div className="h-full rounded-full bg-marca-500 transition-all" style={{ width: `${(resultado.respondidas / total) * 100}%` }} />
             </div>
             {resultado.fatoresGraves.length > 0 && (
               <div>

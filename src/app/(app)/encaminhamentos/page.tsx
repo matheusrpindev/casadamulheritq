@@ -62,7 +62,7 @@ export default async function PaginaEncaminhamentos({ searchParams }: PageProps<
               href={`/encaminhamentos?caixa=${a.id}${todos ? "&status=todos" : ""}`}
               className={cx(
                 "flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium",
-                caixa === a.id ? "bg-lilas-700 text-white" : "text-slate-600 hover:bg-slate-50",
+                caixa === a.id ? "bg-marca-700 text-white" : "text-slate-600 hover:bg-slate-50",
               )}
             >
               <a.icone className="size-4" /> {a.rotulo}
@@ -70,12 +70,12 @@ export default async function PaginaEncaminhamentos({ searchParams }: PageProps<
           ))}
         </div>
         <div className="flex gap-3 text-sm">
-          <Link href={`/encaminhamentos?caixa=${caixa}`} className={cx(!todos ? "font-semibold text-lilas-800" : "text-slate-500 hover:text-slate-800")}>
+          <Link href={`/encaminhamentos?caixa=${caixa}`} className={cx(!todos ? "font-semibold text-marca-800" : "text-slate-500 hover:text-slate-800")}>
             Em aberto
           </Link>
           <Link
             href={`/encaminhamentos?caixa=${caixa}&status=todos`}
-            className={cx(todos ? "font-semibold text-lilas-800" : "text-slate-500 hover:text-slate-800")}
+            className={cx(todos ? "font-semibold text-marca-800" : "text-slate-500 hover:text-slate-800")}
           >
             Todos
           </Link>
@@ -100,7 +100,7 @@ export default async function PaginaEncaminhamentos({ searchParams }: PageProps<
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         {temAcesso ? (
-                          <Link href={`/prontuarios/${p.id}`} className="font-medium text-slate-900 hover:text-lilas-800 hover:underline">
+                          <Link href={`/prontuarios/${p.id}`} className="font-medium text-slate-900 hover:text-marca-800 hover:underline">
                             {nomeExibicao(p)}
                           </Link>
                         ) : (
@@ -118,8 +118,8 @@ export default async function PaginaEncaminhamentos({ searchParams }: PageProps<
                         </span>
                       </p>
                       {motivo && (
-                        <div className="mt-3 rounded-lg bg-lilas-50/70 px-4 py-3">
-                          <p className="text-xs font-semibold text-lilas-900">Ficha de passagem</p>
+                        <div className="mt-3 rounded-lg bg-marca-50/70 px-4 py-3">
+                          <p className="text-xs font-semibold text-marca-900">Ficha de passagem</p>
                           <p className="mt-1 text-sm whitespace-pre-wrap text-slate-800">{motivo}</p>
                         </div>
                       )}

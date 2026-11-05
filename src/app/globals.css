@@ -2,21 +2,32 @@
 
 @theme {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-titulo: "Montserrat Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
 
-  /* Lilás — cor símbolo do enfrentamento à violência contra a mulher (Agosto Lilás) */
-  --color-lilas-50: #f7f3fd;
-  --color-lilas-100: #eee6fb;
-  --color-lilas-200: #dfd0f7;
-  --color-lilas-300: #c7acef;
-  --color-lilas-400: #a97fe4;
-  --color-lilas-500: #8d56d6;
-  --color-lilas-600: #763bbd;
-  --color-lilas-700: #632f9e;
-  --color-lilas-800: #522982;
-  --color-lilas-900: #44246a;
-  --color-lilas-950: #2a1046;
+  /*
+   * Identidade visual da Casa da Mulher em Itaquaquecetuba.
+   * Cores do logo: roxo #84296F, rosa #ED9CA3, coral #E37171, coral-laranja #F07F6A.
+   * "marca" é a escala do roxo (600 = cor do logo). Coral e rosa são só decorativos:
+   * texto branco sobre coral não tem contraste suficiente.
+   */
+  --color-marca-50: #fbf4f8;
+  --color-marca-100: #f6e7f1;
+  --color-marca-200: #eccde2;
+  --color-marca-300: #dda6c9;
+  --color-marca-400: #c574a8;
+  --color-marca-500: #a54b8b;
+  --color-marca-600: #84296f;
+  --color-marca-700: #6e2160;
+  --color-marca-800: #5a1c4f;
+  --color-marca-900: #471842;
+  --color-marca-950: #2b0a27;
 
-  --color-fundo: #f8f6fb;
+  --color-rosa: #ed9ca3;
+  --color-rosa-claro: #fdf2f3;
+  --color-coral: #e37171;
+  --color-coral-laranja: #f07f6a;
+
+  --color-fundo: #faf7f8;
 }
 
 @layer base {
@@ -29,10 +40,16 @@
     color: var(--color-slate-900);
   }
   ::selection {
-    background: var(--color-lilas-200);
+    background: var(--color-rosa);
+    color: var(--color-marca-950);
+  }
+  h1,
+  .fonte-titulo {
+    font-family: var(--font-titulo);
+    letter-spacing: -0.01em;
   }
   :focus-visible {
-    outline: 2px solid var(--color-lilas-500);
+    outline: 2px solid var(--color-marca-500);
     outline-offset: 2px;
   }
 }
@@ -40,7 +57,7 @@
 @layer components {
   .campo-base {
     @apply block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-xs
-      placeholder:text-slate-400 focus:border-lilas-500 focus:ring-2 focus:ring-lilas-200 focus:outline-none
+      placeholder:text-slate-400 focus:border-marca-500 focus:ring-2 focus:ring-marca-200 focus:outline-none
       disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500;
   }
   .texto-relato {

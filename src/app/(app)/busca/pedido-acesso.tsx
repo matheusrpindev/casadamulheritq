@@ -29,7 +29,7 @@ export function PedidoAcesso({ prontuarioId, autorizado }: { prontuarioId: strin
       limparAoSalvar={false}
       className={cx(
         "max-w-2xl space-y-3 rounded-xl border p-4",
-        emergencial ? "border-rose-200 bg-rose-50/60" : "border-lilas-200 bg-lilas-50/60",
+        emergencial ? "border-rose-200 bg-rose-50/60" : "border-marca-200 bg-marca-50/60",
       )}
     >
       <input type="hidden" name="tipo" value={tipo} />

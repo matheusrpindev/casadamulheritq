@@ -30,7 +30,7 @@ export function BarrasHorizontais({ barras, unidade = "", vazio = "Sem dados no 
                 <div className="h-2.5 flex-1">
                   <div
                     className={cx("h-full rounded-r-[4px] transition-opacity group-hover:opacity-80", b.oculto && "opacity-40")}
-                    style={{ width: `${largura}%`, backgroundColor: b.cor ?? "var(--color-lilas-500)" }}
+                    style={{ width: `${largura}%`, backgroundColor: b.cor ?? "var(--color-marca-600)" }}
                   />
                 </div>
                 <span className="w-12 shrink-0 text-right text-xs font-medium text-slate-700 tabular-nums">{texto}</span>
@@ -64,7 +64,7 @@ export function Colunas({ barras, unidade = "" }: { barras: Barra[]; unidade?: s
                   {b.valor}
                 </span>
                 <div
-                  className="mx-auto w-full max-w-6 rounded-t-[4px] bg-lilas-500 transition-colors group-hover:bg-lilas-700"
+                  className="mx-auto w-full max-w-6 rounded-t-[4px] bg-marca-600 transition-colors group-hover:bg-marca-800"
                   style={{ height: `${(b.valor / max) * 80}%`, minHeight: b.valor > 0 ? 2 : 0 }}
                 />
               </div>

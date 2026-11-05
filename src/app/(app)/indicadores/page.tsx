@@ -132,7 +132,7 @@ export default async function PaginaIndicadores({ searchParams }: PageProps<"/in
                 href={link({ escopo: e.id })}
                 className={cx(
                   "rounded-lg px-3 py-1.5 text-sm font-medium",
-                  (e.id === "unidade") === escopoUnidade ? "bg-lilas-700 text-white" : "text-slate-600 hover:bg-slate-50",
+                  (e.id === "unidade") === escopoUnidade ? "bg-marca-700 text-white" : "text-slate-600 hover:bg-slate-50",
                 )}
               >
                 {e.rotulo}
@@ -145,7 +145,7 @@ export default async function PaginaIndicadores({ searchParams }: PageProps<"/in
             <Link
               key={m}
               href={link({ meses: String(m) })}
-              className={cx("rounded-lg px-3 py-1.5 text-sm font-medium", m === meses ? "bg-lilas-700 text-white" : "text-slate-600 hover:bg-slate-50")}
+              className={cx("rounded-lg px-3 py-1.5 text-sm font-medium", m === meses ? "bg-marca-700 text-white" : "text-slate-600 hover:bg-slate-50")}
             >
               {m} meses
             </Link>
@@ -269,7 +269,7 @@ export default async function PaginaIndicadores({ searchParams }: PageProps<"/in
 function Numero({ icone, valor, rotulo }: { icone: React.ReactNode; valor: number | string; rotulo: string }) {
   return (
     <div className="rounded-2xl border border-slate-200/80 bg-white px-5 py-4 shadow-xs">
-      <div className="mb-2 text-lilas-600 [&>svg]:size-5">{icone}</div>
+      <div className="mb-2 text-marca-600 [&>svg]:size-5">{icone}</div>
       <p className="text-3xl font-semibold tracking-tight text-slate-900 tabular-nums">
         {typeof valor === "number" ? valor.toLocaleString("pt-BR") : valor}
       </p>

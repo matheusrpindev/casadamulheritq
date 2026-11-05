@@ -13,11 +13,11 @@ type Variante = "primario" | "secundario" | "fantasma" | "perigo" | "suave";
 type Tamanho = "sm" | "md";
 
 const VARIANTES: Record<Variante, string> = {
-  primario: "bg-lilas-700 text-white hover:bg-lilas-800 shadow-sm",
+  primario: "bg-marca-600 text-white hover:bg-marca-700 shadow-sm",
   secundario: "bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 shadow-xs",
   fantasma: "text-slate-700 hover:bg-slate-100",
   perigo: "bg-rose-700 text-white hover:bg-rose-800 shadow-sm",
-  suave: "bg-lilas-50 text-lilas-800 hover:bg-lilas-100",
+  suave: "bg-marca-50 text-marca-800 hover:bg-marca-100",
 };
 const TAMANHOS: Record<Tamanho, string> = {
   sm: "h-8 px-3 text-xs gap-1.5",
@@ -74,7 +74,7 @@ export function CabecalhoCartao({
   return (
     <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-5 py-4">
       <div className="flex min-w-0 items-start gap-3">
-        {icone && <div className="mt-0.5 text-lilas-600">{icone}</div>}
+        {icone && <div className="mt-0.5 text-marca-600">{icone}</div>}
         <div className="min-w-0">
           <h2 className="text-[15px] font-semibold text-slate-900">{titulo}</h2>
           {descricao && <p className="mt-0.5 text-sm text-slate-500">{descricao}</p>}
@@ -99,7 +99,7 @@ export function TituloPagina({
   return (
     <header className="mb-6">
       {voltar && (
-        <Link href={voltar.href} className="mb-2 inline-flex text-sm text-lilas-700 hover:underline">
+        <Link href={voltar.href} className="mb-2 inline-flex text-sm text-marca-700 hover:underline">
           ← {voltar.rotulo}
         </Link>
       )}
@@ -118,10 +118,10 @@ export function TituloPagina({
 // Selos e avisos
 // ---------------------------------------------------------------------------
 
-type Tom = "neutro" | "lilas" | "verde" | "ambar" | "vermelho" | "azul";
+type Tom = "neutro" | "marca" | "verde" | "ambar" | "vermelho" | "azul";
 const TONS: Record<Tom, string> = {
   neutro: "bg-slate-100 text-slate-700 ring-slate-200",
-  lilas: "bg-lilas-50 text-lilas-800 ring-lilas-200",
+  marca: "bg-marca-50 text-marca-800 ring-marca-200",
   verde: "bg-emerald-50 text-emerald-800 ring-emerald-200",
   ambar: "bg-amber-50 text-amber-900 ring-amber-200",
   vermelho: "bg-rose-50 text-rose-800 ring-rose-200",
@@ -155,7 +155,7 @@ export function SeloUnidade({ unidade }: { unidade: { sigla: string; nome: strin
 }
 
 const TONS_AVISO: Record<"info" | "atencao" | "perigo" | "sucesso", string> = {
-  info: "border-lilas-200 bg-lilas-50 text-lilas-900",
+  info: "border-marca-200 bg-marca-50 text-marca-900",
   atencao: "border-amber-200 bg-amber-50 text-amber-900",
   perigo: "border-rose-200 bg-rose-50 text-rose-900",
   sucesso: "border-emerald-200 bg-emerald-50 text-emerald-900",
@@ -255,11 +255,11 @@ export function Marcador({
     <label
       className={cx(
         "flex cursor-pointer items-start gap-2.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm",
-        "hover:border-lilas-300 has-checked:border-lilas-400 has-checked:bg-lilas-50/60",
+        "hover:border-marca-300 has-checked:border-marca-400 has-checked:bg-marca-50/60",
         className,
       )}
     >
-      <input type="checkbox" className="mt-0.5 size-4 shrink-0 accent-lilas-700" {...props} />
+      <input type="checkbox" className="mt-0.5 size-4 shrink-0 accent-marca-700" {...props} />
       <span>
         <span className="text-slate-800">{rotulo}</span>
         {descricao && <span className="mt-0.5 block text-xs text-slate-500">{descricao}</span>}

@@ -10,6 +10,7 @@ import { formatarData, hojeISO, instante, nomeExibicao, numeroProntuario, tempoR
 import { PREFIXO_PRONTUARIO } from "@/lib/config";
 import { BotaoLink, CabecalhoCartao, Cartao, SeloUnidade, Vazio } from "@/components/ui";
 import { Avatar, SeloRisco, SeloStatusEncaminhamento, SeloUrgencia } from "@/components/selos";
+import { TriangulosDecorativos } from "@/components/marca";
 
 export default async function Painel() {
   const usuario = await exigirUsuario();
@@ -101,13 +102,13 @@ export default async function Painel() {
 
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-lilas-800 to-lilas-600 px-6 py-7 text-white shadow-sm sm:px-8">
-        <div aria-hidden className="absolute -top-20 -right-16 size-64 rounded-full bg-white/10 blur-2xl" />
-        <p className="text-sm text-lilas-100">{usuario.unidade.nome}</p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-marca-900 via-marca-700 to-marca-600 px-6 py-7 text-white shadow-sm sm:px-8">
+        <TriangulosDecorativos className="-right-10 -bottom-16 hidden w-72 sm:block" opacidade={0.85} />
+        <p className="relative text-sm text-marca-100">{usuario.unidade.nome}</p>
+        <h1 className="relative mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
           {saudacao}, {primeiroNome}.
         </h1>
-        <p className="mt-1 text-lilas-100">
+        <p className="relative mt-1 max-w-2xl text-marca-100">
           {aguardando > 0
             ? `${aguardando} ${aguardando === 1 ? "mulher foi encaminhada" : "mulheres foram encaminhadas"} para sua unidade e ainda aguarda${aguardando === 1 ? "" : "m"} acolhimento.`
             : "Nenhum encaminhamento aguardando sua unidade agora."}
@@ -121,13 +122,13 @@ export default async function Painel() {
             id="busca-rapida"
             name="q"
             placeholder="Buscar por nome, nome social ou CPF…"
-            className="h-11 flex-1 rounded-xl border-0 bg-white px-4 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:ring-2 focus:ring-lilas-300 focus:outline-none"
+            className="h-11 flex-1 rounded-xl border-0 bg-white px-4 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:ring-2 focus:ring-rosa focus:outline-none"
           />
-          <button className="inline-flex h-11 items-center gap-2 rounded-xl bg-lilas-950/40 px-4 text-sm font-medium ring-1 ring-white/20 hover:bg-lilas-950/60">
+          <button className="inline-flex h-11 items-center gap-2 rounded-xl bg-marca-950/40 px-4 text-sm font-medium ring-1 ring-white/20 hover:bg-marca-950/60">
             <FileSearch className="size-4" /> Buscar
           </button>
         </form>
-        <p className="relative mt-3 text-xs text-lilas-100/80">
+        <p className="relative mt-3 text-xs text-marca-100/80">
           Sempre busque antes de abrir um novo prontuário — ela pode já ter sido atendida em outra unidade.
         </p>
       </section>
@@ -271,11 +272,11 @@ function Indicador({
   href?: string;
 }) {
   const corpo = (
-    <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white px-5 py-4 shadow-xs transition-colors hover:border-lilas-200">
+    <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white px-5 py-4 shadow-xs transition-colors hover:border-marca-200">
       <div
         className={
           "grid size-11 place-items-center rounded-xl [&>svg]:size-5 " +
-          (alerta ? "bg-rose-50 text-rose-700" : destaque ? "bg-amber-50 text-amber-700" : "bg-lilas-50 text-lilas-700")
+          (alerta ? "bg-rose-50 text-rose-700" : destaque ? "bg-amber-50 text-amber-700" : "bg-marca-50 text-marca-700")
         }
       >
         {icone}

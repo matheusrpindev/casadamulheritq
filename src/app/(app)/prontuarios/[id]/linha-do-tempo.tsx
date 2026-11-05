@@ -47,7 +47,7 @@ export function LinhaDoTempo({
       quando: r.criadoEm,
       unidade: r.unidade,
       icone: <MessageSquareText className="size-4" />,
-      tom: "bg-lilas-100 text-lilas-700",
+      tom: "bg-marca-100 text-marca-700",
       titulo: r.retificaId ? "Retificação de relato" : "Relato registrado",
       autor: r.autor.nome,
       corpo: r.visivel ? (
@@ -125,7 +125,7 @@ export function LinhaDoTempo({
               <time dateTime={ev.quando.toISOString()}>{formatarDataHora(ev.quando)}</time>
               {ev.autor && <span>· {ev.autor}</span>}
             </div>
-            <Link href={ev.href} className="mt-1 block text-sm font-medium text-slate-900 hover:text-lilas-800">
+            <Link href={ev.href} className="mt-1 block text-sm font-medium text-slate-900 hover:text-marca-800">
               {ev.titulo}
             </Link>
             {ev.corpo && <p className="mt-1 text-sm leading-relaxed text-slate-600">{ev.corpo}</p>}

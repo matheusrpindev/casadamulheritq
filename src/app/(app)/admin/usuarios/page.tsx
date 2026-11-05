@@ -63,7 +63,7 @@ export default async function PaginaUsuarios() {
                   <div className="min-w-0 flex-1">
                     <p className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-900">
                       {p.nome}
-                      {p.id === ator.id && <Selo tom="lilas">Você</Selo>}
+                      {p.id === ator.id && <Selo tom="marca">Você</Selo>}
                       {!p.ativo && <Selo>Desativada</Selo>}
                       {bloqueada && <Selo tom="vermelho">Bloqueada por tentativas</Selo>}
                       {p.precisaTrocarSenha && p.ativo && <Selo tom="ambar">Aguardando 1º acesso</Selo>}

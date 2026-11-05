@@ -4,7 +4,8 @@ import { exigirUsuario } from "@/lib/sessao";
 import { registrarAuditoria } from "@/lib/auditoria";
 import { cadastroDecifrado, carregarConteudo, carregarProntuario, mapasRede } from "@/lib/dados/prontuario";
 import { avaliarFonar } from "@/lib/fonar";
-import { NOME_REDE, NOME_SISTEMA, PREFIXO_PRONTUARIO } from "@/lib/config";
+import { INSTITUICAO, NOME_SISTEMA, PREFIXO_PRONTUARIO } from "@/lib/config";
+import { LogoCompleto } from "@/components/marca";
 import {
   ROTULO_RISCO,
   ROTULO_STATUS_ENCAMINHAMENTO,
@@ -40,17 +41,18 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
 
   return (
     <main className="mx-auto max-w-3xl bg-white px-8 py-10 text-[13px] leading-relaxed text-slate-900 print:max-w-none print:p-0">
-      <div className="nao-imprimir mb-6 flex items-center justify-between rounded-xl bg-lilas-50 px-4 py-3 text-sm text-lilas-900">
+      <div className="nao-imprimir mb-6 flex items-center justify-between rounded-xl bg-marca-50 px-4 py-3 text-sm text-marca-900">
         <span>Esta impressão fica registrada na trilha de auditoria. Guarde o papel em local seguro ou descarte triturando.</span>
         <BotaoImprimir />
       </div>
 
-      <header className="flex items-start justify-between border-b-2 border-slate-900 pb-3">
-        <div>
-          <p className="text-xs font-semibold tracking-widest uppercase">Documento sigiloso</p>
+      <header className="flex items-start justify-between gap-4 border-b-2 border-marca-600 pb-3">
+        <LogoCompleto className="w-20 shrink-0" />
+        <div className="flex-1">
+          <p className="text-xs font-semibold tracking-widest text-marca-600 uppercase">Documento sigiloso</p>
           <h1 className="text-xl font-bold">Prontuário único — Rede de Atendimento à Mulher</h1>
           <p className="text-xs text-slate-600">
-            {NOME_SISTEMA} · {NOME_REDE}
+            {INSTITUICAO} · {NOME_SISTEMA}
           </p>
         </div>
         <div className="text-right text-xs">
@@ -165,7 +167,7 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
 function Secao({ titulo, children }: { titulo: string; children: React.ReactNode }) {
   return (
     <section className="mt-5">
-      <h2 className="mb-1.5 border-b border-slate-300 pb-0.5 text-sm font-bold tracking-wide uppercase">{titulo}</h2>
+      <h2 className="mb-1.5 border-b border-slate-300 pb-0.5 text-sm font-bold tracking-wide text-marca-800 uppercase">{titulo}</h2>
       {children}
     </section>
   );

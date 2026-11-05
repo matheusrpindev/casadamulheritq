@@ -17,7 +17,7 @@ export function FormularioAcolhimento({ valores, tecnica, unidade }: { valores: 
       <CamposCadastro valores={valores} />
 
       <Secao titulo="Autorização para compartilhar com a rede" descricao="Pergunte a ela e registre a resposta. Ela pode mudar de ideia a qualquer momento.">
-        <div className="mb-4 rounded-xl border border-lilas-200 bg-lilas-50/70 p-4 text-sm leading-relaxed text-lilas-950">
+        <div className="mb-4 rounded-xl border border-marca-200 bg-marca-50/70 p-4 text-sm leading-relaxed text-marca-950">
           <p className="mb-1 flex items-center gap-2 font-semibold">
             <MessageSquareQuote className="size-4" /> Como explicar para ela
           </p>
@@ -103,7 +103,7 @@ function Duplicidades() {
             <span>
               <strong>{d.nome}</strong> · nasc. {formatarData(d.dataNascimento)} <span className="text-amber-800">({d.motivo})</span>
             </span>
-            <Link href={`/busca?q=${encodeURIComponent(d.nome)}`} className="text-sm font-medium text-lilas-700 underline">
+            <Link href={`/busca?q=${encodeURIComponent(d.nome)}`} className="text-sm font-medium text-marca-700 underline">
               Ver na busca
             </Link>
           </li>

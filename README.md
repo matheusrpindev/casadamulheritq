@@ -132,6 +132,14 @@ tests/                  testes automatizados
 
 Stack: Next.js 16 (App Router, Server Actions), React 19, TypeScript, Drizzle ORM, PostgreSQL, Tailwind CSS 4.
 
+### Identidade visual
+
+Segue a marca da **Casa da Mulher em Itaquaquecetuba**: roxo `#84296F`, rosa `#ED9CA3`, coral `#E37171` e
+coral-laranja `#F07F6A`, com títulos em Montserrat. O logo completo fica em `public/marca/` (versão original e versão
+com texto branco para fundos escuros); o símbolo da casa é desenhado em SVG em `src/components/marca.tsx` e no ícone
+da aba (`src/app/icon.svg`). As cores estão em `src/app/globals.css` (escala `marca-*`). Coral e rosa são só
+decorativos: texto branco sobre coral não tem contraste suficiente.
+
 ## Antes de usar com dados reais
 
 - [ ] Conferir as perguntas do FONAR com a versão oficial vigente do CNJ (`src/lib/fonar.ts`) e validar com a equipe os
