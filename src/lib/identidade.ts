@@ -20,12 +20,8 @@ export function identidadePadrao(tipoUnidade: string): Identidade {
   return tipoUnidade === "CASA_DA_MULHER" ? "CASA_DA_MULHER" : "SECRETARIA";
 }
 
-export function ehIdentidade(valor: unknown): valor is Identidade {
-  return valor === "CASA_DA_MULHER" || valor === "SECRETARIA";
-}
-
-/** Cookie (não sensível) que lembra a identidade do último acesso, para a tela de login. */
-export const COOKIE_IDENTIDADE = "acolhe_identidade";
+/** A tela de login é a porta da rede inteira: usa sempre a identidade da Secretaria, para todas as unidades. */
+export const IDENTIDADE_LOGIN: Identidade = "SECRETARIA";
 
 type Imagem = { src: string; largura: number; altura: number };
 

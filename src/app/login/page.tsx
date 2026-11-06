@@ -1,53 +1,27 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Lock, Network, ShieldCheck } from "lucide-react";
 import { obterUsuario } from "@/lib/sessao";
 import { NOME_SISTEMA, SUBTITULO_SISTEMA } from "@/lib/config";
-import { COOKIE_IDENTIDADE, MARCAS, ROTULO_IDENTIDADE, ehIdentidade, type Identidade } from "@/lib/identidade";
-import { Aviso, cx } from "@/components/ui";
+import { IDENTIDADE_LOGIN, MARCAS, ROTULO_IDENTIDADE } from "@/lib/identidade";
+import { Aviso } from "@/components/ui";
 import { Decoracao, LogoMarca } from "@/components/marca";
 import { FaixaValidacao } from "@/components/faixa-validacao";
 import { FormularioLogin } from "./formulario";
 
-export async function generateMetadata(): Promise<Metadata> {
-  const valor = (await cookies()).get(COOKIE_IDENTIDADE)?.value;
-  return { title: "Entrar", ...(ehIdentidade(valor) ? { icons: { icon: MARCAS[valor].icone } } : {}) };
-}
+export const metadata: Metadata = { title: "Entrar", icons: { icon: MARCAS[IDENTIDADE_LOGIN].icone } };
 
 export default async function PaginaLogin({ searchParams }: PageProps<"/login">) {
   if (await obterUsuario()) redirect("/");
   const { motivo } = await searchParams;
-  // Identidade do último acesso neste navegador; sem ela, a tela mostra as duas marcas.
-  const valor = (await cookies()).get(COOKIE_IDENTIDADE)?.value;
-  const identidade: Identidade | null = ehIdentidade(valor) ? valor : null;
 
   return (
-    <div data-identidade={identidade ?? undefined}>
+    <div data-identidade={IDENTIDADE_LOGIN}>
       <FaixaValidacao />
       <main className="grid min-h-screen bg-white lg:grid-cols-[1.1fr_1fr]">
-        <section
-          className={cx(
-            "relative hidden overflow-hidden p-12 lg:flex lg:flex-col lg:justify-between",
-            identidade ? "bg-destaque-claro" : "bg-zinc-50",
-          )}
-        >
-          {identidade && (
-            <Decoracao
-              identidade={identidade}
-              className={identidade === "SECRETARIA" ? "-right-20 -bottom-24 w-[18rem]" : "-right-24 -bottom-20 w-[26rem]"}
-              opacidade={0.35}
-            />
-          )}
-
-          {identidade === "CASA_DA_MULHER" && <LogoMarca identidade="CASA_DA_MULHER" uso="destaque" className="relative w-40" />}
-          {identidade === "SECRETARIA" && <LogoMarca identidade="SECRETARIA" uso="destaque" className="relative w-[30rem] max-w-full" />}
-          {!identidade && (
-            <div className="relative flex flex-col items-start gap-6">
-              <LogoMarca identidade="SECRETARIA" uso="horizontal" className="w-[30rem] max-w-full" />
-              <LogoMarca identidade="CASA_DA_MULHER" uso="horizontal" className="w-52" />
-            </div>
-          )}
+        <section className="relative hidden overflow-hidden bg-destaque-claro p-12 lg:flex lg:flex-col lg:justify-between">
+          <Decoracao identidade={IDENTIDADE_LOGIN} className="-right-20 -bottom-24 w-[18rem]" opacidade={0.35} />
+          <LogoMarca identidade={IDENTIDADE_LOGIN} uso="destaque" className="relative w-[30rem] max-w-full" />
 
           <div className="relative max-w-lg">
             <p className="mb-3 text-sm font-semibold tracking-wide text-marca-600 uppercase">{NOME_SISTEMA} · prontuário único da rede</p>
@@ -81,14 +55,7 @@ export default async function PaginaLogin({ searchParams }: PageProps<"/login">)
         <section className="flex items-center justify-center px-6 py-12">
           <div className="w-full max-w-sm">
             <div className="mb-8 flex flex-col items-center gap-4 text-center lg:hidden">
-              {identidade === "CASA_DA_MULHER" && <LogoMarca identidade="CASA_DA_MULHER" uso="horizontal" className="w-60" />}
-              {identidade === "SECRETARIA" && <LogoMarca identidade="SECRETARIA" uso="horizontal" className="w-full" />}
-              {!identidade && (
-                <>
-                  <LogoMarca identidade="SECRETARIA" uso="horizontal" className="w-full" />
-                  <LogoMarca identidade="CASA_DA_MULHER" uso="horizontal" className="w-44" />
-                </>
-              )}
+              <LogoMarca identidade={IDENTIDADE_LOGIN} uso="horizontal" className="w-full" />
               <p className="text-sm text-zinc-500">
                 {NOME_SISTEMA} · {SUBTITULO_SISTEMA.toLowerCase()}
               </p>
@@ -114,7 +81,7 @@ export default async function PaginaLogin({ searchParams }: PageProps<"/login">)
               feito com ele fica registrado em seu nome.
             </p>
             <p className="mt-6 border-t border-zinc-100 pt-4 text-xs text-zinc-400">
-              {identidade ? ROTULO_IDENTIDADE[identidade] : `${ROTULO_IDENTIDADE.CASA_DA_MULHER} · ${ROTULO_IDENTIDADE.SECRETARIA}`}
+              {ROTULO_IDENTIDADE[IDENTIDADE_LOGIN]}
             </p>
           </div>
         </section>

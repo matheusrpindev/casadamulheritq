@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { MARCAS, ehIdentidade, identidadePadrao } from "@/lib/identidade";
+import { IDENTIDADE_LOGIN, MARCAS, identidadePadrao } from "@/lib/identidade";
 
 describe("identidade visual por unidade", () => {
   it("unidade do tipo Casa da Mulher começa com a identidade da Casa; as demais, com a da Secretaria", () => {
@@ -9,11 +9,8 @@ describe("identidade visual por unidade", () => {
     }
   });
 
-  it("só aceita identidades conhecidas vindas do cookie", () => {
-    expect(ehIdentidade("SECRETARIA")).toBe(true);
-    expect(ehIdentidade("CASA_DA_MULHER")).toBe(true);
-    expect(ehIdentidade("<script>")).toBe(false);
-    expect(ehIdentidade(undefined)).toBe(false);
+  it("a tela de login usa sempre a identidade da Secretaria", () => {
+    expect(IDENTIDADE_LOGIN).toBe("SECRETARIA");
   });
 
   it("toda identidade tem logos e ícone em /marca", () => {

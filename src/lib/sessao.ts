@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { and, eq, lt, ne, or } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { Ator } from "./permissoes";
-import { COOKIE_IDENTIDADE, type Identidade } from "./identidade";
+import type { Identidade } from "./identidade";
 import { dadosRequisicao } from "./requisicao";
 
 export const NOME_COOKIE = "acolhe_sessao";
@@ -115,21 +115,6 @@ export async function exigirUsuario(opcoes: { permitirTrocaPendente?: boolean } 
   if (!usuario) redirect("/login");
   if (usuario.precisaTrocarSenha && !opcoes.permitirTrocaPendente) redirect("/conta/senha");
   return usuario;
-}
-
-/**
- * Lembra neste navegador a identidade visual da unidade de quem entrou, para a
- * próxima tela de login já aparecer com a marca certa. Não é dado sensível: diz
- * só "Casa da Mulher" ou "Secretaria", e continua após o logout.
- */
-export async function lembrarIdentidade(identidade: Identidade) {
-  (await cookies()).set(COOKIE_IDENTIDADE, identidade, {
-    httpOnly: true,
-    secure: cookieSeguro(),
-    sameSite: "lax",
-    path: "/",
-    maxAge: 365 * 24 * 60 * 60,
-  });
 }
 
 export async function encerrarSessao() {

@@ -6,7 +6,7 @@ import { db, schema } from "@/db";
 import { registrarAuditoria } from "@/lib/auditoria";
 import { falha, type EstadoAcao } from "@/lib/estado-acao";
 import { HASH_FALSO, MAX_TENTATIVAS, MINUTOS_BLOQUEIO, conferirSenha } from "@/lib/senha";
-import { criarSessao, lembrarIdentidade } from "@/lib/sessao";
+import { criarSessao } from "@/lib/sessao";
 
 const ERRO_GENERICO = "E-mail ou senha incorretos.";
 
@@ -73,7 +73,6 @@ async function autenticar(email: string, senha: string): Promise<EstadoAcao | { 
     .set({ tentativasFalhas: 0, bloqueadoAte: null, ultimoAcessoEm: new Date() })
     .where(eq(schema.usuarios.id, usuario.id));
   await criarSessao(usuario.id);
-  await lembrarIdentidade(unidade.identidade);
   await registrarAuditoria("LOGIN", quem);
 
   return { destino: usuario.precisaTrocarSenha ? "/conta/senha" : usuario.papel === "ADMIN" ? "/admin/usuarios" : "/" };

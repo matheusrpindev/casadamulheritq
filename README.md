@@ -150,8 +150,8 @@ fonte correspondentes — no sistema e nas impressões:
 | **Secretaria da Mulher, Direitos Humanos e Cidadania** | azul `#095AFF`, azul escuro `#063798`, ciano `#01B5FF`, azul médio `#0C46C5`, amarelo `#FEED01`, magenta `#DE0067` | Montserrat | `public/marca/secretaria-*.png` (com o brasão da Prefeitura) |
 
 Unidades do tipo Casa da Mulher começam com a identidade da Casa; as demais (Secretaria, CREAS, UBS, Delegacia…), com
-a da Secretaria. A tela de login lembra a identidade do último acesso naquele navegador; no primeiro acesso, mostra as
-duas marcas. As cores ficam em `src/app/globals.css` (escala `marca-*`, redefinida no bloco
+a da Secretaria. A tela de login é a mesma para todos e usa sempre a identidade da Secretaria (`IDENTIDADE_LOGIN`);
+depois de entrar, cada pessoa vê a da sua unidade. As cores ficam em `src/app/globals.css` (escala `marca-*`, redefinida no bloco
 `[data-identidade="SECRETARIA"]`) e os arquivos de logo em `src/lib/identidade.ts`.
 
 ## Antes de usar com dados reais

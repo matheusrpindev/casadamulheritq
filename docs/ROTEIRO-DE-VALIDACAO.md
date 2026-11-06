@@ -101,7 +101,7 @@ Marque cada item e anote o que estranhou (veja a seção 5).
 
 ### Secretaria — `marta@acolhe.demo` e `renata@acolhe.demo`
 - [ ] Ao entrar, o sistema aparece com a **identidade da Secretaria** (azul, logo da Secretaria com a Prefeitura). Quem é da Casa da Mulher continua vendo a identidade da Casa.
-- [ ] Saia e veja que a tela de login agora mostra a marca da Secretaria (ela lembra o último acesso neste navegador).
+- [ ] A tela de login é a mesma para todas as unidades, sempre com a identidade da Secretaria.
 - [ ] Marta: em Encaminhamentos → Enviados, veja que a Casa da Mulher confirmou a chegada da Maria (depois do passo da recepção).
 - [ ] Renata: na Auditoria, há um acesso emergencial do CREAS para revisar.
 
