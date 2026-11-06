@@ -3,7 +3,7 @@
  *
  *   npm run db:semear          (APAGA todo o conteúdo do banco antes!)
  *
- * Cria a rede (6 unidades, 11 contas), 6 casos-roteiro com histórias detalhadas
+ * Cria a rede (6 unidades, 12 contas), 6 casos-roteiro com histórias detalhadas
  * (ver docs/ROTEIRO-DE-VALIDACAO.md) e ~150 casos gerados com perfis coerentes,
  * espalhados pelos últimos 12 meses, para os relatórios terem volume.
  *
@@ -79,7 +79,7 @@ async function main() {
     precisaTrocarSenha: false,
     ultimoAcessoEm: atras(0, 2),
   });
-  const [, ana, carla, joana, sueli, marta, renata, paula, luiza, beatriz, debora] = await db
+  const [, ana, carla, joana, sueli, marta, renata, paula, luiza, beatriz, debora, claudia] = await db
     .insert(schema.usuarios)
     .values([
       pessoa("Equipe de TI da Prefeitura", "ti@acolhe.demo", "ADMIN", smm.id),
@@ -93,6 +93,7 @@ async function main() {
       pessoa("Luiza Campos", "luiza@acolhe.demo", "TECNICA", ubs.id, "SAUDE", "COREN 000000"),
       pessoa("Beatriz Souza", "beatriz@acolhe.demo", "TECNICA", ddm.id, "OUTRA"),
       pessoa("Débora Martins", "debora@acolhe.demo", "TECNICA", crd.id, "SERVICO_SOCIAL", "CRESS 00003"),
+      pessoa("Cláudia Reis", "claudia@acolhe.demo", "GESTORA", crd.id, "JURIDICO", "OAB/SP 000001"),
     ])
     .returning();
   type Profissional = typeof ana;
@@ -104,7 +105,7 @@ async function main() {
     CREAS: { padrao: paula },
     UBS: { padrao: luiza },
     DDM: { padrao: beatriz },
-    CRD: { padrao: debora },
+    CRD: { padrao: debora, JURIDICO: claudia },
   };
   const profissional = (sigla: SiglaUnidade, tipo?: (typeof TIPOS_ATENDIMENTO)[number]) => (tipo && equipe[sigla][tipo]) || equipe[sigla].padrao;
 
@@ -612,6 +613,7 @@ async function main() {
     beatriz@acolhe.demo  DDM
   Centro de Referência de Direitos Humanos (CRD)
     debora@acolhe.demo   assistente social   ← identidade visual do CRD
+    claudia@acolhe.demo  gestora (advogada)
   Administração (TI — não lê prontuários)
     ti@acolhe.demo
 

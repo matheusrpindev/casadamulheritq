@@ -200,7 +200,7 @@ const TIPOS_POR_UNIDADE: Record<SiglaUnidade, readonly TipoAtendimento[]> = {
   CREAS: ["SOCIAL", "VISITA", "RETORNO"],
   UBS: ["SAUDE", "SAUDE", "RETORNO"],
   DDM: ["OUTRO"],
-  CRD: ["SOCIAL", "SOCIAL", "RETORNO", "CONTATO_TELEFONICO"],
+  CRD: ["SOCIAL", "JURIDICO", "RETORNO", "CONTATO_TELEFONICO"],
 };
 
 const MEDIDAS = [

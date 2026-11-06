@@ -55,9 +55,22 @@ Senha de todas: `acolhe-demo-2026`
 | `luiza@acolhe.demo` | Luiza Campos, enfermeira | UBS Central |
 | `beatriz@acolhe.demo` | Beatriz Souza | Delegacia da Mulher (DDM) |
 | `debora@acolhe.demo` | Débora Martins, assistente social | Centro de Referência de Direitos Humanos (CRD) |
+| `claudia@acolhe.demo` | Cláudia Reis, gestora (advogada) | Centro de Referência de Direitos Humanos (CRD) |
 | `ti@acolhe.demo` | Equipe de TI | — (não lê prontuários) |
 
 Dica: use uma janela anônima do navegador para cada pessoa e compare o que cada uma vê.
+
+**O que cada perfil vê** (vale para as três identidades — Casa da Mulher, Secretaria e CRD):
+
+| Perfil | Menu | No prontuário |
+|---|---|---|
+| Gestora (`ana`, `renata`, `claudia`) | Início, Buscar, Novo acolhimento, Encaminhamentos, **Relatórios, Auditoria, Equipe** | Todas as abas, inclusive **Acessos** (quem viu o prontuário) |
+| Equipe técnica (`carla`, `joana`, `marta`, `debora`…) | Início, Buscar, Novo acolhimento, Encaminhamentos | Todas as abas, menos Acessos |
+| Recepção (`sueli`) | Início, Buscar, Novo acolhimento, Encaminhamentos | Cadastro, risco e encaminhamentos, **sem ler relatos e atendimentos** |
+| TI (`ti`) | Relatórios, Auditoria, Equipe, **Unidades da rede** | Não abre prontuários |
+
+Ninguém lê tudo: registros marcados "Só Psicologia" ficam fechados até para a gestora, se ela não for psicóloga, e
+cada unidade só abre os prontuários a que tem acesso (encaminhamento, autorização dela ou acesso emergencial).
 
 ## 3. Casos-roteiro
 
@@ -106,10 +119,11 @@ Marque cada item e anote o que estranhou (veja a seção 5).
 - [ ] Marta: em Encaminhamentos → Enviados, veja que a Casa da Mulher confirmou a chegada da Maria (depois do passo da recepção).
 - [ ] Renata: na Auditoria, há um acesso emergencial do CREAS para revisar.
 
-### Centro de Referência de Direitos Humanos — `debora@acolhe.demo`
+### Centro de Referência de Direitos Humanos — `debora@acolhe.demo` e `claudia@acolhe.demo`
 - [ ] Ao entrar, o sistema aparece com a **identidade do CRD** (menu grafite, logo com a roda de pessoas, azul do CRD).
 - [ ] No início, há mulheres encaminhadas pela Secretaria aguardando: abra uma e veja que o histórico já está lá.
 - [ ] Imprima um prontuário: o cabeçalho sai com o logo do CRD.
+- [ ] Cláudia (gestora): Relatórios, Auditoria e Equipe com a identidade do CRD; os relatórios de "CRD" mostram só a unidade.
 
 ### Outras unidades — `paula@acolhe.demo`, `luiza@acolhe.demo`
 - [ ] Paula (CREAS): veja a Josefa e a Rafaela, recebidas por encaminhamento.

@@ -83,7 +83,7 @@ npm run dev
 ```
 
 Abra http://localhost:3000. O `db:semear` cria a **base fictícia de validação** (apaga o banco antes!): 6 unidades,
-11 contas e 156 mulheres inventadas, com 6 casos-roteiro detalhados. Senha de todas as contas: `acolhe-demo-2026`.
+12 contas e 156 mulheres inventadas, com 6 casos-roteiro detalhados. Senha de todas as contas: `acolhe-demo-2026`.
 Com `MODO_VALIDACAO=true` no `.env`, uma faixa amarela avisa em todas as telas que os dados são fictícios.
 
 **Para a equipe testar, siga o [roteiro de validação](docs/ROTEIRO-DE-VALIDACAO.md).**
@@ -96,6 +96,7 @@ Com `MODO_VALIDACAO=true` no `.env`, uma faixa amarela avisa em todas as telas q
 | `ana@acolhe.demo` | Gestora da Casa da Mulher | Auditoria com um acesso emergencial para revisar; relatórios |
 | `marta@acolhe.demo` | Assistente social da Secretaria | Quem acolheu a Maria |
 | `debora@acolhe.demo` | Assistente social do Centro de Referência de Direitos Humanos | Identidade visual do CRD; recebe encaminhamentos da Secretaria |
+| `claudia@acolhe.demo` | Gestora do Centro de Referência de Direitos Humanos | Relatórios, auditoria e equipe do CRD |
 | `luiza@acolhe.demo` | UBS | A Antônia não autorizou compartilhar — veja como fica do lado da Casa da Mulher |
 | `ti@acolhe.demo` | TI da Prefeitura | Gerencia contas e unidades, sem acesso a prontuários |
 
