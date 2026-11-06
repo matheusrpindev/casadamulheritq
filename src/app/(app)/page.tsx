@@ -12,6 +12,7 @@ import { PREFIXO_PRONTUARIO } from "@/lib/config";
 import { BotaoLink, CabecalhoCartao, Cartao, SeloUnidade, Vazio } from "@/components/ui";
 import { Avatar, SeloRisco, SeloStatusEncaminhamento, SeloUrgencia } from "@/components/selos";
 import { Decoracao } from "@/components/marca";
+import { MARCAS } from "@/lib/identidade";
 
 export default async function Painel() {
   const usuario = await exigirUsuario();
@@ -107,7 +108,7 @@ export default async function Painel() {
         <Decoracao
           identidade={usuario.unidade.identidade}
           className="-right-10 -bottom-16 hidden w-72 sm:block"
-          opacidade={usuario.unidade.identidade === "SECRETARIA" ? 1 : 0.85}
+          opacidade={MARCAS[usuario.unidade.identidade].opacidadeDecoracao}
         />
         <p className="relative text-sm text-marca-100">{usuario.unidade.nome}</p>
         <h1 className="relative mt-1 text-2xl font-bold tracking-tight sm:text-3xl">

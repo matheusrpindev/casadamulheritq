@@ -29,6 +29,13 @@
       "when": 1793980754032,
       "tag": "0003_identidade_por_unidade",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793992045701,
+      "tag": "0004_centro_direitos_humanos",
+      "breakpoints": true
     }
   ]
 }

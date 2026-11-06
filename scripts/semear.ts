@@ -3,7 +3,7 @@
  *
  *   npm run db:semear          (APAGA todo o conteúdo do banco antes!)
  *
- * Cria a rede (5 unidades, 10 contas), 6 casos-roteiro com histórias detalhadas
+ * Cria a rede (6 unidades, 11 contas), 6 casos-roteiro com histórias detalhadas
  * (ver docs/ROTEIRO-DE-VALIDACAO.md) e ~150 casos gerados com perfis coerentes,
  * espalhados pelos últimos 12 meses, para os relatórios terem volume.
  *
@@ -53,7 +53,7 @@ async function main() {
     medidas_protetivas, autores, prontuarios, usuarios, unidades restart identity cascade`);
 
   // ---------------------------------------------------------------- unidades
-  const [cmi, smm, creas, ubs, ddm] = await db
+  const [cmi, smm, creas, ubs, ddm, crd] = await db
     .insert(schema.unidades)
     .values([
       { nome: "Casa da Mulher Itaquaquecetuba", sigla: "CMI", tipo: "CASA_DA_MULHER", identidade: "CASA_DA_MULHER", cor: "#862C72", telefone: "(11) 0000-0001" },
@@ -61,9 +61,10 @@ async function main() {
       { nome: "CREAS Itaquaquecetuba", sigla: "CREAS", tipo: "CREAS", identidade: "SECRETARIA", cor: "#0891b2", telefone: "(11) 0000-0003" },
       { nome: "UBS Central", sigla: "UBS", tipo: "SAUDE", identidade: "SECRETARIA", cor: "#059669", telefone: "(11) 0000-0004" },
       { nome: "Delegacia de Defesa da Mulher", sigla: "DDM", tipo: "DELEGACIA", identidade: "SECRETARIA", cor: "#b45309", telefone: "(11) 0000-0005" },
+      { nome: "Centro de Referência de Direitos Humanos", sigla: "CRD", tipo: "CENTRO_DIREITOS_HUMANOS", identidade: "CENTRO_DIREITOS_HUMANOS", cor: "#0634CF", telefone: "(11) 0000-0006" },
     ])
     .returning();
-  const unidadePorSigla: Record<SiglaUnidade, typeof cmi> = { CMI: cmi, SMDHC: smm, CREAS: creas, UBS: ubs, DDM: ddm };
+  const unidadePorSigla: Record<SiglaUnidade, typeof cmi> = { CMI: cmi, SMDHC: smm, CREAS: creas, UBS: ubs, DDM: ddm, CRD: crd };
 
   // ---------------------------------------------------------------- equipe
   const hash = await bcrypt.hash(SENHA_DEMO, 10);
@@ -78,7 +79,7 @@ async function main() {
     precisaTrocarSenha: false,
     ultimoAcessoEm: atras(0, 2),
   });
-  const [, ana, carla, joana, sueli, marta, renata, paula, luiza, beatriz] = await db
+  const [, ana, carla, joana, sueli, marta, renata, paula, luiza, beatriz, debora] = await db
     .insert(schema.usuarios)
     .values([
       pessoa("Equipe de TI da Prefeitura", "ti@acolhe.demo", "ADMIN", smm.id),
@@ -91,6 +92,7 @@ async function main() {
       pessoa("Paula Teixeira", "paula@acolhe.demo", "TECNICA", creas.id, "SERVICO_SOCIAL", "CRESS 00002"),
       pessoa("Luiza Campos", "luiza@acolhe.demo", "TECNICA", ubs.id, "SAUDE", "COREN 000000"),
       pessoa("Beatriz Souza", "beatriz@acolhe.demo", "TECNICA", ddm.id, "OUTRA"),
+      pessoa("Débora Martins", "debora@acolhe.demo", "TECNICA", crd.id, "SERVICO_SOCIAL", "CRESS 00003"),
     ])
     .returning();
   type Profissional = typeof ana;
@@ -102,6 +104,7 @@ async function main() {
     CREAS: { padrao: paula },
     UBS: { padrao: luiza },
     DDM: { padrao: beatriz },
+    CRD: { padrao: debora },
   };
   const profissional = (sigla: SiglaUnidade, tipo?: (typeof TIPOS_ATENDIMENTO)[number]) => (tipo && equipe[sigla][tipo]) || equipe[sigla].padrao;
 
@@ -591,7 +594,7 @@ async function main() {
   }
 
   console.log(`
-✓ Base de validação criada — TUDO FICTÍCIO (${casos.length + 6} mulheres, 5 unidades).
+✓ Base de validação criada — TUDO FICTÍCIO (${casos.length + 6} mulheres, 6 unidades).
 
   Senha de todas as contas: ${SENHA_DEMO}
 
@@ -607,6 +610,8 @@ async function main() {
     paula@acolhe.demo    CREAS
     luiza@acolhe.demo    UBS
     beatriz@acolhe.demo  DDM
+  Centro de Referência de Direitos Humanos (CRD)
+    debora@acolhe.demo   assistente social   ← identidade visual do CRD
   Administração (TI — não lê prontuários)
     ti@acolhe.demo
 

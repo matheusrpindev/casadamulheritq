@@ -68,7 +68,7 @@ com outro banco e outras chaves) com `MODO_VALIDACAO=true` no `.env` e carregue 
 docker compose exec app node scripts/semear.mjs
 ```
 
-O script apaga o banco e cria 156 mulheres inventadas e 10 contas de teste. Sem `MODO_VALIDACAO=true` ele se recusa
+O script apaga o banco e cria 156 mulheres inventadas e 11 contas de teste. Sem `MODO_VALIDACAO=true` ele se recusa
 a rodar. O roteiro de testes está em [`ROTEIRO-DE-VALIDACAO.md`](ROTEIRO-DE-VALIDACAO.md).
 
 > Na instalação de verdade, mantenha `MODO_VALIDACAO=false` e nunca rode esse script.

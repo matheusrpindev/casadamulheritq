@@ -82,8 +82,8 @@ npm run db:semear
 npm run dev
 ```
 
-Abra http://localhost:3000. O `db:semear` cria a **base fictícia de validação** (apaga o banco antes!): 5 unidades,
-10 contas e 156 mulheres inventadas, com 6 casos-roteiro detalhados. Senha de todas as contas: `acolhe-demo-2026`.
+Abra http://localhost:3000. O `db:semear` cria a **base fictícia de validação** (apaga o banco antes!): 6 unidades,
+11 contas e 156 mulheres inventadas, com 6 casos-roteiro detalhados. Senha de todas as contas: `acolhe-demo-2026`.
 Com `MODO_VALIDACAO=true` no `.env`, uma faixa amarela avisa em todas as telas que os dados são fictícios.
 
 **Para a equipe testar, siga o [roteiro de validação](docs/ROTEIRO-DE-VALIDACAO.md).**
@@ -95,6 +95,7 @@ Com `MODO_VALIDACAO=true` no `.env`, uma faixa amarela avisa em todas as telas q
 | `joana@acolhe.demo` | Advogada da Casa da Mulher | Não lê os registros restritos à Psicologia |
 | `ana@acolhe.demo` | Gestora da Casa da Mulher | Auditoria com um acesso emergencial para revisar; relatórios |
 | `marta@acolhe.demo` | Assistente social da Secretaria | Quem acolheu a Maria |
+| `debora@acolhe.demo` | Assistente social do Centro de Referência de Direitos Humanos | Identidade visual do CRD; recebe encaminhamentos da Secretaria |
 | `luiza@acolhe.demo` | UBS | A Antônia não autorizou compartilhar — veja como fica do lado da Casa da Mulher |
 | `ti@acolhe.demo` | TI da Prefeitura | Gerencia contas e unidades, sem acesso a prontuários |
 
@@ -148,11 +149,12 @@ fonte correspondentes — no sistema e nas impressões:
 |---|---|---|---|
 | **Casa da Mulher Itaquaquecetuba** | roxo `#862C72`, rosa `#E7A1A3`, coral `#E07974`, cinza `#717075` | PT Sans | `public/marca/casa-da-mulher-*.png`, símbolo em SVG |
 | **Secretaria da Mulher, Direitos Humanos e Cidadania** | azul `#095AFF`, azul escuro `#063798`, ciano `#01B5FF`, azul médio `#0C46C5`, amarelo `#FEED01`, magenta `#DE0067` | Montserrat | `public/marca/secretaria-*.png` (com o brasão da Prefeitura) |
+| **Centro de Referência de Direitos Humanos (CRD)** | azul `#0634CF`, ciano `#00B4FB`, verde-água `#50B4A8`, amarelo `#F7BE00`, magenta `#D6007E`; menu grafite | Montserrat | `public/marca/crd-*.png` |
 
-Unidades do tipo Casa da Mulher começam com a identidade da Casa; as demais (Secretaria, CREAS, UBS, Delegacia…), com
-a da Secretaria. A tela de login é a mesma para todos e usa sempre a identidade da Secretaria (`IDENTIDADE_LOGIN`);
-depois de entrar, cada pessoa vê a da sua unidade. As cores ficam em `src/app/globals.css` (escala `marca-*`, redefinida no bloco
-`[data-identidade="SECRETARIA"]`) e os arquivos de logo em `src/lib/identidade.ts`.
+Unidades do tipo Casa da Mulher começam com a identidade da Casa; as do tipo Centro de Referência de Direitos Humanos,
+com a do CRD; as demais (Secretaria, CREAS, UBS, Delegacia…), com a da Secretaria. A tela de login é a mesma para todos e usa sempre a identidade da Secretaria (`IDENTIDADE_LOGIN`);
+depois de entrar, cada pessoa vê a da sua unidade. As cores ficam em `src/app/globals.css` (escala `marca-*`, redefinida nos blocos
+`[data-identidade="…"]`) e os arquivos de logo em `src/lib/identidade.ts`.
 
 ## Antes de usar com dados reais
 

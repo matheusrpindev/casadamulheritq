@@ -18,7 +18,7 @@ import {
 import { useState } from "react";
 import { sair } from "@/app/(app)/acoes-sessao";
 import { FaixaCores, LogoMarca } from "./marca";
-import type { Identidade } from "@/lib/identidade";
+import { MARCAS, type Identidade } from "@/lib/identidade";
 import { cx } from "./ui";
 
 export type ItemMenu = {
@@ -58,7 +58,7 @@ export function Navegacao({
     <div className="flex h-full flex-col">
       <FaixaCores identidade={identidade} />
       <Link href="/" className="block px-5 pt-6 pb-5" onClick={() => setAberto(false)} aria-label={`${nomeSistema} — início`}>
-        <LogoMarca identidade={identidade} uso="menu" className={identidade === "SECRETARIA" ? "w-48" : "w-44"} />
+        <LogoMarca identidade={identidade} uso="menu" className={MARCAS[identidade].largura.menu} />
         <p className="mt-3 text-[11px] font-semibold tracking-wider text-marca-200 uppercase">
           {nomeSistema} · prontuário da rede
         </p>

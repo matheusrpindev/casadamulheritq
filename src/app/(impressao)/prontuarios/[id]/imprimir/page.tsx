@@ -6,7 +6,7 @@ import { cadastroDecifrado, carregarConteudo, carregarProntuario, mapasRede } fr
 import { avaliarFonar } from "@/lib/fonar";
 import { resumoPerfil } from "@/lib/relatorios";
 import { NOME_SISTEMA, PREFIXO_PRONTUARIO } from "@/lib/config";
-import { ROTULO_IDENTIDADE } from "@/lib/identidade";
+import { MARCAS, ROTULO_IDENTIDADE } from "@/lib/identidade";
 import { LogoMarca } from "@/components/marca";
 import { FaixaValidacao } from "@/components/faixa-validacao";
 import {
@@ -54,7 +54,7 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
         <FaixaValidacao />
       </div>
       <header className="flex items-start justify-between gap-4 border-b-2 border-marca-600 pb-3">
-        <LogoMarca identidade={usuario.unidade.identidade} uso="horizontal" className={usuario.unidade.identidade === "SECRETARIA" ? "w-80 shrink-0" : "w-44 shrink-0"} />
+        <LogoMarca identidade={usuario.unidade.identidade} uso="horizontal" className={`${MARCAS[usuario.unidade.identidade].largura.horizontal} shrink-0`} />
         <div className="flex-1">
           <p className="text-xs font-semibold tracking-widest text-marca-600 uppercase">Documento sigiloso</p>
           <h1 className="text-xl font-bold">Prontuário único — Rede de Atendimento à Mulher</h1>

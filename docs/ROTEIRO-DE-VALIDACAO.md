@@ -54,6 +54,7 @@ Senha de todas: `acolhe-demo-2026`
 | `paula@acolhe.demo` | Paula Teixeira, assistente social | CREAS |
 | `luiza@acolhe.demo` | Luiza Campos, enfermeira | UBS Central |
 | `beatriz@acolhe.demo` | Beatriz Souza | Delegacia da Mulher (DDM) |
+| `debora@acolhe.demo` | Débora Martins, assistente social | Centro de Referência de Direitos Humanos (CRD) |
 | `ti@acolhe.demo` | Equipe de TI | — (não lê prontuários) |
 
 Dica: use uma janela anônima do navegador para cada pessoa e compare o que cada uma vê.
@@ -104,6 +105,11 @@ Marque cada item e anote o que estranhou (veja a seção 5).
 - [ ] A tela de login é a mesma para todas as unidades, sempre com a identidade da Secretaria.
 - [ ] Marta: em Encaminhamentos → Enviados, veja que a Casa da Mulher confirmou a chegada da Maria (depois do passo da recepção).
 - [ ] Renata: na Auditoria, há um acesso emergencial do CREAS para revisar.
+
+### Centro de Referência de Direitos Humanos — `debora@acolhe.demo`
+- [ ] Ao entrar, o sistema aparece com a **identidade do CRD** (menu grafite, logo com a roda de pessoas, azul do CRD).
+- [ ] No início, há mulheres encaminhadas pela Secretaria aguardando: abra uma e veja que o histórico já está lá.
+- [ ] Imprima um prontuário: o cabeçalho sai com o logo do CRD.
 
 ### Outras unidades — `paula@acolhe.demo`, `luiza@acolhe.demo`
 - [ ] Paula (CREAS): veja a Josefa e a Rafaela, recebidas por encaminhamento.

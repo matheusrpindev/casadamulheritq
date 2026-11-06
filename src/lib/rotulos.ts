@@ -40,6 +40,7 @@ export const ROTULO_TIPO_UNIDADE: Rotulos<typeof TIPOS_UNIDADE> = {
   SAUDE: "Saúde",
   JURIDICO: "Jurídico / Defensoria",
   ABRIGO: "Casa-abrigo",
+  CENTRO_DIREITOS_HUMANOS: "Centro de Referência de Direitos Humanos",
   OUTRO: "Outro",
 };
 

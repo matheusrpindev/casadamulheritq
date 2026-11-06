@@ -11,7 +11,7 @@
 import type { Respostas } from "@/lib/fonar";
 import type { TipoViolencia } from "@/lib/dominio";
 
-export type SiglaUnidade = "CMI" | "SMDHC" | "CREAS" | "UBS" | "DDM";
+export type SiglaUnidade = "CMI" | "SMDHC" | "CREAS" | "UBS" | "DDM" | "CRD";
 export type Vinculo =
   | "CONJUGE_COMPANHEIRO"
   | "EX_CONJUGE_COMPANHEIRO"
@@ -200,6 +200,7 @@ const TIPOS_POR_UNIDADE: Record<SiglaUnidade, readonly TipoAtendimento[]> = {
   CREAS: ["SOCIAL", "VISITA", "RETORNO"],
   UBS: ["SAUDE", "SAUDE", "RETORNO"],
   DDM: ["OUTRO"],
+  CRD: ["SOCIAL", "SOCIAL", "RETORNO", "CONTATO_TELEFONICO"],
 };
 
 const MEDIDAS = [
@@ -450,7 +451,7 @@ export function gerarCasos(quantidade: number, hoje: Date, semente = 20261105): 
         ] as const);
 
     // Unidade de origem e atendimentos
-    const origem = pesar([["CMI", 46], ["SMDHC", 24], ["CREAS", 12], ["UBS", 12], ["DDM", 6]] as const) as SiglaUnidade;
+    const origem = pesar([["CMI", 44], ["SMDHC", 22], ["CREAS", 12], ["UBS", 12], ["DDM", 6], ["CRD", 4]] as const) as SiglaUnidade;
     const atendimentos: Caso["atendimentos"] = [];
     const nAt = inteiro(1, diasAtras > 60 ? 7 : diasAtras > 14 ? 4 : 2);
     for (let k = 0; k < nAt; k++) {
@@ -471,11 +472,13 @@ export function gerarCasos(quantidade: number, hoje: Date, semente = 20261105): 
         origem === "CMI"
           ? pesar([["CREAS", 45], ["DDM", 25], ["EXTERNO", 20], ["UBS", 10]] as const)
           : origem === "SMDHC"
-            ? pesar([["CMI", 65], ["CREAS", 20], ["DDM", 15]] as const)
+            ? pesar([["CMI", 60], ["CREAS", 18], ["DDM", 12], ["CRD", 10]] as const)
             : origem === "DDM"
               ? pesar([["CMI", 80], ["CREAS", 20]] as const)
               : origem === "CREAS"
                 ? pesar([["CMI", 70], ["DDM", 30]] as const)
+                : origem === "CRD"
+                  ? pesar([["CMI", 70], ["CREAS", 30]] as const)
                 : pesar([["CMI", 75], ["CREAS", 25]] as const);
       const diasDepois = Math.min(diasAtras - 1 < 0 ? 0 : diasAtras - 1, inteiro(0, 10));
       const recente = diasAtras - diasDepois <= 6;
@@ -491,6 +494,7 @@ export function gerarCasos(quantidade: number, hoje: Date, semente = 20261105): 
         CREAS: "Precisa de acompanhamento socioassistencial (benefícios, moradia e rede de apoio). Já atendida e orientada sobre medida protetiva.",
         DDM: "Decidiu registrar ocorrência e pedir medida protetiva. Prefere ser atendida por policial mulher.",
         UBS: "Encaminhada para acompanhamento em saúde mental (ansiedade e insônia) e avaliação clínica.",
+        CRD: "Encaminhada para orientação sobre direitos: documentos, benefícios e acesso à Justiça. O relato já está no prontuário.",
         EXTERNO: "Encaminhada à Defensoria Pública para divórcio, guarda e pensão alimentícia.",
       };
       encaminhamento = {

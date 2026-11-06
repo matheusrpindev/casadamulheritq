@@ -1,7 +1,7 @@
 /**
- * Marcas do sistema: Casa da Mulher Itaquaquecetuba e Secretaria da Mulher,
- * Direitos Humanos e Cidadania. Qual aparece depende da unidade de quem está
- * logada (ver src/lib/identidade.ts). As cores vêm das variáveis CSS do bloco
+ * Marcas do sistema: Casa da Mulher Itaquaquecetuba, Secretaria da Mulher,
+ * Direitos Humanos e Cidadania e Centro de Referência de Direitos Humanos. Qual
+ * aparece depende da unidade de quem está logada (ver src/lib/identidade.ts). As cores vêm das variáveis CSS do bloco
  * [data-identidade] em globals.css.
  */
 import { MARCAS, ROTULO_IDENTIDADE, type Identidade } from "@/lib/identidade";
@@ -37,10 +37,23 @@ export function FaixaCores({ identidade, className }: { identidade: Identidade; 
 
 /**
  * Formas decorativas no canto de áreas de destaque: os triângulos da casa
- * (Casa da Mulher) ou os blocos sobrepostos da paleta (Secretaria).
+ * (Casa da Mulher), os blocos sobrepostos da paleta (Secretaria) ou a roda de
+ * pessoas do símbolo (Centro de Referência de Direitos Humanos).
  * O contêiner pai precisa de `relative overflow-hidden`.
  */
 export function Decoracao({ identidade, className, opacidade = 0.9 }: { identidade: Identidade; className?: string; opacidade?: number }) {
+  if (identidade === "CENTRO_DIREITOS_HUMANOS") {
+    return (
+      <svg viewBox="0 0 500 457" aria-hidden className={cx("pointer-events-none absolute", className)} style={{ opacity: opacidade }}>
+        {RODA_CRD.map((p) => (
+          <g key={p.cor}>
+            <path d={p.arco} fill="none" stroke={p.cor} strokeWidth={46} />
+            <circle cx={p.cabeca[0]} cy={p.cabeca[1]} r={34} fill={p.cor} />
+          </g>
+        ))}
+      </svg>
+    );
+  }
   if (identidade === "SECRETARIA") {
     return (
       <svg viewBox="0 0 500 457" aria-hidden className={cx("pointer-events-none absolute", className)} style={{ opacity: opacidade }}>
@@ -59,3 +72,23 @@ export function Decoracao({ identidade, className, opacidade = 0.9 }: { identida
     </svg>
   );
 }
+
+/** Cinco pessoas de mãos dadas em roda, como no símbolo do CRD: um arco (braços) e uma cabeça para cada cor. */
+const RODA_CRD = (() => {
+  const [cx, cy, raio, raioCabeca] = [250, 235, 128, 196];
+  const ponto = (r: number, graus: number) => {
+    const a = (graus * Math.PI) / 180;
+    return [Math.round(cx + r * Math.cos(a)), Math.round(cy + r * Math.sin(a))] as const;
+  };
+  return [
+    { angulo: -90, cor: "#0634CF" },
+    { angulo: -18, cor: "#50B4A8" },
+    { angulo: 54, cor: "#D6007E" },
+    { angulo: 126, cor: "#F7BE00" },
+    { angulo: 198, cor: "#00B4FB" },
+  ].map(({ angulo, cor }) => {
+    const [x1, y1] = ponto(raio, angulo - 31);
+    const [x2, y2] = ponto(raio, angulo + 31);
+    return { cor, arco: `M${x1} ${y1}A${raio} ${raio} 0 0 1 ${x2} ${y2}`, cabeca: ponto(raioCabeca, angulo) };
+  });
+})();

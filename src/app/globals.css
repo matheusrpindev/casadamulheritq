@@ -63,6 +63,35 @@
   --color-fundo: #f7f8fb;
 }
 
+/*
+ * Identidade do Centro de Referência de Direitos Humanos (CRD).
+ * Paleta: azul #0634CF, ciano #00B4FB, verde-água #50B4A8, amarelo #F7BE00 e magenta #D6007E;
+ * texto do logo em grafite #5B5C60. O menu é grafite, como o fundo da arte oficial. Títulos em Montserrat.
+ */
+[data-identidade="CENTRO_DIREITOS_HUMANOS"] {
+  --font-titulo: "Montserrat Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-marca-50: #eef2fe;
+  --color-marca-100: #dbe4fd;
+  --color-marca-200: #bccbfb;
+  --color-marca-300: #8ea7f7;
+  --color-marca-400: #5a7cf0;
+  --color-marca-500: #2c55e3;
+  --color-marca-600: #0634cf;
+  --color-marca-700: #052aa8;
+  --color-marca-800: #072486;
+  --color-marca-900: #0a216b;
+  --color-marca-950: #17181c;
+
+  --color-destaque: #00b4fb;
+  --color-destaque-claro: #eef8ff;
+  --color-destaque-forte: #d6007e;
+  --color-contador: #f7be00;
+  --color-contador-texto: #17181c;
+
+  --color-fundo: #f7f8fa;
+}
+
 @layer base {
   html {
     color-scheme: light;

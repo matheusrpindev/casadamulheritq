@@ -8,6 +8,7 @@ export const TIPOS_UNIDADE = [
   "SAUDE",
   "JURIDICO",
   "ABRIGO",
+  "CENTRO_DIREITOS_HUMANOS",
   "OUTRO",
 ] as const;
 
@@ -89,7 +90,7 @@ export const VINCULOS_AUTOR = [
 
 export type TipoViolencia = (typeof TIPOS_VIOLENCIA)[number];
 /** Identidade visual mostrada a quem é da unidade (logos, cores e fonte). */
-export const IDENTIDADES = ["CASA_DA_MULHER", "SECRETARIA"] as const;
+export const IDENTIDADES = ["CASA_DA_MULHER", "SECRETARIA", "CENTRO_DIREITOS_HUMANOS"] as const;
 export type Identidade = (typeof IDENTIDADES)[number];
 
 export type Papel = (typeof PAPEIS)[number];

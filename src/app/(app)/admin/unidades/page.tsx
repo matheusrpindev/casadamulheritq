@@ -8,6 +8,7 @@ import { ROTULO_TIPO_UNIDADE } from "@/lib/rotulos";
 import { Cartao, Selo, TituloPagina, cx } from "@/components/ui";
 import { Expansivel } from "../../prontuarios/[id]/formularios";
 import { FormUnidade, LinhaUnidadeAcoes } from "../formularios";
+import { ROTULO_CURTO_IDENTIDADE } from "@/lib/identidade";
 
 export const metadata: Metadata = { title: "Unidades da rede" };
 
@@ -37,7 +38,7 @@ export default async function PaginaUnidades() {
               <div className="min-w-0 flex-1">
                 <p className="flex flex-wrap items-center gap-2 font-medium text-zinc-900">
                   {u.nome} <Selo>{u.sigla}</Selo> <Selo tom="marca">{ROTULO_TIPO_UNIDADE[u.tipo]}</Selo>
-                  <Selo tom="azul">Identidade: {u.identidade === "CASA_DA_MULHER" ? "Casa da Mulher" : "Secretaria"}</Selo>
+                  <Selo tom="azul">Identidade: {ROTULO_CURTO_IDENTIDADE[u.identidade]}</Selo>
                   {!u.ativa && <Selo tom="vermelho">Inativa</Selo>}
                 </p>
                 <p className="mt-0.5 text-xs text-zinc-500">

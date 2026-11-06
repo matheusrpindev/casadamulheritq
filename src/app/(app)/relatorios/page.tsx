@@ -7,7 +7,7 @@ import { podeVerIndicadores } from "@/lib/permissoes";
 import { carregarRelatorio, ehOculto, LIMIAR_SIGILO, type Grafico } from "@/lib/dados/relatorios";
 import { formatarData } from "@/lib/texto";
 import { NOME_SISTEMA } from "@/lib/config";
-import { ROTULO_IDENTIDADE } from "@/lib/identidade";
+import { MARCAS, ROTULO_IDENTIDADE } from "@/lib/identidade";
 import { CabecalhoCartao, Cartao, TituloPagina, classeBotao, cx } from "@/components/ui";
 import { BarrasHorizontais, Colunas, Proporcao } from "@/components/graficos";
 import { BotaoImprimir } from "@/components/botao-imprimir";
@@ -45,7 +45,7 @@ export default async function PaginaRelatorios({ searchParams }: PageProps<"/rel
     <div>
       {/* Cabeçalho só da impressão */}
       <div className="mb-6 hidden items-center gap-4 border-b-2 border-marca-600 pb-3 print:flex">
-        <LogoMarca identidade={usuario.unidade.identidade} uso="horizontal" className={usuario.unidade.identidade === "SECRETARIA" ? "w-80" : "w-44"} />
+        <LogoMarca identidade={usuario.unidade.identidade} uso="horizontal" className={MARCAS[usuario.unidade.identidade].largura.horizontal} />
         <div>
           <p className="text-lg font-bold">Relatório — {NOME_SISTEMA}</p>
           <p className="text-sm text-zinc-600">
