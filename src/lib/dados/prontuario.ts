@@ -17,15 +17,22 @@ import type { Especialidade } from "@/db/schema";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const ehUuid = (v: string) => UUID.test(v);
 
-export type InfoUnidade = { id: string; nome: string; sigla: string; cor: string };
+export type InfoUnidade = { id: string; nome: string; sigla: string; cor: string; ativa: boolean };
 export type InfoPessoa = { id: string; nome: string; especialidade: Especialidade | null; registroProfissional: string | null };
 
 /** Unidades e profissionais da rede (tabelas pequenas — carregadas por inteiro). */
 export async function mapasRede() {
   const [unidades, pessoas] = await Promise.all([
     db
-      .select({ id: schema.unidades.id, nome: schema.unidades.nome, sigla: schema.unidades.sigla, cor: schema.unidades.cor })
-      .from(schema.unidades),
+      .select({
+        id: schema.unidades.id,
+        nome: schema.unidades.nome,
+        sigla: schema.unidades.sigla,
+        cor: schema.unidades.cor,
+        ativa: schema.unidades.ativa,
+      })
+      .from(schema.unidades)
+      .orderBy(schema.unidades.nome),
     db
       .select({
         id: schema.usuarios.id,
@@ -35,11 +42,13 @@ export async function mapasRede() {
       })
       .from(schema.usuarios),
   ]);
-  const semUnidade: InfoUnidade = { id: "", nome: "Unidade removida", sigla: "?", cor: "#64748b" };
+  const semUnidade: InfoUnidade = { id: "", nome: "Unidade removida", sigla: "?", cor: "#64748b", ativa: false };
   const semPessoa: InfoPessoa = { id: "", nome: "—", especialidade: null, registroProfissional: null };
   const u = new Map(unidades.map((x) => [x.id, x]));
   const p = new Map(pessoas.map((x) => [x.id, x]));
   return {
+    /** Todas as unidades, em ordem alfabética. */
+    unidades,
     unidade: (id: string | null | undefined) => (id && u.get(id)) || semUnidade,
     pessoa: (id: string | null | undefined) => (id && p.get(id)) || semPessoa,
   };
@@ -66,9 +75,12 @@ export type ResultadoCarga =
 
 export async function carregarProntuario(ator: Ator, id: string): Promise<ResultadoCarga> {
   if (!ehUuid(id)) return { situacao: "nao-encontrado" };
-  const [prontuario] = await db.select().from(schema.prontuarios).where(eq(schema.prontuarios.id, id)).limit(1);
+  // As duas consultas saem juntas: com o banco longe, cada ida e volta conta.
+  const [[prontuario], concessoes] = await Promise.all([
+    db.select().from(schema.prontuarios).where(eq(schema.prontuarios.id, id)).limit(1),
+    concessoesDoProntuario(id),
+  ]);
   if (!prontuario) return { situacao: "nao-encontrado" };
-  const concessoes = await concessoesDoProntuario(id);
   if (!podeAbrirProntuario(ator, concessoes as Concessao[])) return { situacao: "sem-acesso", prontuario };
   const apenasEmergencial = acessoApenasEmergencial(ator, concessoes as Concessao[]);
   const expiraEmergencialEm = apenasEmergencial
@@ -92,9 +104,11 @@ export function cadastroDecifrado(p: schema.Prontuario) {
 
 type Mapas = Awaited<ReturnType<typeof mapasRede>>;
 
-/** Carrega todo o conteúdo do prontuário, já filtrado pelo que a pessoa pode ver. */
-export async function carregarConteudo(ator: Ator, prontuarioId: string, mapas: Mapas) {
-  const tecnica = podeLerConteudoTecnico(ator);
+/**
+ * Busca os registros do prontuário como estão no banco (cifrados). Pode sair junto com a checagem de acesso, mas
+ * só passe o resultado para `montarConteudo` depois de confirmar que a pessoa pode abrir o prontuário.
+ */
+export async function buscarRegistros(prontuarioId: string) {
   const [relatos, atendimentos, avaliacoes, encaminhamentos, medidas, autores] = await Promise.all([
     db.select().from(schema.relatos).where(eq(schema.relatos.prontuarioId, prontuarioId)).orderBy(desc(schema.relatos.criadoEm)),
     db
@@ -119,6 +133,20 @@ export async function carregarConteudo(ator: Ator, prontuarioId: string, mapas: 
       .orderBy(desc(schema.medidasProtetivas.criadoEm)),
     db.select().from(schema.autores).where(eq(schema.autores.prontuarioId, prontuarioId)).orderBy(asc(schema.autores.criadoEm)),
   ]);
+  return { relatos, atendimentos, avaliacoes, encaminhamentos, medidas, autores };
+}
+
+export type RegistrosProntuario = Awaited<ReturnType<typeof buscarRegistros>>;
+
+/** Carrega todo o conteúdo do prontuário, já filtrado pelo que a pessoa pode ver. */
+export async function carregarConteudo(ator: Ator, prontuarioId: string, mapas: Mapas) {
+  return montarConteudo(ator, await buscarRegistros(prontuarioId), mapas);
+}
+
+/** Decifra e filtra os registros conforme o que a pessoa pode ver. */
+export function montarConteudo(ator: Ator, registros: RegistrosProntuario, mapas: Mapas) {
+  const tecnica = podeLerConteudoTecnico(ator);
+  const { relatos, atendimentos, avaliacoes, encaminhamentos, medidas, autores } = registros;
 
   const retificadoPor = (lista: { id: string; retificaId: string | null; criadoEm: Date }[]) => {
     const m = new Map<string, { id: string; criadoEm: Date }>();
@@ -220,7 +248,7 @@ export async function carregarConteudo(ator: Ator, prontuarioId: string, mapas: 
   };
 }
 
-export type ConteudoProntuario = Awaited<ReturnType<typeof carregarConteudo>>;
+export type ConteudoProntuario = ReturnType<typeof montarConteudo>;
 
 /** Eventos de auditoria de um prontuário (aba "Acessos", só gestão). */
 export async function acessosAoProntuario(prontuarioId: string) {

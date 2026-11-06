@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { and, eq, ne } from "drizzle-orm";
 import {
   BookOpenText,
   ClipboardList,
@@ -14,7 +13,7 @@ import {
   UserX,
   Users,
 } from "lucide-react";
-import { db, schema } from "@/db";
+import type { schema } from "@/db";
 import type { Prontuario } from "@/db/schema";
 import { avaliarFonar, FONAR } from "@/lib/fonar";
 import { resumoPerfil } from "@/lib/relatorios";
@@ -604,12 +603,10 @@ export function AbaRisco({ prontuario: p, conteudo, tecnica }: Ctx) {
 // Encaminhamentos
 // ---------------------------------------------------------------------------
 
-export async function AbaEncaminhamentos({ usuario, prontuario: p, conteudo, tecnica }: Ctx) {
-  const unidades = await db
-    .select({ id: schema.unidades.id, nome: schema.unidades.nome })
-    .from(schema.unidades)
-    .where(and(eq(schema.unidades.ativa, true), ne(schema.unidades.id, usuario.unidadeId)))
-    .orderBy(schema.unidades.nome);
+export async function AbaEncaminhamentos({ usuario, prontuario: p, conteudo, mapas, tecnica }: Ctx) {
+  const unidades = mapas.unidades
+    .filter((u) => u.ativa && u.id !== usuario.unidadeId)
+    .map((u) => ({ id: u.id, nome: u.nome }));
 
   return (
     <div className="space-y-6">

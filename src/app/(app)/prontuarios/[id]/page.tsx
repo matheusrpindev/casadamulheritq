@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { and, eq, gt } from "drizzle-orm";
 import { AlertOctagon, Archive, Clock, Gavel, Lock, PhoneOff, Printer, Send, ShieldCheck, ShieldOff } from "lucide-react";
 import { db, schema } from "@/db";
 import { exigirUsuario } from "@/lib/sessao";
 import { registrarAuditoria } from "@/lib/auditoria";
-import { carregarConteudo, carregarProntuario, mapasRede } from "@/lib/dados/prontuario";
+import { buscarRegistros, carregarProntuario, ehUuid, mapasRede, montarConteudo } from "@/lib/dados/prontuario";
 import { podeRegistrarAtendimento, podeSolicitarAcessoEmergencial, podeVerAcessosDoProntuario } from "@/lib/permissoes";
 import { formatarData, formatarDataHora, hojeISO, idade, instante, nomeExibicao, numeroProntuario } from "@/lib/texto";
 import { PREFIXO_PRONTUARIO } from "@/lib/config";
-import { Aviso, BotaoLink, Cartao, Selo, SeloUnidade, cx } from "@/components/ui";
+import { Aviso, BotaoLink, Cartao, Selo, SeloUnidade } from "@/components/ui";
 import { Avatar, SeloRisco } from "@/components/selos";
 import { PedidoAcesso } from "../../busca/pedido-acesso";
+import { LinkAba } from "./link-aba";
 import {
   AbaAcessos,
   AbaAtendimentos,
@@ -44,7 +44,15 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
   const usuario = await exigirUsuario();
   const { id } = await params;
   const sp = await searchParams;
-  const carga = await carregarProntuario(usuario, id);
+  // Uma ida ao banco para tudo: prontuário, permissões, unidades, registros e a última visualização. Os registros
+  // (cifrados) só são decifrados depois da checagem de acesso, logo abaixo.
+  const valido = ehUuid(id);
+  const [carga, mapas, registros, recente] = await Promise.all([
+    carregarProntuario(usuario, id),
+    mapasRede(),
+    valido ? buscarRegistros(id) : null,
+    valido ? vistoRecentemente(usuario.id, id) : true,
+  ]);
 
   if (carga.situacao === "nao-encontrado") notFound();
   if (carga.situacao === "sem-acesso") {
@@ -72,23 +80,10 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
   }
 
   const { prontuario: p, concessoes, apenasEmergencial, expiraEmergencialEm } = carga;
-  const mapas = await mapasRede();
-  const conteudo = await carregarConteudo(usuario, p.id, mapas);
+  const conteudo = montarConteudo(usuario, registros!, mapas);
 
   // Trilha de auditoria: uma visualização a cada 10 min por pessoa (trocar de aba não gera ruído).
-  const recente = await db
-    .select({ id: schema.auditoria.id })
-    .from(schema.auditoria)
-    .where(
-      and(
-        eq(schema.auditoria.usuarioId, usuario.id),
-        eq(schema.auditoria.prontuarioId, p.id),
-        eq(schema.auditoria.acao, "PRONTUARIO_VISUALIZADO"),
-        gt(schema.auditoria.criadoEm, instante(-10 * 60000)),
-      ),
-    )
-    .limit(1);
-  if (recente.length === 0) {
+  if (!recente) {
     await registrarAuditoria(
       "PRONTUARIO_VISUALIZADO",
       { usuarioId: usuario.id, unidadeId: usuario.unidadeId },
@@ -203,22 +198,13 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
 
         <nav className="nao-imprimir flex gap-1 overflow-x-auto border-t border-zinc-100 px-3" aria-label="Seções do prontuário">
           {abasVisiveis.map((a) => (
-            <Link
+            <LinkAba
               key={a.id}
               href={`/prontuarios/${p.id}${a.id === "resumo" ? "" : `?aba=${a.id}`}`}
-              aria-current={aba === a.id ? "page" : undefined}
-              className={cx(
-                "-mb-px flex items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium whitespace-nowrap",
-                aba === a.id ? "border-marca-600 text-marca-800" : "border-transparent text-zinc-500 hover:text-zinc-800",
-              )}
-            >
-              {a.rotulo}
-              {!!contagem[a.id] && (
-                <span className={cx("rounded-full px-1.5 text-xs tabular-nums", aba === a.id ? "bg-marca-100" : "bg-zinc-100")}>
-                  {contagem[a.id]}
-                </span>
-              )}
-            </Link>
+              ativa={aba === a.id}
+              rotulo={a.rotulo}
+              contagem={contagem[a.id]}
+            />
           ))}
         </nav>
       </Cartao>
@@ -241,4 +227,21 @@ export default async function PaginaProntuario({ params, searchParams }: PagePro
       {aba === "acessos" && <AbaAcessos {...ctx} />}
     </div>
   );
+}
+
+/** Esta pessoa já teve uma visualização deste prontuário registrada nos últimos 10 minutos? */
+async function vistoRecentemente(usuarioId: string, prontuarioId: string) {
+  const linhas = await db
+    .select({ id: schema.auditoria.id })
+    .from(schema.auditoria)
+    .where(
+      and(
+        eq(schema.auditoria.usuarioId, usuarioId),
+        eq(schema.auditoria.prontuarioId, prontuarioId),
+        eq(schema.auditoria.acao, "PRONTUARIO_VISUALIZADO"),
+        gt(schema.auditoria.criadoEm, instante(-10 * 60000)),
+      ),
+    )
+    .limit(1);
+  return linhas.length > 0;
 }

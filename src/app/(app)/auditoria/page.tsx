@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Form from "next/form";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { and, desc, eq, gte, inArray, isNull, lt, ne, or, sql, type SQL } from "drizzle-orm";
@@ -12,6 +13,7 @@ import { formatarDataHora, nomeExibicao, numeroProntuario } from "@/lib/texto";
 import { PREFIXO_PRONTUARIO } from "@/lib/config";
 import { CabecalhoCartao, Cartao, Entrada, Seletor, SeloUnidade, TituloPagina, Vazio, classeBotao, cx } from "@/components/ui";
 import { FormRevisarAcesso } from "../prontuarios/[id]/formularios";
+import { BotaoFiltro, IndicadorLink } from "@/components/carregando";
 
 export const metadata: Metadata = { title: "Auditoria" };
 
@@ -141,7 +143,7 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
       )}
 
       <Cartao>
-        <form className="grid gap-3 border-b border-zinc-100 p-5 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_150px_150px_130px_auto]">
+        <Form action="/auditoria" className="grid gap-3 border-b border-zinc-100 p-5 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_150px_150px_130px_auto]">
           <Seletor name="acao" defaultValue={acao} aria-label="Ação">
             <option value="">Todas as ações</option>
             {Object.entries(ROTULO_ACAO).map(([k, v]) => (
@@ -161,8 +163,8 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
           <Entrada type="date" name="de" defaultValue={de} aria-label="De" />
           <Entrada type="date" name="ate" defaultValue={ate} aria-label="Até" />
           <Entrada name="numero" defaultValue={numero ? String(numero) : ""} placeholder="Nº prontuário" aria-label="Número do prontuário" />
-          <button className={classeBotao("primario")}>Filtrar</button>
-        </form>
+          <BotaoFiltro className={classeBotao("primario")}>Filtrar</BotaoFiltro>
+        </Form>
 
         {visiveis.length === 0 ? (
           <Vazio titulo="Nenhum evento encontrado" icone={<ShieldAlert className="size-10" />} />
@@ -213,12 +215,12 @@ export default async function PaginaAuditoria({ searchParams }: PageProps<"/audi
           <div className="flex gap-2">
             {pagina > 1 && (
               <Link className={classeBotao("secundario", "sm")} href={qs({ pagina: String(pagina - 1) })}>
-                Anterior
+                <IndicadorLink /> Anterior
               </Link>
             )}
             {temMais && (
               <Link className={classeBotao("secundario", "sm")} href={qs({ pagina: String(pagina + 1) })}>
-                Próxima
+                Próxima <IndicadorLink />
               </Link>
             )}
           </div>

@@ -3,6 +3,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { cache } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { and, eq, lt, ne, or } from "drizzle-orm";
 import { db, schema } from "@/db";
 import type { Ator } from "./permissoes";
@@ -88,10 +89,8 @@ export const obterUsuario = cache(async (): Promise<UsuarioLogado | null> => {
   }
 
   if (agora - linha.sessao.ultimaAtividadeEm.getTime() > 60_000) {
-    await db
-      .update(schema.sessoes)
-      .set({ ultimaAtividadeEm: new Date() })
-      .where(eq(schema.sessoes.id, id));
+    // Depois de enviar a tela: marcar atividade não precisa atrasar a resposta.
+    after(() => db.update(schema.sessoes).set({ ultimaAtividadeEm: new Date() }).where(eq(schema.sessoes.id, id)));
   }
 
   const { usuario, unidade } = linha;

@@ -12,6 +12,7 @@ import { Cartao, SeloUnidade, TituloPagina, Vazio, cx } from "@/components/ui";
 import { Avatar, SeloRisco, SeloStatusEncaminhamento, SeloUrgencia } from "@/components/selos";
 import { AcoesEncaminhamento } from "../prontuarios/[id]/formularios";
 import { PedidoAcesso } from "../busca/pedido-acesso";
+import { IndicadorLink } from "@/components/carregando";
 
 export const metadata: Metadata = { title: "Encaminhamentos" };
 
@@ -65,19 +66,22 @@ export default async function PaginaEncaminhamentos({ searchParams }: PageProps<
                 caixa === a.id ? "bg-marca-700 text-white" : "text-zinc-600 hover:bg-zinc-50",
               )}
             >
-              <a.icone className="size-4" /> {a.rotulo}
+              <a.icone className="size-4" /> {a.rotulo} <IndicadorLink />
             </Link>
           ))}
         </div>
         <div className="flex gap-3 text-sm">
-          <Link href={`/encaminhamentos?caixa=${caixa}`} className={cx(!todos ? "font-semibold text-marca-800" : "text-zinc-500 hover:text-zinc-800")}>
-            Em aberto
+          <Link
+            href={`/encaminhamentos?caixa=${caixa}`}
+            className={cx("inline-flex items-center gap-1", !todos ? "font-semibold text-marca-800" : "text-zinc-500 hover:text-zinc-800")}
+          >
+            Em aberto <IndicadorLink />
           </Link>
           <Link
             href={`/encaminhamentos?caixa=${caixa}&status=todos`}
-            className={cx(todos ? "font-semibold text-marca-800" : "text-zinc-500 hover:text-zinc-800")}
+            className={cx("inline-flex items-center gap-1", todos ? "font-semibold text-marca-800" : "text-zinc-500 hover:text-zinc-800")}
           >
-            Todos
+            Todos <IndicadorLink />
           </Link>
         </div>
       </div>

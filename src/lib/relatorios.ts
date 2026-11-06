@@ -83,3 +83,26 @@ export function contarEmOrdem<T extends string>(valores: T[], ordem: readonly st
 /** Rótulo de sim/não/não informado. */
 export const rotuloSimNao = (v: boolean | null) => (v === true ? "Sim" : v === false ? "Não" : "Não informado");
 export const ORDEM_SIM_NAO = ["Sim", "Não", "Não informado"];
+
+const FUSO = "America/Sao_Paulo";
+
+/** Deslocamento do horário de Brasília em relação ao UTC, em minutos (ex.: −180), num instante. */
+function deslocamentoMinutos(instante: Date): number {
+  const nome = new Intl.DateTimeFormat("en-US", { timeZone: FUSO, timeZoneName: "longOffset" })
+    .formatToParts(instante)
+    .find((p) => p.type === "timeZoneName")?.value;
+  const m = /GMT([+-])(\d{2}):(\d{2})/.exec(nome ?? "");
+  return m ? (m[1] === "-" ? -1 : 1) * (Number(m[2]) * 60 + Number(m[3])) : 0;
+}
+
+/**
+ * Início do período dos relatórios: meia-noite (horário de Brasília) do dia 1º, `meses − 1` meses antes do mês atual.
+ * Ex.: em 6/nov, 3 meses → 1º/set 00:00.
+ */
+export function inicioDoPeriodo(meses: number, agora: Date = new Date()): Date {
+  const partes = new Intl.DateTimeFormat("en-US", { timeZone: FUSO, year: "numeric", month: "numeric" }).formatToParts(agora);
+  const ano = Number(partes.find((p) => p.type === "year")?.value);
+  const mes = Number(partes.find((p) => p.type === "month")?.value) - 1;
+  const meiaNoiteUtc = Date.UTC(ano, mes - (meses - 1), 1);
+  return new Date(meiaNoiteUtc - deslocamentoMinutos(new Date(meiaNoiteUtc)) * 60_000);
+}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { exigirUsuario } from "@/lib/sessao";
-import { carregarConteudo, carregarProntuario, mapasRede } from "@/lib/dados/prontuario";
+import { buscarRegistros, carregarProntuario, ehUuid, mapasRede, montarConteudo } from "@/lib/dados/prontuario";
 import { podeRegistrarAtendimento } from "@/lib/permissoes";
 import { nomeExibicao } from "@/lib/texto";
 import { TituloPagina } from "@/components/ui";
@@ -13,11 +13,16 @@ export default async function PaginaNovaAvaliacao({ params }: PageProps<"/prontu
   const usuario = await exigirUsuario();
   const { id } = await params;
   if (!podeRegistrarAtendimento(usuario)) redirect(`/prontuarios/${id}`);
-  const carga = await carregarProntuario(usuario, id);
+  const [carga, mapas, registros] = await Promise.all([
+    carregarProntuario(usuario, id),
+    mapasRede(),
+    ehUuid(id) ? buscarRegistros(id) : null,
+  ]);
   if (carga.situacao === "nao-encontrado") notFound();
   if (carga.situacao === "sem-acesso") redirect(`/prontuarios/${id}`);
 
-  const conteudo = await carregarConteudo(usuario, id, await mapasRede());
+  // Decifra só depois de confirmar o acesso.
+  const conteudo = montarConteudo(usuario, registros!, mapas);
   const anteriores = conteudo.avaliacoes[0]?.respostas ?? null;
 
   return (

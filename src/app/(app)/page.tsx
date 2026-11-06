@@ -1,3 +1,4 @@
+import Form from "next/form";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { and, count, desc, eq, gte, inArray, lte, sql } from "drizzle-orm";
@@ -118,7 +119,7 @@ export default async function Painel() {
             : "Nenhum encaminhamento aguardando sua unidade agora."}
         </p>
 
-        <form action="/busca" className="relative mt-5 flex max-w-xl gap-2">
+        <Form action="/busca" className="relative mt-5 flex max-w-xl gap-2">
           <label htmlFor="busca-rapida" className="sr-only">
             Buscar mulher na rede
           </label>
@@ -131,7 +132,7 @@ export default async function Painel() {
           <button className="inline-flex h-11 items-center gap-2 rounded-xl bg-marca-950/40 px-4 text-sm font-medium ring-1 ring-white/20 hover:bg-marca-950/60">
             <FileSearch className="size-4" /> Buscar
           </button>
-        </form>
+        </Form>
         <p className="relative mt-3 text-xs text-marca-100/80">
           Sempre busque antes de abrir um novo prontuário — ela pode já ter sido atendida em outra unidade.
         </p>

@@ -79,7 +79,9 @@ Para a **base fictícia**, uma hospedagem gerenciada é o caminho mais rápido. 
 servidores ficam fora do Brasil e o contrato não foi avaliado pela Prefeitura.
 
 1. **Banco:** crie um PostgreSQL no [Neon](https://neon.com) (ou pelo Netlify Database, que usa o Neon) e copie a
-   *connection string* **com pooling** (o endereço tem `-pooler`).
+   *connection string* **com pooling** (o endereço tem `-pooler`). Para a base fictícia, escolha a região
+   **AWS US East 2 (Ohio)**: no plano gratuito a Netlify roda o sistema em Ohio, e com o banco em São Paulo cada
+   consulta atravessa o continente (cerca de 0,15 s cada). Na mesma região, as telas abrem bem mais rápido.
 2. **Chaves:** no seu computador, rode `npm run gerar-chaves` e guarde as duas chaves.
 3. **Carga do banco, do seu computador:** no `.env` local, coloque o `DATABASE_URL` do Neon, as duas chaves e
    `MODO_VALIDACAO=true`. Depois rode `npm run db:migrar` e `npm run db:semear`.

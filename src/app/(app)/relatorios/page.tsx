@@ -12,6 +12,7 @@ import { CabecalhoCartao, Cartao, TituloPagina, classeBotao, cx } from "@/compon
 import { BarrasHorizontais, Colunas, Proporcao } from "@/components/graficos";
 import { BotaoImprimir } from "@/components/botao-imprimir";
 import { LogoMarca } from "@/components/marca";
+import { IndicadorLink } from "@/components/carregando";
 
 export const metadata: Metadata = { title: "Relatórios" };
 
@@ -239,9 +240,12 @@ function Alternador({ opcoes }: { opcoes: { rotulo: string; href: string; ativo:
         <Link
           key={o.rotulo}
           href={o.href}
-          className={cx("rounded-lg px-3 py-1.5 text-sm font-medium", o.ativo ? "bg-marca-600 text-white" : "text-zinc-600 hover:bg-zinc-50")}
+          className={cx(
+            "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium",
+            o.ativo ? "bg-marca-600 text-white" : "text-zinc-600 hover:bg-zinc-50",
+          )}
         >
-          {o.rotulo}
+          {o.rotulo} <IndicadorLink />
         </Link>
       ))}
     </div>

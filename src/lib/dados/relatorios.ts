@@ -8,6 +8,7 @@ import {
   FAIXAS_ETARIAS,
   faixaEtaria,
   idadeEm,
+  inicioDoPeriodo,
   ORDEM_FILHOS,
   ORDEM_SIM_NAO,
   rotuloFilhos,
@@ -52,10 +53,8 @@ const naoInformado = (v: string | null | undefined) => (v && v.trim() ? v : "Nã
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
 export async function carregarRelatorio({ meses, unidadeId: u }: FiltroRelatorio) {
-  const [{ desde }] = await linhas<{ desde: Date }>(
-    sql`select (date_trunc('month', now() at time zone 'America/Sao_Paulo') - make_interval(months => ${meses - 1})) at time zone 'America/Sao_Paulo' as desde`,
-  );
-  const d = new Date(desde);
+  // Calculado aqui (e não com uma consulta) para as consultas abaixo saírem todas juntas.
+  const d = inicioDoPeriodo(meses);
 
   // Filtros por escopo (rede inteira ou uma unidade)
   const fP = u ? sql`and p.unidade_origem_id = ${u}` : sql``;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Form from "next/form";
 import Link from "next/link";
 import { and, desc, eq, ilike, type SQL } from "drizzle-orm";
 import { FileSearch, Lock, ShieldCheck, UserPlus } from "lucide-react";
@@ -13,6 +14,7 @@ import { PREFIXO_PRONTUARIO } from "@/lib/config";
 import { Aviso, BotaoLink, Cartao, Entrada, Selo, SeloUnidade, TituloPagina, Vazio, classeBotao } from "@/components/ui";
 import { Avatar, SeloRisco } from "@/components/selos";
 import { PedidoAcesso } from "./pedido-acesso";
+import { BotaoFiltro } from "@/components/carregando";
 
 export const metadata: Metadata = { title: "Buscar mulher" };
 
@@ -30,32 +32,34 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
   const buscaValida = porCpf || termos.join("").length >= 3 || (!!nasc && termos.length > 0);
   const buscou = q.length > 0 || !!nasc;
 
-  let resultados: schema.Prontuario[] = [];
-  if (buscaValida) {
-    const filtros: SQL[] = [];
-    if (porCpf) filtros.push(eq(schema.prontuarios.cpfIndice, indiceCego(digitos)));
-    else for (const t of termos) filtros.push(ilike(schema.prontuarios.nomeBusca, `%${escaparLike(t)}%`));
-    if (nasc) filtros.push(eq(schema.prontuarios.dataNascimento, nasc));
-    resultados = await db
-      .select()
-      .from(schema.prontuarios)
-      .where(and(...filtros))
-      .orderBy(desc(schema.prontuarios.atualizadoEm))
-      .limit(30);
+  const filtros: SQL[] = [];
+  if (porCpf) filtros.push(eq(schema.prontuarios.cpfIndice, indiceCego(digitos)));
+  else for (const t of termos) filtros.push(ilike(schema.prontuarios.nomeBusca, `%${escaparLike(t)}%`));
+  if (nasc) filtros.push(eq(schema.prontuarios.dataNascimento, nasc));
 
-    await registrarAuditoria(
-      "BUSCA",
-      { usuarioId: usuario.id, unidadeId: usuario.unidadeId },
-      { detalhes: { termo: porCpf ? mascararCpf(digitos) : q, nascimento: nasc || undefined, resultados: resultados.length } },
-    );
-  }
-
-  const [mapas, acessiveis] = await Promise.all([
+  // Consultas independentes saem juntas (cada ida ao banco conta quando ele está longe).
+  const [mapas, resultados] = await Promise.all([
     mapasRede(),
+    buscaValida
+      ? db
+          .select()
+          .from(schema.prontuarios)
+          .where(and(...filtros))
+          .orderBy(desc(schema.prontuarios.atualizadoEm))
+          .limit(30)
+      : ([] as schema.Prontuario[]),
+  ]);
+  const [acessiveis] = await Promise.all([
     prontuariosAcessiveis(
       usuario.unidadeId,
       resultados.map((r) => r.id),
     ),
+    buscaValida &&
+      registrarAuditoria(
+        "BUSCA",
+        { usuarioId: usuario.id, unidadeId: usuario.unidadeId },
+        { detalhes: { termo: porCpf ? mascararCpf(digitos) : q, nascimento: nasc || undefined, resultados: resultados.length } },
+      ),
   ]);
   const podePedir = podeSolicitarAcessoEmergencial(usuario);
   const novoHref = `/prontuarios/novo?${new URLSearchParams({ ...(q && !porCpf ? { nome: q } : {}), ...(porCpf ? { cpf: digitos } : {}), ...(nasc ? { nasc } : {}) })}`;
@@ -68,7 +72,7 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
       />
 
       <Cartao className="mb-6 p-5">
-        <form className="grid gap-3 sm:grid-cols-[1fr_200px_auto]" role="search">
+        <Form action="/busca" className="grid gap-3 sm:grid-cols-[1fr_200px_auto]" role="search">
           <div>
             <label htmlFor="q" className="mb-1 block text-sm font-medium text-zinc-700">
               Nome, nome social ou CPF
@@ -82,11 +86,11 @@ export default async function PaginaBusca({ searchParams }: PageProps<"/busca">)
             <Entrada id="nasc" name="nasc" type="date" defaultValue={nasc} />
           </div>
           <div className="flex items-end">
-            <button className={classeBotao("primario", "md", "w-full sm:w-auto")}>
-              <FileSearch className="size-4" /> Buscar
-            </button>
+            <BotaoFiltro className={classeBotao("primario", "md", "w-full sm:w-auto")} icone={<FileSearch className="size-4" />}>
+              Buscar
+            </BotaoFiltro>
           </div>
-        </form>
+        </Form>
         <p className="mt-3 text-xs text-zinc-500">
           Por privacidade, não existe lista completa de mulheres atendidas: é preciso buscar alguém específico. Toda busca fica registrada.
         </p>
