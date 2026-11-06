@@ -11,7 +11,7 @@
 import type { Respostas } from "@/lib/fonar";
 import type { TipoViolencia } from "@/lib/dominio";
 
-export type SiglaUnidade = "CMI" | "SMM" | "CREAS" | "UBS" | "DDM";
+export type SiglaUnidade = "CMI" | "SMDHC" | "CREAS" | "UBS" | "DDM";
 export type Vinculo =
   | "CONJUGE_COMPANHEIRO"
   | "EX_CONJUGE_COMPANHEIRO"
@@ -196,7 +196,7 @@ const TEXTO_ATENDIMENTO: Record<TipoAtendimento, readonly string[]> = {
 
 const TIPOS_POR_UNIDADE: Record<SiglaUnidade, readonly TipoAtendimento[]> = {
   CMI: ["ACOLHIMENTO", "PSICOLOGICO", "PSICOLOGICO", "SOCIAL", "JURIDICO", "RETORNO", "GRUPO", "CONTATO_TELEFONICO"],
-  SMM: ["ACOLHIMENTO", "SOCIAL", "SOCIAL", "CONTATO_TELEFONICO", "RETORNO"],
+  SMDHC: ["ACOLHIMENTO", "SOCIAL", "SOCIAL", "CONTATO_TELEFONICO", "RETORNO"],
   CREAS: ["SOCIAL", "VISITA", "RETORNO"],
   UBS: ["SAUDE", "SAUDE", "RETORNO"],
   DDM: ["OUTRO"],
@@ -450,7 +450,7 @@ export function gerarCasos(quantidade: number, hoje: Date, semente = 20261105): 
         ] as const);
 
     // Unidade de origem e atendimentos
-    const origem = pesar([["CMI", 46], ["SMM", 24], ["CREAS", 12], ["UBS", 12], ["DDM", 6]] as const) as SiglaUnidade;
+    const origem = pesar([["CMI", 46], ["SMDHC", 24], ["CREAS", 12], ["UBS", 12], ["DDM", 6]] as const) as SiglaUnidade;
     const atendimentos: Caso["atendimentos"] = [];
     const nAt = inteiro(1, diasAtras > 60 ? 7 : diasAtras > 14 ? 4 : 2);
     for (let k = 0; k < nAt; k++) {
@@ -470,7 +470,7 @@ export function gerarCasos(quantidade: number, hoje: Date, semente = 20261105): 
       const destino: SiglaUnidade | "EXTERNO" =
         origem === "CMI"
           ? pesar([["CREAS", 45], ["DDM", 25], ["EXTERNO", 20], ["UBS", 10]] as const)
-          : origem === "SMM"
+          : origem === "SMDHC"
             ? pesar([["CMI", 65], ["CREAS", 20], ["DDM", 15]] as const)
             : origem === "DDM"
               ? pesar([["CMI", 80], ["CREAS", 20]] as const)

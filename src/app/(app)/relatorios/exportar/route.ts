@@ -3,7 +3,8 @@ import { podeVerIndicadores } from "@/lib/permissoes";
 import { registrarAuditoria } from "@/lib/auditoria";
 import { carregarRelatorio, ehOculto, LIMIAR_SIGILO, type Grafico } from "@/lib/dados/relatorios";
 import { formatarData, hojeISO } from "@/lib/texto";
-import { INSTITUICAO, NOME_SISTEMA } from "@/lib/config";
+import { NOME_SISTEMA } from "@/lib/config";
+import { ROTULO_IDENTIDADE } from "@/lib/identidade";
 
 /**
  * Exporta o relatório AGREGADO em CSV (separador ";" e BOM, para abrir direto no Excel).
@@ -23,7 +24,7 @@ export async function GET(request: Request) {
     return /[;"\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
   const linhas: (string | number)[][] = [
-    ["Relatório", `${NOME_SISTEMA} — ${INSTITUICAO}`],
+    ["Relatório", `${NOME_SISTEMA} — ${ROTULO_IDENTIDADE[usuario.unidade.identidade]}`],
     ["Escopo", r.escopo ? r.escopo.nome : "Rede toda"],
     ["Período", `desde ${formatarData(r.desde)} (${meses} meses)`],
     ["Emitido em", formatarData(new Date())],

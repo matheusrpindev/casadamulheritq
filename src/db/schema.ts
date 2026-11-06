@@ -37,6 +37,7 @@ import {
   ORIGENS_ACESSO,
   STATUS_MEDIDA,
   VINCULOS_AUTOR,
+  IDENTIDADES,
 } from "../lib/dominio";
 
 export * from "../lib/dominio";
@@ -46,6 +47,7 @@ export * from "../lib/dominio";
 // ---------------------------------------------------------------------------
 
 export const tipoUnidade = pgEnum("tipo_unidade", TIPOS_UNIDADE);
+export const identidadeVisual = pgEnum("identidade_visual", IDENTIDADES);
 
 export const papel = pgEnum("papel", PAPEIS);
 
@@ -85,6 +87,8 @@ export const unidades = pgTable("unidades", {
   telefone: text(),
   /** Cor de identificação na linha do tempo (hex). */
   cor: text().notNull().default("#7c3aed"),
+  /** Identidade visual (logos, cores) que as pessoas desta unidade veem no sistema. */
+  identidade: identidadeVisual().notNull().default("SECRETARIA"),
   ativa: boolean().notNull().default(true),
   criadoEm: criadoEm(),
 });

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { db, schema } from "@/db";
 import { ESPECIALIDADES, PAPEIS, TIPOS_UNIDADE } from "@/db/schema";
+import { IDENTIDADES, identidadePadrao } from "@/lib/identidade";
 import { registrarAuditoria } from "@/lib/auditoria";
 import { falha, falhaValidacao, lerFormulario, sucesso, type EstadoAcao } from "@/lib/estado-acao";
 import { papeisAtribuiveis, podeGerirUnidades, podeGerirUsuarios } from "@/lib/permissoes";
@@ -111,7 +112,8 @@ const esquemaUnidade = z.object({
     .string()
     .regex(/^#[0-9a-fA-F]{6}$/, "Cor inválida.")
     .default("#7c3aed"),
-});
+  identidade: z.enum(IDENTIDADES).optional(),
+}).transform((d) => ({ ...d, identidade: d.identidade ?? identidadePadrao(d.tipo) }));
 
 export async function salvarUnidade(unidadeId: string | null, _: EstadoAcao, dados: FormData): Promise<EstadoAcao> {
   const ator = await exigirUsuario();

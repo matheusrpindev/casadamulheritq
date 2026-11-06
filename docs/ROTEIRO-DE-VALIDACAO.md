@@ -49,7 +49,7 @@ Senha de todas: `acolhe-demo-2026`
 | `joana@acolhe.demo` | Joana Prado, advogada | Casa da Mulher |
 | `ana@acolhe.demo` | Ana Beatriz Moura, gestora | Casa da Mulher |
 | `sueli@acolhe.demo` | Sueli Ramos, recepção | Casa da Mulher |
-| `marta@acolhe.demo` | Marta Lima, assistente social | Secretaria da Mulher (SMM) |
+| `marta@acolhe.demo` | Marta Lima, assistente social | Secretaria da Mulher, Direitos Humanos e Cidadania (SMDHC) |
 | `renata@acolhe.demo` | Renata Alves, gestora (psicóloga) | Secretaria da Mulher |
 | `paula@acolhe.demo` | Paula Teixeira, assistente social | CREAS |
 | `luiza@acolhe.demo` | Luiza Campos, enfermeira | UBS Central |
@@ -100,6 +100,8 @@ Marque cada item e anote o que estranhou (veja a seção 5).
 - [ ] **Equipe**: crie uma conta para uma técnica e veja a senha temporária.
 
 ### Secretaria — `marta@acolhe.demo` e `renata@acolhe.demo`
+- [ ] Ao entrar, o sistema aparece com a **identidade da Secretaria** (azul, logo da Secretaria com a Prefeitura). Quem é da Casa da Mulher continua vendo a identidade da Casa.
+- [ ] Saia e veja que a tela de login agora mostra a marca da Secretaria (ela lembra o último acesso neste navegador).
 - [ ] Marta: em Encaminhamentos → Enviados, veja que a Casa da Mulher confirmou a chegada da Maria (depois do passo da recepção).
 - [ ] Renata: na Auditoria, há um acesso emergencial do CREAS para revisar.
 

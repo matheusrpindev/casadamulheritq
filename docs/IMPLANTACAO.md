@@ -51,7 +51,7 @@ Em rede interna sem certificado (só para testes!), defina `PERMITIR_HTTP=true` 
 ## 4. Primeira conta
 
 ```bash
-docker compose exec app node scripts/criar-admin.mjs --email ti@prefeitura.sp.gov.br --nome "Equipe de TI" --unidade "Secretaria Municipal da Mulher" --sigla SMM --tipo SECRETARIA
+docker compose exec app node scripts/criar-admin.mjs --email ti@prefeitura.sp.gov.br --nome "Equipe de TI" --unidade "Secretaria da Mulher, Direitos Humanos e Cidadania" --sigla SMDHC --tipo SECRETARIA
 ```
 
 Ele mostra uma **senha temporária**, trocada no primeiro acesso. Com essa conta, cadastre as unidades e as gestoras de

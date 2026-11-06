@@ -37,6 +37,7 @@ export default async function PaginaUnidades() {
               <div className="min-w-0 flex-1">
                 <p className="flex flex-wrap items-center gap-2 font-medium text-zinc-900">
                   {u.nome} <Selo>{u.sigla}</Selo> <Selo tom="marca">{ROTULO_TIPO_UNIDADE[u.tipo]}</Selo>
+                  <Selo tom="azul">Identidade: {u.identidade === "CASA_DA_MULHER" ? "Casa da Mulher" : "Secretaria"}</Selo>
                   {!u.ativa && <Selo tom="vermelho">Inativa</Selo>}
                 </p>
                 <p className="mt-0.5 text-xs text-zinc-500">
@@ -45,7 +46,7 @@ export default async function PaginaUnidades() {
                 </p>
               </div>
               <div className="w-full sm:w-auto sm:min-w-64">
-                <LinhaUnidadeAcoes id={u.id} ativa={u.ativa} valores={{ nome: u.nome, sigla: u.sigla, tipo: u.tipo, endereco: u.endereco, telefone: u.telefone, cor: u.cor }} />
+                <LinhaUnidadeAcoes id={u.id} ativa={u.ativa} valores={{ nome: u.nome, sigla: u.sigla, tipo: u.tipo, endereco: u.endereco, telefone: u.telefone, cor: u.cor, identidade: u.identidade }} />
               </div>
             </li>
           ))}

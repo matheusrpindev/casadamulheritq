@@ -6,11 +6,12 @@ import { exigirUsuario } from "@/lib/sessao";
 import { podeVerIndicadores } from "@/lib/permissoes";
 import { carregarRelatorio, ehOculto, LIMIAR_SIGILO, type Grafico } from "@/lib/dados/relatorios";
 import { formatarData } from "@/lib/texto";
-import { INSTITUICAO, NOME_SISTEMA } from "@/lib/config";
+import { NOME_SISTEMA } from "@/lib/config";
+import { ROTULO_IDENTIDADE } from "@/lib/identidade";
 import { CabecalhoCartao, Cartao, TituloPagina, classeBotao, cx } from "@/components/ui";
 import { BarrasHorizontais, Colunas, Proporcao } from "@/components/graficos";
 import { BotaoImprimir } from "@/components/botao-imprimir";
-import { LogoCompleto } from "@/components/marca";
+import { LogoMarca } from "@/components/marca";
 
 export const metadata: Metadata = { title: "Relatórios" };
 
@@ -43,11 +44,11 @@ export default async function PaginaRelatorios({ searchParams }: PageProps<"/rel
     <div>
       {/* Cabeçalho só da impressão */}
       <div className="mb-6 hidden items-center gap-4 border-b-2 border-marca-600 pb-3 print:flex">
-        <LogoCompleto orientacao="horizontal" className="w-44" />
+        <LogoMarca identidade={usuario.unidade.identidade} uso="horizontal" className={usuario.unidade.identidade === "SECRETARIA" ? "w-80" : "w-44"} />
         <div>
           <p className="text-lg font-bold">Relatório — {NOME_SISTEMA}</p>
           <p className="text-sm text-zinc-600">
-            {INSTITUICAO} · {escopoTexto} · desde {formatarData(r.desde)} ({meses} meses) · emitido em {formatarData(new Date())}
+            {ROTULO_IDENTIDADE[usuario.unidade.identidade]} · {escopoTexto} · desde {formatarData(r.desde)} ({meses} meses) · emitido em {formatarData(new Date())}
           </p>
         </div>
       </div>

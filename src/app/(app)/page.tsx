@@ -10,7 +10,7 @@ import { formatarData, hojeISO, instante, nomeExibicao, numeroProntuario, tempoR
 import { PREFIXO_PRONTUARIO } from "@/lib/config";
 import { BotaoLink, CabecalhoCartao, Cartao, SeloUnidade, Vazio } from "@/components/ui";
 import { Avatar, SeloRisco, SeloStatusEncaminhamento, SeloUrgencia } from "@/components/selos";
-import { TriangulosDecorativos } from "@/components/marca";
+import { Decoracao } from "@/components/marca";
 
 export default async function Painel() {
   const usuario = await exigirUsuario();
@@ -103,7 +103,11 @@ export default async function Painel() {
   return (
     <div className="space-y-8">
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-marca-900 via-marca-700 to-marca-600 px-6 py-7 text-white shadow-sm sm:px-8">
-        <TriangulosDecorativos className="-right-10 -bottom-16 hidden w-72 sm:block" opacidade={0.85} />
+        <Decoracao
+          identidade={usuario.unidade.identidade}
+          className="-right-10 -bottom-16 hidden w-72 sm:block"
+          opacidade={usuario.unidade.identidade === "SECRETARIA" ? 1 : 0.85}
+        />
         <p className="relative text-sm text-marca-100">{usuario.unidade.nome}</p>
         <h1 className="relative mt-1 text-2xl font-bold tracking-tight sm:text-3xl">
           {saudacao}, {primeiroNome}.
@@ -122,7 +126,7 @@ export default async function Painel() {
             id="busca-rapida"
             name="q"
             placeholder="Buscar por nome, nome social ou CPF…"
-            className="h-11 min-w-0 flex-1 rounded-xl border-0 bg-white px-4 text-sm text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:ring-2 focus:ring-rosa focus:outline-none"
+            className="h-11 min-w-0 flex-1 rounded-xl border-0 bg-white px-4 text-sm text-zinc-900 shadow-sm placeholder:text-zinc-400 focus:ring-2 focus:ring-destaque focus:outline-none"
           />
           <button className="inline-flex h-11 items-center gap-2 rounded-xl bg-marca-950/40 px-4 text-sm font-medium ring-1 ring-white/20 hover:bg-marca-950/60">
             <FileSearch className="size-4" /> Buscar

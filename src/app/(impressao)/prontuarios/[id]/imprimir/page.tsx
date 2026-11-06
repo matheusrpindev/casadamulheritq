@@ -5,8 +5,9 @@ import { registrarAuditoria } from "@/lib/auditoria";
 import { cadastroDecifrado, carregarConteudo, carregarProntuario, mapasRede } from "@/lib/dados/prontuario";
 import { avaliarFonar } from "@/lib/fonar";
 import { resumoPerfil } from "@/lib/relatorios";
-import { INSTITUICAO, NOME_SISTEMA, PREFIXO_PRONTUARIO } from "@/lib/config";
-import { LogoCompleto } from "@/components/marca";
+import { NOME_SISTEMA, PREFIXO_PRONTUARIO } from "@/lib/config";
+import { ROTULO_IDENTIDADE } from "@/lib/identidade";
+import { LogoMarca } from "@/components/marca";
 import { FaixaValidacao } from "@/components/faixa-validacao";
 import {
   ROTULO_RISCO,
@@ -43,7 +44,7 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
   const fonar = ultima?.respostas ? avaliarFonar(ultima.respostas) : null;
 
   return (
-    <main className="mx-auto max-w-3xl bg-white px-8 py-10 text-[13px] leading-relaxed text-zinc-900 print:max-w-none print:p-0">
+    <main data-identidade={usuario.unidade.identidade} className="mx-auto max-w-3xl bg-white px-8 py-10 text-[13px] leading-relaxed text-zinc-900 print:max-w-none print:p-0">
       <div className="nao-imprimir mb-6 flex items-center justify-between rounded-xl bg-marca-50 px-4 py-3 text-sm text-marca-900">
         <span>Esta impressão fica registrada na trilha de auditoria. Guarde o papel em local seguro ou descarte triturando.</span>
         <BotaoImprimir />
@@ -53,12 +54,12 @@ export default async function PaginaImpressao({ params }: PageProps<"/prontuario
         <FaixaValidacao />
       </div>
       <header className="flex items-start justify-between gap-4 border-b-2 border-marca-600 pb-3">
-        <LogoCompleto orientacao="horizontal" className="w-44 shrink-0" />
+        <LogoMarca identidade={usuario.unidade.identidade} uso="horizontal" className={usuario.unidade.identidade === "SECRETARIA" ? "w-80 shrink-0" : "w-44 shrink-0"} />
         <div className="flex-1">
           <p className="text-xs font-semibold tracking-widest text-marca-600 uppercase">Documento sigiloso</p>
           <h1 className="text-xl font-bold">Prontuário único — Rede de Atendimento à Mulher</h1>
           <p className="text-xs text-zinc-600">
-            {INSTITUICAO} · {NOME_SISTEMA}
+            {ROTULO_IDENTIDADE[usuario.unidade.identidade]} · {NOME_SISTEMA}
           </p>
         </div>
         <div className="text-right text-xs">

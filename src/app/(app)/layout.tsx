@@ -1,12 +1,20 @@
 import { and, count, eq } from "drizzle-orm";
 import { db, schema } from "@/db";
-import { exigirUsuario } from "@/lib/sessao";
+import type { Metadata } from "next";
+import { exigirUsuario, obterUsuario } from "@/lib/sessao";
+import { MARCAS } from "@/lib/identidade";
 import { podeGerirUnidades, podeGerirUsuarios, podeVerAuditoria, podeVerIndicadores } from "@/lib/permissoes";
 import { MINUTOS_BLOQUEIO_TELA, NOME_SISTEMA } from "@/lib/config";
 import { ROTULO_PAPEL } from "@/lib/rotulos";
 import { Navegacao, type ItemMenu } from "@/components/navegacao";
 import { GuardaInatividade } from "@/components/guarda-inatividade";
 import { FaixaValidacao } from "@/components/faixa-validacao";
+
+/** Ícone da aba conforme a identidade da unidade de quem está logada. */
+export async function generateMetadata(): Promise<Metadata> {
+  const usuario = await obterUsuario();
+  return usuario ? { icons: { icon: MARCAS[usuario.unidade.identidade].icone } } : {};
+}
 
 export default async function LayoutAutenticado({ children }: LayoutProps<"/">) {
   const usuario = await exigirUsuario({ permitirTrocaPendente: true });
@@ -44,8 +52,10 @@ export default async function LayoutAutenticado({ children }: LayoutProps<"/">) 
   ];
 
   return (
-    <div className="min-h-screen">
+    // data-identidade troca cores, fonte e logos para a identidade da unidade (globals.css).
+    <div data-identidade={usuario.unidade.identidade} className="min-h-screen bg-fundo">
       <Navegacao
+        identidade={usuario.unidade.identidade}
         grupos={grupos}
         nomeSistema={NOME_SISTEMA}
         usuario={{

@@ -17,7 +17,8 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { sair } from "@/app/(app)/acoes-sessao";
-import { LogoCompleto } from "./marca";
+import { FaixaCores, LogoMarca } from "./marca";
+import type { Identidade } from "@/lib/identidade";
 import { cx } from "./ui";
 
 export type ItemMenu = {
@@ -42,10 +43,12 @@ export function Navegacao({
   grupos,
   usuario,
   nomeSistema,
+  identidade,
 }: {
   grupos: { titulo?: string; itens: ItemMenu[] }[];
   usuario: { nome: string; papel: string; unidade: string; cor: string };
   nomeSistema: string;
+  identidade: Identidade;
 }) {
   const caminho = usePathname();
   const [aberto, setAberto] = useState(false);
@@ -53,14 +56,9 @@ export function Navegacao({
 
   const conteudo = (
     <div className="flex h-full flex-col">
-      <div aria-hidden className="flex h-1 shrink-0">
-        <span className="flex-1 bg-[#862C72]" />
-        <span className="flex-1 bg-[#E7A1A3]" />
-        <span className="flex-1 bg-[#E07974]" />
-        <span className="flex-1 bg-[#717075]" />
-      </div>
+      <FaixaCores identidade={identidade} />
       <Link href="/" className="block px-5 pt-6 pb-5" onClick={() => setAberto(false)} aria-label={`${nomeSistema} — início`}>
-        <LogoCompleto orientacao="horizontal" claro className="w-44" />
+        <LogoMarca identidade={identidade} uso="menu" className={identidade === "SECRETARIA" ? "w-48" : "w-44"} />
         <p className="mt-3 text-[11px] font-semibold tracking-wider text-marca-200 uppercase">
           {nomeSistema} · prontuário da rede
         </p>
@@ -93,7 +91,7 @@ export function Navegacao({
                         <span
                           className={cx(
                             "min-w-5 rounded-full px-1.5 text-center text-xs font-semibold tabular-nums",
-                            marcado ? "bg-marca-600 text-white" : "bg-[#E07974] text-marca-950",
+                            marcado ? "bg-marca-600 text-white" : "bg-contador text-contador-texto",
                           )}
                         >
                           {item.contador}
@@ -137,7 +135,7 @@ export function Navegacao({
     <>
       <div className="nao-imprimir sticky top-0 z-30 flex items-center justify-between bg-marca-950 px-4 py-3 text-white lg:hidden">
         <span className="flex items-center gap-2.5">
-          <LogoCompleto orientacao="horizontal" claro className="w-32" />
+          <LogoMarca identidade={identidade} uso="menu" className="w-32" />
           <span className="border-l border-white/20 pl-2.5 text-xs font-semibold tracking-wider text-marca-200 uppercase">{nomeSistema}</span>
         </span>
         <button type="button" onClick={() => setAberto(true)} aria-label="Abrir menu" className="rounded-md p-1.5 hover:bg-white/10">

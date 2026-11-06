@@ -56,14 +56,14 @@ async function main() {
   const [cmi, smm, creas, ubs, ddm] = await db
     .insert(schema.unidades)
     .values([
-      { nome: "Casa da Mulher Itaquaquecetuba", sigla: "CMI", tipo: "CASA_DA_MULHER", cor: "#862C72", telefone: "(11) 0000-0001" },
-      { nome: "Secretaria Municipal da Mulher", sigla: "SMM", tipo: "SECRETARIA", cor: "#db2777", telefone: "(11) 0000-0002" },
-      { nome: "CREAS Itaquaquecetuba", sigla: "CREAS", tipo: "CREAS", cor: "#0891b2", telefone: "(11) 0000-0003" },
-      { nome: "UBS Central", sigla: "UBS", tipo: "SAUDE", cor: "#059669", telefone: "(11) 0000-0004" },
-      { nome: "Delegacia de Defesa da Mulher", sigla: "DDM", tipo: "DELEGACIA", cor: "#2563eb", telefone: "(11) 0000-0005" },
+      { nome: "Casa da Mulher Itaquaquecetuba", sigla: "CMI", tipo: "CASA_DA_MULHER", identidade: "CASA_DA_MULHER", cor: "#862C72", telefone: "(11) 0000-0001" },
+      { nome: "Secretaria da Mulher, Direitos Humanos e Cidadania", sigla: "SMDHC", tipo: "SECRETARIA", identidade: "SECRETARIA", cor: "#0C46C5", telefone: "(11) 0000-0002" },
+      { nome: "CREAS Itaquaquecetuba", sigla: "CREAS", tipo: "CREAS", identidade: "SECRETARIA", cor: "#0891b2", telefone: "(11) 0000-0003" },
+      { nome: "UBS Central", sigla: "UBS", tipo: "SAUDE", identidade: "SECRETARIA", cor: "#059669", telefone: "(11) 0000-0004" },
+      { nome: "Delegacia de Defesa da Mulher", sigla: "DDM", tipo: "DELEGACIA", identidade: "SECRETARIA", cor: "#b45309", telefone: "(11) 0000-0005" },
     ])
     .returning();
-  const unidadePorSigla: Record<SiglaUnidade, typeof cmi> = { CMI: cmi, SMM: smm, CREAS: creas, UBS: ubs, DDM: ddm };
+  const unidadePorSigla: Record<SiglaUnidade, typeof cmi> = { CMI: cmi, SMDHC: smm, CREAS: creas, UBS: ubs, DDM: ddm };
 
   // ---------------------------------------------------------------- equipe
   const hash = await bcrypt.hash(SENHA_DEMO, 10);
@@ -98,7 +98,7 @@ async function main() {
   /** Quem atende cada tipo de atendimento em cada unidade. */
   const equipe: Record<SiglaUnidade, Partial<Record<(typeof TIPOS_ATENDIMENTO)[number], Profissional>> & { padrao: Profissional }> = {
     CMI: { padrao: carla, ACOLHIMENTO: ana, SOCIAL: ana, CONTATO_TELEFONICO: ana, JURIDICO: joana, PSICOLOGICO: carla, RETORNO: carla, GRUPO: carla },
-    SMM: { padrao: marta, PSICOLOGICO: renata },
+    SMDHC: { padrao: marta, PSICOLOGICO: renata },
     CREAS: { padrao: paula },
     UBS: { padrao: luiza },
     DDM: { padrao: beatriz },
@@ -576,7 +576,7 @@ async function main() {
       }
     }
     // Alguns acessos emergenciais antigos, já revisados, para a trilha de auditoria
-    if (emergenciais < 3 && c.origem === "SMM" && c.diasAtras > 30) {
+    if (emergenciais < 3 && c.origem === "SMDHC" && c.diasAtras > 30) {
       emergenciais++;
       const em = depois(quando, 3);
       await db.insert(schema.acessos).values({ prontuarioId: p.id, unidadeId: creas.id, origem: "EMERGENCIAL", justificativa: "Visita domiciliar com sinais de agressão recente; precisávamos da avaliação de risco.", concedidoPorId: paula.id, criadoEm: em, expiraEm: depois(em, 1), revisadoPorId: emergenciais < 3 ? renata.id : null, revisadoEm: emergenciais < 3 ? depois(em, 2) : null });
@@ -600,8 +600,8 @@ async function main() {
     carla@acolhe.demo    psicóloga        ← comece por aqui: Maria e Bianca estão chegando
     joana@acolhe.demo    advogada
     sueli@acolhe.demo    recepção
-  Secretaria da Mulher (SMM)
-    marta@acolhe.demo    assistente social
+  Secretaria da Mulher, Direitos Humanos e Cidadania (SMDHC)
+    marta@acolhe.demo    assistente social   ← identidade visual da Secretaria
     renata@acolhe.demo   gestora (psicóloga)
   Outras unidades
     paula@acolhe.demo    CREAS

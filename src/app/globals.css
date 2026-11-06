@@ -5,11 +5,11 @@
   --font-titulo: "PT Sans", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
 
   /*
-   * Identidade visual oficial da Casa da Mulher Itaquaquecetuba.
+   * Identidade visual — padrão: Casa da Mulher Itaquaquecetuba.
    * Paleta: roxo #862C72, rosa #E7A1A3, coral #E07974 e cinza #717075.
-   * "marca" é a escala do roxo (600 = cor oficial). Coral e rosa são decorativos:
-   * texto branco sobre coral não tem contraste suficiente. Os cinzas da interface
-   * usam a escala "zinc", cujo 500 (#71717A) é praticamente o cinza oficial.
+   * "marca" é a escala da cor principal (600 = cor oficial). A outra identidade
+   * (Secretaria) redefine estas variáveis no bloco [data-identidade="SECRETARIA"].
+   * Os cinzas da interface usam a escala "zinc".
    */
   --color-marca-50: #fbf4f9;
   --color-marca-100: #f6e6f1;
@@ -23,12 +23,44 @@
   --color-marca-900: #491942;
   --color-marca-950: #2c0a28;
 
-  --color-rosa: #e7a1a3;
-  --color-rosa-claro: #fcf1f1;
-  --color-coral: #e07974;
-  --color-cinza-marca: #717075;
+  /* Destaques decorativos (não usar como fundo de texto branco). */
+  --color-destaque: #e7a1a3;
+  --color-destaque-claro: #fcf1f1;
+  --color-destaque-forte: #e07974;
+  /* Contador de pendências no menu. */
+  --color-contador: #e07974;
+  --color-contador-texto: #2c0a28;
 
   --color-fundo: #faf7f8;
+}
+
+/*
+ * Identidade da Secretaria da Mulher, Direitos Humanos e Cidadania.
+ * Paleta: azul #095AFF, azul escuro #063798, ciano #01B5FF, azul médio #0C46C5,
+ * amarelo #FEED01 e magenta #DE0067. Títulos em Montserrat.
+ */
+[data-identidade="SECRETARIA"] {
+  --font-titulo: "Montserrat Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-marca-50: #f0f5ff;
+  --color-marca-100: #dfeaff;
+  --color-marca-200: #c4d8ff;
+  --color-marca-300: #93b8ff;
+  --color-marca-400: #4d8bff;
+  --color-marca-500: #095aff;
+  --color-marca-600: #0c46c5;
+  --color-marca-700: #063798;
+  --color-marca-800: #052c7a;
+  --color-marca-900: #06245f;
+  --color-marca-950: #04153d;
+
+  --color-destaque: #feed01;
+  --color-destaque-claro: #f0f5ff;
+  --color-destaque-forte: #de0067;
+  --color-contador: #feed01;
+  --color-contador-texto: #04153d;
+
+  --color-fundo: #f7f8fb;
 }
 
 @layer base {
@@ -41,7 +73,7 @@
     color: var(--color-zinc-900);
   }
   ::selection {
-    background: var(--color-rosa);
+    background: var(--color-destaque);
     color: var(--color-marca-950);
   }
   h1,

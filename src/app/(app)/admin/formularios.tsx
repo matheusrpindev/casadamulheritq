@@ -5,6 +5,7 @@ import { KeyRound } from "lucide-react";
 import { BotaoEnviar, ErroCampo, FormAcao, useEstadoAcao } from "@/components/form-acao";
 import { Campo, Entrada, Seletor, classeBotao } from "@/components/ui";
 import { ESPECIALIDADES, TIPOS_UNIDADE, type Papel } from "@/lib/dominio";
+import { IDENTIDADES, ROTULO_IDENTIDADE, identidadePadrao, type Identidade } from "@/lib/identidade";
 import { ROTULO_ESPECIALIDADE, ROTULO_PAPEL, ROTULO_TIPO_UNIDADE } from "@/lib/rotulos";
 import { alternarAtivo, alternarUnidade, criarUsuario, redefinirSenha, salvarUnidade } from "./acoes";
 
@@ -32,9 +33,11 @@ export function FormNovoUsuario({
 }: {
   papeis: Papel[];
   /** Só para a administração; gestão cria na própria unidade. */
-  unidades?: { id: string; nome: string }[];
+  unidades?: { id: string; nome: string; identidade: Identidade }[];
 }) {
   const [papel, setPapel] = useState<Papel>(papeis.includes("TECNICA") ? "TECNICA" : papeis[0]);
+  const [unidadeId, setUnidadeId] = useState("");
+  const identidadeEscolhida = unidades?.find((u) => u.id === unidadeId)?.identidade;
   return (
     <FormAcao acao={criarUsuario} className="space-y-4">
       <SenhaGerada />
@@ -49,7 +52,7 @@ export function FormNovoUsuario({
         </Campo>
         {unidades && (
           <Campo rotulo="Unidade" htmlFor="u-unidade" obrigatorio>
-            <Seletor id="u-unidade" name="unidadeId" required defaultValue="">
+            <Seletor id="u-unidade" name="unidadeId" required value={unidadeId} onChange={(e) => setUnidadeId(e.target.value)}>
               <option value="" disabled>
                 Selecione…
               </option>
@@ -60,6 +63,9 @@ export function FormNovoUsuario({
               ))}
             </Seletor>
             <ErroCampo nome="unidadeId" />
+            {identidadeEscolhida && (
+              <p className="mt-1 text-xs text-zinc-500">Ela verá a identidade visual da {ROTULO_IDENTIDADE[identidadeEscolhida]}.</p>
+            )}
           </Campo>
         )}
         <Campo rotulo="Perfil" htmlFor="u-papel" obrigatorio>
@@ -117,9 +123,20 @@ export function AcoesUsuario({ id, ativo, nome }: { id: string; ativo: boolean; 
   );
 }
 
-type ValoresUnidade = { nome: string; sigla: string; tipo: string; endereco: string | null; telefone: string | null; cor: string };
+type ValoresUnidade = {
+  nome: string;
+  sigla: string;
+  tipo: string;
+  endereco: string | null;
+  telefone: string | null;
+  cor: string;
+  identidade: Identidade;
+};
 
 export function FormUnidade({ id, valores, aoFechar }: { id: string | null; valores?: ValoresUnidade; aoFechar?: () => void }) {
+  const [tipo, setTipo] = useState(valores?.tipo ?? "CASA_DA_MULHER");
+  const [identidade, setIdentidade] = useState<Identidade>(valores?.identidade ?? identidadePadrao(tipo));
+  const [escolheuIdentidade, setEscolheuIdentidade] = useState(!!valores);
   return (
     <FormAcao acao={salvarUnidade.bind(null, id)} limparAoSalvar={!id} className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-[2fr_1fr_1fr]">
@@ -131,7 +148,16 @@ export function FormUnidade({ id, valores, aoFechar }: { id: string | null; valo
           <Entrada id={`un-sigla-${id}`} name="sigla" defaultValue={valores?.sigla} required maxLength={12} />
         </Campo>
         <Campo rotulo="Tipo" htmlFor={`un-tipo-${id}`}>
-          <Seletor id={`un-tipo-${id}`} name="tipo" defaultValue={valores?.tipo ?? "CASA_DA_MULHER"}>
+          <Seletor
+            id={`un-tipo-${id}`}
+            name="tipo"
+            value={tipo}
+            onChange={(e) => {
+              setTipo(e.target.value);
+              // Ao cadastrar, a identidade acompanha o tipo até a pessoa escolher outra.
+              if (!escolheuIdentidade) setIdentidade(identidadePadrao(e.target.value));
+            }}
+          >
             {TIPOS_UNIDADE.map((t) => (
               <option key={t} value={t}>
                 {ROTULO_TIPO_UNIDADE[t]}
@@ -151,6 +177,27 @@ export function FormUnidade({ id, valores, aoFechar }: { id: string | null; valo
           <input id={`un-cor-${id}`} name="cor" type="color" defaultValue={valores?.cor ?? "#7c3aed"} className="h-10 w-16 cursor-pointer rounded-lg border border-zinc-300 bg-white p-1" />
         </Campo>
       </div>
+      <Campo
+        rotulo="Identidade visual"
+        htmlFor={`un-ident-${id}`}
+        dica="Logos e cores que as pessoas desta unidade veem no sistema e nas impressões."
+      >
+        <Seletor
+          id={`un-ident-${id}`}
+          name="identidade"
+          value={identidade}
+          onChange={(e) => {
+            setIdentidade(e.target.value as Identidade);
+            setEscolheuIdentidade(true);
+          }}
+        >
+          {IDENTIDADES.map((i) => (
+            <option key={i} value={i}>
+              {ROTULO_IDENTIDADE[i]}
+            </option>
+          ))}
+        </Seletor>
+      </Campo>
       <div className="flex justify-end gap-2">
         {aoFechar && (
           <button type="button" className={classeBotao("fantasma")} onClick={aoFechar}>

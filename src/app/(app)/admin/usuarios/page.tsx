@@ -39,7 +39,7 @@ export default async function PaginaUsuarios() {
       />
 
       <Expansivel rotulo="Nova conta">
-        <FormNovoUsuario papeis={atribuiveis} unidades={admin ? unidades.filter((u) => u.ativa).map((u) => ({ id: u.id, nome: u.nome })) : undefined} />
+        <FormNovoUsuario papeis={atribuiveis} unidades={admin ? unidades.filter((u) => u.ativa).map((u) => ({ id: u.id, nome: u.nome, identidade: u.identidade })) : undefined} />
       </Expansivel>
 
       {porUnidade.map(({ unidade, pessoas: lista }) => (

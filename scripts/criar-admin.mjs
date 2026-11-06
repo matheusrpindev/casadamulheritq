@@ -3,7 +3,7 @@
 //
 // Uso (local):      npm run criar-admin -- --email ti@prefeitura.gov.br --nome "Equipe de TI"
 // Uso (container):  docker compose exec app node scripts/criar-admin.mjs --email ... --nome "..."
-// Opcionais: --unidade "Secretaria Municipal da Mulher" --sigla SMM --tipo SECRETARIA --papel ADMIN
+// Opcionais: --unidade "Secretaria da Mulher, Direitos Humanos e Cidadania" --sigla SMDHC --tipo SECRETARIA --papel ADMIN
 try {
   await import("dotenv/config");
 } catch {}
@@ -20,8 +20,8 @@ const arg = (nome) => {
 
 const email = arg("email")?.trim().toLowerCase();
 const nome = arg("nome")?.trim();
-const nomeUnidade = arg("unidade") ?? "Secretaria Municipal da Mulher";
-const sigla = arg("sigla") ?? "SMM";
+const nomeUnidade = arg("unidade") ?? "Secretaria da Mulher, Direitos Humanos e Cidadania";
+const sigla = arg("sigla") ?? "SMDHC";
 const tipo = arg("tipo") ?? "SECRETARIA";
 const papel = arg("papel") ?? "ADMIN";
 
@@ -47,7 +47,12 @@ try {
   let unidade = (await cliente.query("select id, nome from unidades where nome = $1", [nomeUnidade])).rows[0];
   if (!unidade) {
     unidade = (
-      await cliente.query("insert into unidades (nome, sigla, tipo) values ($1, $2, $3) returning id, nome", [nomeUnidade, sigla, tipo])
+      await cliente.query("insert into unidades (nome, sigla, tipo, identidade) values ($1, $2, $3, $4) returning id, nome", [
+        nomeUnidade,
+        sigla,
+        tipo,
+        tipo === "CASA_DA_MULHER" ? "CASA_DA_MULHER" : "SECRETARIA",
+      ])
     ).rows[0];
   }
   await cliente.query(

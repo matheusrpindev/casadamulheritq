@@ -13,7 +13,7 @@ feito, e **ela não precisa contar a história de novo** (revitimização — Le
  Secretaria da Mulher                         Casa da Mulher
  ─────────────────────                        ─────────────────────────────
  1. Busca na rede (nome/CPF)                  4. "Chegando à sua unidade":
- 2. Abre o prontuário                            Maria · Urgente · de SMM
+ 2. Abre o prontuário                            Maria · Urgente · de SMDHC
     · relato (escuta qualificada)             5. Lê o prontuário ANTES de recebê-la:
     · avaliação de risco (FONAR)                 relato, risco, medidas, como contatar
     · autorização dela p/ compartilhar        6. Confirma a chegada e registra o
@@ -139,14 +139,20 @@ tests/                  testes automatizados
 
 Stack: Next.js 16 (App Router, Server Actions), React 19, TypeScript, Drizzle ORM, PostgreSQL, Tailwind CSS 4.
 
-### Identidade visual
+### Identidade visual por unidade
 
-Segue a identidade oficial da **Casa da Mulher Itaquaquecetuba**: roxo `#862C72`, rosa `#E7A1A3`, coral `#E07974`
-e cinza `#717075`, com títulos em PT Sans. Os logos ficam em `public/marca/` nas versões horizontal e vertical, com
-texto cinza (fundo claro) ou branco (fundo escuro), recompostos dos arquivos oficiais com fundo transparente; o
-símbolo da casa é desenhado em SVG (`src/components/marca.tsx` e `src/app/icon.svg`). As cores estão em
-`src/app/globals.css` (escala `marca-*`; os cinzas da interface usam a escala `zinc`, próxima do cinza oficial).
-Coral e rosa são só decorativos: texto branco sobre coral não tem contraste suficiente.
+Cada unidade escolhe uma identidade (tela **Unidades da rede**), e quem trabalha nela vê os logos, as cores e a
+fonte correspondentes — no sistema e nas impressões:
+
+| Identidade | Cores | Títulos | Logos |
+|---|---|---|---|
+| **Casa da Mulher Itaquaquecetuba** | roxo `#862C72`, rosa `#E7A1A3`, coral `#E07974`, cinza `#717075` | PT Sans | `public/marca/casa-da-mulher-*.png`, símbolo em SVG |
+| **Secretaria da Mulher, Direitos Humanos e Cidadania** | azul `#095AFF`, azul escuro `#063798`, ciano `#01B5FF`, azul médio `#0C46C5`, amarelo `#FEED01`, magenta `#DE0067` | Montserrat | `public/marca/secretaria-*.png` (com o brasão da Prefeitura) |
+
+Unidades do tipo Casa da Mulher começam com a identidade da Casa; as demais (Secretaria, CREAS, UBS, Delegacia…), com
+a da Secretaria. A tela de login lembra a identidade do último acesso naquele navegador; no primeiro acesso, mostra as
+duas marcas. As cores ficam em `src/app/globals.css` (escala `marca-*`, redefinida no bloco
+`[data-identidade="SECRETARIA"]`) e os arquivos de logo em `src/lib/identidade.ts`.
 
 ## Antes de usar com dados reais
 

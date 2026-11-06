@@ -88,6 +88,10 @@ export const VINCULOS_AUTOR = [
 ] as const;
 
 export type TipoViolencia = (typeof TIPOS_VIOLENCIA)[number];
+/** Identidade visual mostrada a quem é da unidade (logos, cores e fonte). */
+export const IDENTIDADES = ["CASA_DA_MULHER", "SECRETARIA"] as const;
+export type Identidade = (typeof IDENTIDADES)[number];
+
 export type Papel = (typeof PAPEIS)[number];
 export type Especialidade = (typeof ESPECIALIDADES)[number];
 export type Sigilo = (typeof SIGILOS)[number];
