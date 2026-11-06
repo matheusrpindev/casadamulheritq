@@ -148,7 +148,7 @@ fonte correspondentes — no sistema e nas impressões:
 | Identidade | Cores | Títulos | Logos |
 |---|---|---|---|
 | **Casa da Mulher Itaquaquecetuba** | roxo `#862C72`, rosa `#E7A1A3`, coral `#E07974`, cinza `#717075` | PT Sans | `public/marca/casa-da-mulher-*.png`, símbolo em SVG |
-| **Secretaria da Mulher, Direitos Humanos e Cidadania** | azul `#095AFF`, azul escuro `#063798`, ciano `#01B5FF`, azul médio `#0C46C5`, amarelo `#FEED01`, magenta `#DE0067` | Montserrat | `public/marca/secretaria-*.png` (com o brasão da Prefeitura) |
+| **Secretaria da Mulher, Direitos Humanos e Cidadania** | azul `#095AFF`, azul escuro `#063798`, ciano `#01B5FF`, azul médio `#0C46C5`, amarelo `#FEED01`, magenta `#DE0067` | Montserrat | `public/marca/secretaria-*.png` e `prefeitura-*.png` (no menu, a Prefeitura aparece abaixo da Secretaria) |
 | **Centro de Referência de Direitos Humanos (CRD)** | azul `#0634CF`, ciano `#00B4FB`, verde-água `#50B4A8`, amarelo `#F7BE00`, magenta `#D6007E`; menu grafite | Montserrat | `public/marca/crd-*.png` |
 
 Unidades do tipo Casa da Mulher começam com a identidade da Casa; as do tipo Centro de Referência de Direitos Humanos,

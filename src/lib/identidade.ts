@@ -41,6 +41,8 @@ export const MARCAS: Record<
   {
     /** Logo em fundo escuro, compacto (menu lateral, barra do celular). */
     menu: Imagem;
+    /** Segundo logo no menu lateral, abaixo do principal (ex.: Prefeitura, na Secretaria). */
+    apoioMenu?: Imagem & { alt: string };
     /** Logo em fundo claro, horizontal (impressões, login no celular). */
     horizontal: Imagem;
     /** Logo em destaque na tela de login. */
@@ -66,6 +68,7 @@ export const MARCAS: Record<
   },
   SECRETARIA: {
     menu: { src: "/marca/secretaria-branco.png", largura: 600, altura: 136 },
+    apoioMenu: { src: "/marca/prefeitura-branco.png", largura: 599, altura: 122, alt: "Prefeitura de Itaquaquecetuba" },
     horizontal: { src: "/marca/secretaria-completa.png", largura: 1200, altura: 128 },
     destaque: { src: "/marca/secretaria-completa.png", largura: 1200, altura: 128 },
     icone: "/marca/brasao.png",

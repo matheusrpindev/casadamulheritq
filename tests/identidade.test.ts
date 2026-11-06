@@ -21,7 +21,7 @@ describe("identidade visual por unidade", () => {
       const m = MARCAS[i];
       expect(ROTULO_IDENTIDADE[i]).toBeTruthy();
       expect(ROTULO_CURTO_IDENTIDADE[i]).toBeTruthy();
-      for (const arquivo of [m.menu.src, m.horizontal.src, m.destaque.src, m.icone]) {
+      for (const arquivo of [m.menu.src, m.horizontal.src, m.destaque.src, m.icone, ...(m.apoioMenu ? [m.apoioMenu.src] : [])]) {
         expect(arquivo).toMatch(/^\/marca\//);
         expect(existsSync(join("public", arquivo)), arquivo).toBe(true);
       }

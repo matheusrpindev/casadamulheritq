@@ -54,12 +54,19 @@ export function Navegacao({
   const [aberto, setAberto] = useState(false);
   const ativo = (href: string) => (href === "/" ? caminho === "/" : caminho === href || caminho.startsWith(`${href}/`));
 
+  const apoio = MARCAS[identidade].apoioMenu;
   const conteudo = (
     <div className="flex h-full flex-col">
       <FaixaCores identidade={identidade} />
       <Link href="/" className="block px-5 pt-6 pb-5" onClick={() => setAberto(false)} aria-label={`${nomeSistema} — início`}>
         <LogoMarca identidade={identidade} uso="menu" className={MARCAS[identidade].largura.menu} />
-        <p className="mt-3 text-[11px] font-semibold tracking-wider text-marca-200 uppercase">
+        {apoio && (
+          <div className="mt-4 border-t border-white/15 pt-4">
+            {/* eslint-disable-next-line @next/next/no-img-element -- PNG pequeno e estático */}
+            <img src={apoio.src} alt={apoio.alt} width={apoio.largura} height={apoio.altura} className="h-auto w-44" />
+          </div>
+        )}
+        <p className="mt-4 text-[11px] font-semibold tracking-wider text-marca-200 uppercase">
           {nomeSistema} · prontuário da rede
         </p>
       </Link>
