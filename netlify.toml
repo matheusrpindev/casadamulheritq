@@ -1,0 +1,4 @@
+# Netlify: aplica as migrações do banco antes de cada publicação, para o código novo
+# nunca ir ao ar com o banco desatualizado. Usa a variável DATABASE_URL do painel da Netlify.
+[build]
+  command = "npm run db:migrar && npm run build"

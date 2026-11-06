@@ -87,6 +87,10 @@ servidores ficam fora do Brasil e o contrato não foi avaliado pela Prefeitura.
    é detectado sozinho. Em *Environment variables*, cadastre **exatamente as mesmas** `DATABASE_URL`,
    `CHAVE_CRIPTOGRAFIA` e `CHAVE_INDICE` do passo 3, mais `MODO_VALIDACAO=true`.
 
+> A cada publicação, a Netlify roda `npm run db:migrar` antes do build (arquivo `netlify.toml`), então o banco é
+> atualizado sozinho quando o sistema ganha campos novos. Se o deploy falhar nesse passo, confira o `DATABASE_URL` no
+> painel da Netlify.
+
 > As chaves da hospedagem precisam ser idênticas às usadas na carga: com chaves diferentes, os relatos gravados
 > não podem ser lidos (o sistema mostra erro ao abrir um prontuário).
 
